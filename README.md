@@ -1,4 +1,4 @@
-**MMM-WEALTH: Multisectoral Micro-Macro Model with Wealth Tax & Evasion Dynamics**
+## **MMM-WEALTH: Multisectoral Micro-Macro Model with Wealth Tax & Evasion Dynamics**
 
 Built on top of the V3.6 (Finance Augmented) version, this model extends the original framework by incorporating wealth taxation and evasion dynamics.
 
@@ -44,7 +44,6 @@ This structure enables more granular analysis of wealth dynamics and tax inciden
 
 *   **Capital Controls:** The model includes a switch to simulate two scenarios: (1) an open economy with unrestricted capital flows, and (2) a closed economy with capital controls. Capital controls serve as a policy tool to prevent tax evasion through capital flight by restricting the movement of wealth across borders.
 
-/////////////////////////////////////////////////////////////////////////////////////
 
 ## ORIGINAL MMM MODEL (v. 3.6)
 
