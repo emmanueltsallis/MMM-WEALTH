@@ -1,0 +1,9 @@
+Res_*/
+*.RData
+*.RHistory
+*.bak
+*.exe
+*.o
+makefile
+elements.txt
+makefileNW

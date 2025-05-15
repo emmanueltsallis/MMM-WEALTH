@@ -1,0 +1,10 @@
+
+
+====================> NEW TCL SESSION
+
+(05/09/25 19:52:31)
+Command:
+if { ! [ file pathtype "$filetoload" ] eq "absolute" } { set filetoload "[ pwd ]/$filetoload" }
+Message:
+can't use non-numeric string as operand of "!"
+-----
