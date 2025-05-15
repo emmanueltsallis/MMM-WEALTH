@@ -7,14 +7,13 @@ Built on top of the V3.6 (Finance Augmented) version, this model extends the ori
 
 This version introduces a comprehensive module for Wealth Taxation, incorporating endogenous Tax Evasion and Capital Flow dynamics. Key features include:
 
-*   **Class Structure:** The model implements a derives from a 3-class structure (class A, B and C) to a 6-class structure following the Paris School of Economics literature and World Inequality Database (WID) methodology:
+*   **Class Structure:** The model implements a derives from a 3-class structure (class A, B and C) to a 6-class structure following the Paris School of Economics literature and World Inequality Database (WID) methodology. This structure enables more granular analysis of wealth dynamics and tax incidence across different segments of the wealth distribution, while maintaining consistency with widely used inequality metrics:
     *   **Bottom 50% (P0-P50):** The lower, working class
     *   **Middle 40% (P50-P90):** The middle class
     *   **Next 9% (P90-P99):** The upper middle class
     *   **Next 0.9% (P99-P99.9):** The rich
     *   **Next 0.09% (P99.9-P99.99):** The super rich
     *   **Top 0.01% (P99.99-P100):** The ultra rich
-This structure enables more granular analysis of wealth dynamics and tax incidence across different segments of the wealth distribution, while maintaining consistency with widely used inequality metrics.
 
 *   **Wealth Heterogeneity:** The model now allows for negative net wealth (debt) at the class level. It assumes an intra-class wealth distribution (e.g., Pareto-Tsallis, or q-Exponential) to estimate the proportion of households liable for wealth tax based on a specified threshold.
 
