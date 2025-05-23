@@ -74,6 +74,8 @@ Label Root
 			Var: Class_Taxpayer_Proportion
 			Param: class_pareto_alpha
 			Param: wealth_tax_threshold
+			Var: Wealth_Max
+			Var: Wealth_Min
 
 		}
 
@@ -926,6 +928,8 @@ Var: Class_Profits 0 s + n n
 Var: Class_Taxpayer_Proportion 0 s + n n
 Param: class_pareto_alpha 0 n + n n	1.1	1.2	1.3	1.5	2	3
 Param: wealth_tax_threshold 0 n + n n	43800	43800	43800	43800	43800	43800
+Var: Wealth_Max 0 s + n n
+Var: Wealth_Min 0 s + n n
 
 Object: CLASS_LOANS C	1	1	1	1	1	1
 Param: class_loan_fixed_amortization 0 n + n n	0	0	0	0	0	0
@@ -2169,6 +2173,17 @@ END_DESCRIPTION
 
 Parameter_wealth_tax_threshold
 
+END_DESCRIPTION
+
+Variable_Wealth_Max
+Calculates the maximum wealth (w_max_j) for a class based on the Pareto (Type I) distribution assumptions.
+Uses the pre-calculated Wealth_Min.
+Returns Wealth_Min (which would be 0 if problematic) if conditions for further calculation aren't met.
+END_DESCRIPTION
+
+Variable_Wealth_Min
+Calculates the minimum wealth (w_min_j) for a class based on the Pareto (Type I) distribution assumptions.
+Returns 0 if avg_wealth is not positive or if pareto_alpha <= 1, as the derivation is not valid in those cases.
 END_DESCRIPTION
 
 Object_CLASS_LOANS
