@@ -531,72 +531,113 @@ RESULT(v[2])
 
 
 
+EQUATION("Wealth_Min")
+/*
+Calculates the minimum wealth (w_min_j) for a class based on the Pareto (Type I) distribution assumptions.
+Returns 0 if avg_wealth is not positive or if pareto_alpha <= 1, as the derivation is not valid in those cases.
+*/
+	double class_wealth = VL("Class_Stock_Deposits", 1);
+	double class_pop_share = V("class_population_share");
+	double total_population = V("country_total_population");
+	double alpha_j = V("class_pareto_alpha");
+
+	double class_population = class_pop_share * total_population;
+	double min_wealth = 0.0;
+
+	if (class_population > 0) {
+		double avg_wealth = class_wealth / class_population;
+		if (avg_wealth > 0 && alpha_j > 1) {
+			min_wealth = avg_wealth * (alpha_j - 1) / alpha_j;
+		}
+	}
+RESULT(min_wealth)
+
+
+EQUATION("Wealth_Max")
+/*
+Calculates the maximum wealth (w_max_j) for a class based on the Pareto (Type I) distribution assumptions.
+Uses the pre-calculated Wealth_Min.
+Returns Wealth_Min (which would be 0 if problematic) if conditions for further calculation aren't met.
+*/
+	double w_min_j = V("Wealth_Min");
+	double class_pop_share = V("class_population_share");
+	double total_population = V("country_total_population");
+	double alpha_j = V("class_pareto_alpha");
+
+	double class_population = class_pop_share * total_population;
+	double max_wealth = w_min_j; // Default to min_wealth, especially if min_wealth is 0
+
+	// Only proceed if min_wealth is positive, alpha is suitable, and population is positive
+	if (w_min_j > 1e-9 && alpha_j > 1 && class_population > 0) {
+		max_wealth = w_min_j * pow(class_population, 1 / alpha_j);
+	}
+
+RESULT(max_wealth)
+
+
+
 EQUATION("Class_Taxpayer_Proportion")
 /*
 Estimates the proportion of households within the class whose wealth exceeds the wealth threshold w^T.
+Uses pre-calculated Wealth_Min and Wealth_Max.
 Assumes Pareto Type I distribution for intra-class wealth.
 Requires parameters: class_population_share, and class_pareto_alpha (must be > 1).
 Also WRITES to the Class_Has_Taxpayers dummy variable (1 if proportion > 0, else 0).
-Alternative (commented out): Assumes Lognormal distribution.
 */
-	v[0] = VL("Class_Stock_Deposits", 1);		// Total class wealth of the previous period
-	v[1] = V("class_population_share");
-	v[2] = V("country_total_population");
-	double class_population = v[1] * v[2];
+	// Inputs for fallback calculations if Pareto isn't applicable
+	double class_wealth = VL("Class_Stock_Deposits", 1); 
+	double class_pop_share = V("class_population_share");
+	double total_population = V("country_total_population");
+	double class_population = class_pop_share * total_population;
 
-	v[4] = V("wealth_tax_threshold");		// Wealth tax threshold (per household, w^T)
-	v[5] = V("class_pareto_alpha");	// Shape parameter (alpha_j)
+	double w_T = V("wealth_tax_threshold");		// Wealth tax threshold (per household, w^T)
+	double alpha_j = V("class_pareto_alpha");	// Shape parameter (alpha_j)
 
-	double proportion = 0; // Default to 0
-	double avg_wealth = v[0] / class_population;
+	double proportion = 0.0; // Default to 0
 
-			if (avg_wealth <= 0) {
-				// If average wealth is zero or negative, only a zero or negative threshold could be met.
-				proportion = (v[4] <= 0) ? 1 : 0;
-			} else if (v[5] <= 1) {
-				// Derivation for w_min_j requires alpha_j > 1. Also, 1/alpha_j in w_max_j needs alpha_j > 0.
-				// Fallback: if threshold is above avg_wealth, 0%, else 100% (crude).
-				proportion = (v[4] > avg_wealth) ? 0 : 1;
-			} else {
-				// Derive w_min_j and w_max_j
-				double min_wealth = avg_wealth * (v[5] - 1) / v[5];
-				double max_wealth;
+	// Fallback logic for cases where Pareto distribution assumptions are not met or lead to trivial results
+	if (class_population <= 0) {
+	    proportion = 0.0; // No population, no taxpayers
+	} else {
+	    double avg_wealth = class_wealth / class_population;
+	    if (avg_wealth <= 0) {
+		    // If average wealth is zero or negative, only a zero or negative threshold could be met.
+		    proportion = (w_T <= 0) ? 1.0 : 0.0;
+	    } else if (alpha_j <= 1.0) {
+		    // Pareto derivation requires alpha_j > 1. 
+		    // Fallback: if threshold is above avg_wealth, 0%, else 100% (crude).
+		    proportion = (w_T > avg_wealth) ? 0.0 : 1.0;
+	    } else {
+		    // Valid conditions for Pareto: avg_wealth > 0, alpha_j > 1, class_population > 0
+		    double min_wealth = V("Wealth_Min");
+		    double max_wealth = V("Wealth_Max");
 
-				if (min_wealth <= 1e-9) { // If derived w_min is effectively zero or negative
-				    // This can happen if avg_wealth is positive but alpha_j is very close to 1.
-				    // Force w_min and w_max to 0. The three-part formula below will handle it.
-				    min_wealth = 0;
-				    max_wealth = 0;
-				} else {
-					// General calculation for w_max_j_derived.
-					max_wealth = min_wealth * pow(class_population, 1 / v[5]);
-				}
-
-				// Apply the three-part formula from Equation (1)
-				if (v[4] > max_wealth) {
-					// Case 1: max_wealth < w^T (Threshold is above the max wealth)
-					proportion = 0;
-				} else if (v[4] < min_wealth) {
-					// Case 3: min_wealth > w^T (Threshold is below the min wealth)
-					proportion = 1;
-				} else {
-					// Case 2: min_wealth <= w^T <= max_wealth
-					double range = max_wealth - min_wealth;
-					if (range < 1e-9) { // Avoid division by zero if w_min approx w_max
-						// If range is zero, all have same wealth (min_wealth).
-						// Proportion is 1 if threshold is at or below this wealth, else 0.
-						proportion = (v[4] <= min_wealth) ? 1 : 0;
-					} else {
-						proportion = 1 - pow((v[4] - min_wealth) / range, v[5]);
-					}
-				}
-			}
+		    // Apply the three-part formula using derived min_wealth and max_wealth
+		    if (w_T >= max_wealth && max_wealth > min_wealth) { // Modified condition to handle w_T = max_wealth properly 
+			    // Case 1: Threshold is at or above the max wealth (and max > min to avoid issues if they are both 0)
+			    proportion = 0.0;
+		    } else if (w_T <= min_wealth) {
+			    // Case 3: Threshold is at or below the min wealth
+			    proportion = 1.0;
+		    } else { // min_wealth < w_T < max_wealth
+			    double range = max_wealth - min_wealth;
+			    if (range < 1e-9) { // Avoid division by zero if w_min approx w_max (should ideally be caught by w_T checks)
+				    // This case implies min_wealth and max_wealth are virtually identical.
+				    // Proportion is 1 if threshold is at or below this wealth, else 0.
+				    proportion = (w_T <= min_wealth) ? 1.0 : 0.0;
+			    } else {
+				    proportion = 1.0 - pow((w_T - min_wealth) / range, alpha_j);
+			    }
+		    }
+	    }
+	}
 
 	// Ensure proportion is always bounded between 0 and 1
-	proportion = max(0, min(1, proportion));
+	proportion = max(0.0, min(1.0, proportion));
 
-//	WRITE("Class_Has_Taxpayers", (proportion > 1e-9) ? 1 : 0); // If proportion is greater than zero, set Class_Has_Taxpayers to 1, else 0
+//	WRITE("Class_Has_Taxpayers", (proportion > 1e-9) ? 1.0 : 0.0); 
 RESULT(proportion)
 
 
 //QUATION_DUMMY("Class_Has_Taxpayers", "Class_Taxpayer_Proportion") // Dummy variable set by Class_Taxpayer_Proportion
+
