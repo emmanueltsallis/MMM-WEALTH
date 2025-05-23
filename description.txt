@@ -1,9 +1,10 @@
-MICRO-MACRO MULTISECTORAL MODEL (ver. 3.9)
+MICRO-MACRO MULTISECTORAL MODEL WITH WEALTH TAX & EVASION DYNAMICS (MMM-WEALTH) (ver. 2.0)
 
 *********************************************************************************************************************************************
 
-This is a (preliminary) new version of the model created by Dweck (2006) and used in Dweck, Vianna and Barbosa (2018). 
+This version significantly extends the multisectoral micro-macro model (originally based on Dweck, 2006; Possas, 1983) by incorporating a Wealth Taxation module with endogenous Tax Evasion and Capital Flow dynamics.
 Coded and copyright by Matheus Vianna.
+Evolutionary Dynamics and Wealth Taxation module developed in Emmanuel Tsallis's Master's thesis, advised by Italo Pedrosa and co-advised by Matheus Vianna.
 
 *********************************************************************************************************************************************
 
@@ -12,20 +13,35 @@ ORIGIN:
 The origin of the MMM model can be traced back to Mario Possas's Ph.D. Thesis (Possas 1983). In order to explain the main components of the dynamics of a capitalist economy, Possas combines theoretical propositions of three of the most influential economists of the twentieth century: John Maynard Keynes, Michail Kalecki and Joseph Schumpeter. 
 Possas stablishes a multisectoral model where basic units are the sectors and intersectoral relationships give birth to dynamics, not only sectoral but also aggregated. The model was based on input-output matrices to determine sectoral conponents of the intermediate consumption of each sector. 
 As highligthed by the author, the model was already very complex and it would require a solution by computer simulation. However, due to the inexistent computation and processing power at that time, he opted for analytical solution. Only at the end of 90's the author started to work again in the model, now with enough computational power to use numeric solution. 
-Possas and Dweck (2004) presented the consolidated MMM model for the first time while Dweck (2006) did an extensive analysis of the dynamic properties.
+Possas and Dweck (2004) presented the consolidated MMM model for the first time while Dweck (2006) did an extensive analysis of the dynamic properties. This version builds upon that foundation, adding complex fiscal policy dimensions and agent behavior related to wealth and taxation.
 
 MODEL DESCRIPTION AND FEATURES:
 
-The MMM model is a multisectoral micro-macro dynamic model of simulation, that combines theorectical foundations from pos-keynesian, kaleckian and schumpeterian
-approaches, useful to investigate general dynamic properties of capitalist economies.
+The MMM model is a multisectoral micro-macro dynamic simulation model combining theoretical foundations from Post-Keynesian, Kaleckian, and Schumpeterian approaches, useful for investigating general dynamic properties of capitalist economies.
+Extending this framework, the MMM-WEALTH model explicitly incorporates wealth distribution dynamics, wealth taxation policies, and behavioral responses such as tax evasion through capital flight.
 
-Multisectoral: most of the general dynamic properties derives from the intersectoral relationships, using input-output matrices to determine intersectoral demands. Additionally, a matrix of income apropriation determines income distribution among dierent classes from functional distribution. Sectors basically differ by how they fit in the productive chain, which can be capital goods production, intermediate goods production or consumption goods production. Sectoral demands are determined endogenously by firms and income classes decisions.
-	The core version runs with the minimum number of sector of each type (1), but the model can be generalized for more than one sector of each type, employing input-output matrices to generate sectoral demands, as proposed by Possas (1983). The number of income classes can also be generalized.  
-	Additionally, the model have two "exoneous" blocks that were simplified in the core version: Government and External Sector.
+Key features remain:
+*  Multisectoral: Intersectoral linkages (input-output) drive dynamics. Production sectors (Capital, Intermediate, Consumption Goods) and Income Classes interact.
+*  Dynamic: Discrete time, disequilibrium model based on agent decisions (production, pricing, investment, innovation).
+*  Micro-Macro: Firm-level decisions aggregate to sectoral/macro outcomes, with feedback loops.
+*  Theoretical: Focuses on general dynamic properties of stylized capitalist economies.
 
-Dynamic: the model generates dynamic trajectories in discrete time (time steps). It is a desequilibrium model, since causality is based on decisions to produce and spend, no equilibrium position is ever required. The basic time unit is the production period of the firm, which can be understood as one quarter in cronological time. In each time step, firms take production decisions but other decisions can happen in dierent frequencies, for instance, the investment decision and the markup adjustment decision. 
+New Core Features (Wealth Taxation & Evasion Module):
 
-Micro-Macro: decisions happen at the firm level, in the micro level. Consequences of those decisions, however, affect both the sectoral level and the macro level. Addionally, the sectoral and macro structures can affect firm's decisions trough feedback mechanisms.
+*  Wealth Heterogeneity: Allows for negative net wealth (debt) at the class level. Assumes intra-class wealth follows a Pareto distribution, enabling estimation of the proportion of households liable for wealth tax based on a threshold.
+*  Wealth Taxation: Implements a configurable tax on household net wealth above a specified threshold. Potential tax revenue is calculated based on the estimated taxpayer base and their average wealth above the threshold (using Pareto conditional expectation).
+*  Tax Evasion Decision: Income classes endogenously decide the proportion of domestic wealth to evade via capital flight based on a comparison of expected payoffs:
+    *  Compliance Payoff: Considers domestic interest rates and the effective wealth tax burden.
+    *  Evasion Payoff: Considers foreign interest rates, *expected* exchange rate changes, and the *expected* probability of detection and penalties.
+*  Capital Repatriation Decision: Classes with existing external wealth decide the proportion to repatriate based on expected payoffs:
+    *  Repatriation Payoff: Considers domestic interest rates and potential tax on repatriated wealth.
+    *  Keep Abroad Payoff: Considers foreign interest rates and *realized* exchange rate changes on the domestic currency value of external assets.
+*  Capital Flight & Repatriation Dynamics: Modeled as flows altering domestic (`Class_Stock_Deposits`) and external (`Class_External_Stock_Deposits`, tracked in domestic currency) wealth stocks, ensuring stock-flow consistency using lagged flows.
+*  Dynamic Government Enforcement: The government's audit rate (probability of detecting capital flight) adjusts dynamically based on observed changes in the aggregate evasion rate.
+*  Adaptive Expectations: Classes form expectations about the government's audit rate adaptively, based on past observed rates and their expectation formation parameters.
+*  Wealth Penalties: If capital flight is detected (probabilistically), a penalty is levied on the evaded amount, contributing to government revenue but reducing the amount successfully transferred abroad.
+*  Capital Controls: A switch allows simulating scenarios where capital controls prevent tax evasion via capital flight.
+*  Exchange Rate Effects: Exchange rate dynamics explicitly influence the domestic currency value of external assets and the payoffs for evasion/repatriation decisions.
 
 Theoretical: the main goal of the model is to investigate general dynamic properties of capitalist economies, so the results are general, theoretical, representing only the essential elements of a non-specic capitalist economy. Historical, national and intitutional particularities are, most of the time, omited from the model.
 
@@ -33,6 +49,12 @@ Agent-Based: Firms are the main agents. Each firm belongs only to one sector. St
 	(i) production, prices and profits: production decisions are based on expected sales for the production period, extrapolated from the average of some previous periods. As to prices, themodel assumes each sector to be an oligopoly with some degree of price competition as well as of product differentiation, following a version of Kalecki's price model (1954, ch. 1), in which actual price is a weighted average of the price corresponding to the expected markup and the industry average price, but subject to change according to a feedback from the firm's competitive performance.
 	(ii) investment: investment decision rules on new capacity are also based on extrapolated expected sales from some previous (investment) periods but limited by a debt constraint following Kalecki's principle of increasing risk (1954, ch. 8). Wider financial features are included in these decisions to capture the influence of assets and liabilities structure of the firm, represented by debt/equity ratio, retained profits and liquidity demand.
 	(iii) technological search:  technological search combines different approaches: both innovative and imitative searches follow a stochastic process as in Nelson and Winter (1982) and a learning process is also included drawing on the vintage model by Silverberg et al. (1988), from which a payback period criterion for equipment replacement decisions is also applied.
+
+Income Classes as Agents (Wealth Module): Classes now make active decisions regarding their wealth portfolio based on the introduction of a wealth tax. Key aspects include:
+*  Wealth Heterogeneity: Allows for negative net wealth (debt). Assumes intra-class wealth follows a Pareto distribution (`class_pareto_alpha`) to estimate the proportion of households (`Class_Taxpayer_Proportion`) liable for wealth tax above a threshold (`wealth_tax_threshold`).
+*  Evasion/Repatriation Decision: Based on comparing expected payoffs (using lagged wealth, interest rates, expected audit rates, penalties, and exchange rate dynamics) for compliance vs. evasion, and for keeping wealth abroad vs. repatriating it. This determines `Class_Evasion_Rate` and `Class_Repatriation_Rate`.
+*  Capital Flight/Repatriation: Modeled as flows altering domestic (`Class_Stock_Deposits`) and external (`Class_External_Stock_Deposits`, tracked in domestic currency) wealth stocks.
+*  Adaptive Expectations: Classes form expectations of the government audit rate (`Class_Expected_Audit_Rate`) based on past observations and an expectation weight (`class_expectation_weight`).
 
 TIMELINE OF EVENTS:
 
@@ -48,15 +70,31 @@ TIMELINE OF EVENTS:
 7. Sales: actual sales are determined by the effective orders, which may or may not correspond to the expectations that previously defined the level of production. This interaction between sales and production over time creates a mechanism of dynamic induction over the subsequent production decisions, via changes on the expected behavior of future sales. Orders not met by firm's production and sales becomes delivery delay and negatively affect firm's competitiveness.
 8. Income creation
 	i. Functional distribution
-		Ttoal Wages: determined by government wages and private wages. Private wages depend on sector's effective production times unitary wage of each firm and R&D expenses.
+		Total Wages: determined by government wages and private wages. Private wages depend on sector's effective production times unitary wage of each firm and R&D expenses.
 		Total Profits: determined by revenue, discounting indirect tax and R&D expenses, and unit variable cost; part is distributed to households and the rest is reinvested or allocated at the financial sector.
-	ii. Personal distribution: total wages and total distributed profits are converted into personal income by a matrix of income appropriation for each class (wage share and profit share of each class).
-9. Investment Decision: (fourth firm's decision) given the financial restriction, at the end of each investment period firms must decide the amount of investment. This decision is divided into three different components:
+		Interest Income: Calculated based on the lagged stock of deposits.
+	ii. Personal distribution: total wages and total distributed profits are converted into personal income by a matrix of income appropriation for each class (wage share and profit share of each class).If wealth tax is active (`begin_wealth_tax`), the potential tax (`Class_Potential_Wealth_Tax`) is calculated based on the estimated taxpayer proportion and Pareto conditional expectation.
+9.Evasion & Repatriation Decision:
+    *   Classes calculate expected payoffs for Compliance, Evasion, Keeping Abroad, Repatriation based on lagged wealth, interest/exchange rates, and expected audit rate.
+    *   Evasion Rate (`Class_Evasion_Rate`) and Repatriation Rate (`Class_Repatriation_Rate`) determined (subject to `switch_capital_controls`).
+10.Capital Flows, Penalties & Effective Tax:
+    *   Capital Flight (`Class_Capital_Flight`) and Repatriation (`Class_Capital_Repatriation`) calculated.
+    *   Wealth Penalties (`Class_Wealth_Penalties`) calculated probabilistically based on flight amount and government audit rate.
+    *   Effective Wealth Tax (`Class_Effective_Wealth_Tax`) calculated = Potential Tax * (1 - Evasion Rate).
+    *   Other direct taxes calculated based on `switch_class_tax_structure`.
+    *   Government total tax revenue (`Government_Total_Taxes`) updated, including effective wealth tax and penalties.
+11.Consumption and Savings Decisions: (Implicitly affected by tax calculation and wealth changes)
+12.Wealth Stock Updates:
+    *   Domestic (`Class_Stock_Deposits`): Updated considering savings/dissaving (now allows `Class_Available_Deposits` to be negative, reducing stock), interest returns (on lagged stock), net capital flows (lagged: Repatriation Inflow - Flight Outflow), anddirect deduction of `Class_Effective_Wealth_Tax` (if `switch_class_tax_structure` = 5).
+    *   External (`Class_External_Stock_Deposits`): Updated considering interest, exchange rate valuation effects, net capital flows (lagged: Flight In net of Penalties - Repatriation Out).
+13. Investment Decision: (fourth firm's decision) given the financial restriction, at the end of each investment period firms must decide the amount of investment. This decision is divided into three different components:
 	i. Investment on capacity expansion (induced liquid investment): depends on expected sales and the capacity utilization level;
 	ii. Investment on physical depreciation: added to the first one, they both comprise the induced gross investment;
 	iii. Investment given the technological obsolescence of capital equipment (autonomous investment): depends on the innovative success and the payback calculus;
-10. R&D: the innovation and diffusion (imitation) processes follow closely those 2 stage processes proposed by Nelson & Winter (1982, ch. 12). Technological search by any firm is accomplished through process and product R&D. 
-11. Entry and Exit: firms can exit because of small market share of high debt rate. The total number of firms is not constant, but entry only occurs in case of exit. The possibility of entry of a new firm is limited to an exit caused by financial problems.
+14. R&D: the innovation and diffusion (imitation) processes follow closely those 2 stage processes proposed by Nelson & Winter (1982, ch. 12). Technological search by any firm is accomplished through process and product R&D. 
+15. Entry and Exit: firms can exit because of small market share of high debt rate. The total number of firms is not constant, but entry only occurs in case of exit. The possibility of entry of a new firm is limited to an exit caused by financial problems.
+16.Government Policy Update: `Government_Audit_Rate` potentially adjusted based on change in `Country_Evasion_Rate` and `gov_audit_sensitivity`.
+17.Expectations Update: `Class_Expected_Audit_Rate` updated based on lagged `Government_Audit_Rate` and `class_expectation_weight`.
 
 ***************************************************************************************************************************************************************
 
@@ -121,7 +159,7 @@ Most of the parameters that contains the word "initial" on their names are used 
 Additionally, multiple instances of objects are created in this proceadure. The initial number of objects are parameters controlled by the user.
 
 Hypothesis:
-1-All firms start homogeneouslly inside each sector. Heterogeneity among firms will be generated during the simulation.
+1-All firms start homogeneously inside each sector. Heterogeneity among firms will be generated during the simulation.
 2-The economy starts in a non-growth steady-state position. Growth and cycles will be generated endogenouslly during the simulation.
 3-All stock-flows ratios must be constant.
 4-There are no expansion or replacement investment, so initial investment is only to replace physically depreciated capital goods.
@@ -158,6 +196,11 @@ Essential calibration parameters: these parameters must be defined by the user.
 -"sector_capital_output_ratio"										:defines the capital-output-ratio of each sector
 -"sector_desired_degree_capacity_utilization"						:defines the desitred degree of capacity utilization of each sector
 
+New Essential Calibration Parameters (for Wealth Tax & Evasion):
+-"class_pareto_alpha"												:Shape parameter for intra-class Pareto wealth distribution (must be > 1). Lower value = higher inequality.
+-"initial_probability_detection"									:Initial value for the government's audit rate before dynamic adjustments begin.
+-"class_expectation_weight"										:Weight (lambda) for adaptive expectations of the audit rate.
+
 *******************************************************************************************************
 
 MODEL CONTROL PARAMETERS
@@ -168,14 +211,15 @@ MODEL CONTROL PARAMETERS
 "begin_flexible_surplus_target"										:defines when flexible surplus target fiscal rule begins. -1 = fixed suplus target
 "begin_monetary_policy"												:defines when reactive monetary policy begins. -1 = fixed basic interest rate
 "begin_surplus_target_rule"											:defines when surplus target fiscal rule begins. -1 = no surplus target
+"begin_wealth_tax"													:defines when wealth taxation begins. -1 = no wealth tax
 
 "switch_class_tax_structure"										:defines different sources of direct taxation
-	0= No Income Taxation
+	0= No Income or Wealth Taxation
 	1= Taxation on Wages Only
 	2= Taxation on Profits Only
 	3= Taxation on Wages and Profits
 	4= Taxation on Wages, Profits and Interest Gains
-	5= Taxation on Wages, Porfits, Interest and Stock of Wealth
+	5= Taxation on Wages, Profits, Interest Gains, and Net Wealth(Note: Wealth tax is deducted directly from stock)
 	
 "switch_creditworthness"											:defines how banks define the creditworthness rank	
 	1= Debt Rate
@@ -210,6 +254,10 @@ MODEL CONTROL PARAMETERS
 	3= Pasinetti Rule
 	4= Kansas City Rule
 
+"switch_capital_controls"											:Defines if capital controls are active, preventing tax evasion via capital flight.
+	0= No Capital Controls (Open economy with free capital flow)
+	1= Capital Controls Active (Evasion via flight blocked)
+
 *******************************************************************************************************
 
 OTHER RELEVANT PARAMETERS
@@ -233,6 +281,15 @@ OTHER RELEVANT PARAMETERS
 	"government_surplus_target_adjustment"							:defines the additive absolute adjustment to surplus target in case of flexible surplus target
 	"government_max_debt_ratio"										:defines the maximum accepted govenrment debt to GDP ratio
 	"government_min_debt_ratio"										:defines the minimum accepted government debt to GDP ratio
+	"gov_audit_sensitivity"											:Sensitivity parameter (eta) for adjusting Government Audit Rate based on changes in aggregate evasion.
+
+->Wealth Tax & Evasion
+	"class_wealth_tax_rate"											:The annual tax rate applied to household net wealth. Often set per class.
+	"wealth_tax_threshold"											:The net wealth level (per household) above which the wealth tax is applied.
+	"class_pareto_alpha"											:Shape parameter for intra-class Pareto wealth distribution (Essential Calibration).
+	"penalty_rate"													:The penalty rate applied to the amount of capital flight if detected by the government audit.
+	"class_expectation_weight"										:Weight (lambda) for adaptive expectations of the audit rate (Essential Calibration).
+	"initial_probability_detection"									:Starting value for the government audit rate (Essential Calibration).
 	
 ->Exchange Rate
 	"exchange_rate_adjustment"										:defines the addtive absolute change to exchange rate
@@ -269,7 +326,6 @@ OTHER RELEVANT PARAMETERS
 	"sector_external_price_shock_duration"							:defines how many time periods the sectoral external price shock will last
 	"sector_external_price_shock_size"								:defines the size of the sectoral external price shock, in relation to the expected growth rate
 	
-
 *******************************************************************************************************
 
 SAMPLE CONFIGURATIONS:
@@ -304,6 +360,33 @@ Sim_5
 --Simples Government (Only Wages)
 --Fixed Exchange Rate
 --No Credit Rationing
+
+Sim_6: Baseline Wealth Tax
+--Single Mandate Taylor Rule
+--Flexible Surplus Target with Debt Rate Limits
+--Flexible Exchange Rate
+--Wealth Tax Active (`begin_wealth_tax` > -1, `switch_class_tax_structure` = 5)
+--Moderate Wealth Tax Rate & Threshold
+--Moderate Evasion Parameters (sensitivity, penalty, initial audit rate, expectation weight)
+--No Capital Controls (`switch_capital_controls` = 0)
+--No Credit Rationing
+
+Sim_7: Wealth Tax with High Evasion Propensity
+--Same as Sim_6, but:
+--Lower `penalty_rate`
+--Lower `gov_audit_sensitivity`
+--Lower `initial_probability_detection`
+--Higher `class_expectation_weight` (agents react faster to perceived low risk)
+
+Sim_8: Wealth Tax with Capital Controls
+--Same as Sim_6, but:
+--Capital Controls Active (`switch_capital_controls` = 1)
+
+Sim_9: Wealth Tax with Aggressive Enforcement
+--Same as Sim_6, but:
+--Higher `penalty_rate`
+--Higher `gov_audit_sensitivity`
+--Higher `initial_probability_detection`
 
 
 
