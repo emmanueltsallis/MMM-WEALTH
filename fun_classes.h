@@ -592,16 +592,7 @@ Also WRITES to the Class_Has_Taxpayers dummy variable (1 if proportion > 0, else
 
 	double w_T; // Declare w_T
 	double aggregate_threshold_param = V("wealth_tax_threshold"); // Original parameter value
-
-	// Ensure total_population is not zero to avoid division by zero
-	if (total_population > 1e-9) { // Use a small epsilon
-	    w_T = aggregate_threshold_param / total_population; // MODIFIED LINE: Uniform per-household threshold
-	} else {
-	    // Fallback if total_population is zero or negligible.
-	    // Set w_T to a very high value (effectively no taxpayers) or use the aggregate parameter directly as a large threshold.
-	    // This choice depends on desired behavior for this edge case.
-	    w_T = aggregate_threshold_param * 1e12; // Example: make threshold extremely high
-	}
+	w_T = aggregate_threshold_param / total_population; // Uniform per-household threshold
 	double alpha_j = V("class_pareto_alpha");	// Shape parameter (alpha_j)
 
 	double proportion = 0.0; // Default to 0
