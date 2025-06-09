@@ -641,5 +641,5 @@ Also WRITES to the Class_Has_Taxpayers dummy variable (1 if proportion > 0, else
 RESULT(proportion)
 
 
-//QUATION_DUMMY("Class_Has_Taxpayers", "Class_Taxpayer_Proportion") // Dummy variable set by Class_Taxpayer_Proportion
+//EQUATION_DUMMY("Class_Has_Taxpayers", "Class_Taxpayer_Proportion") // Dummy variable set by Class_Taxpayer_Proportion
 
