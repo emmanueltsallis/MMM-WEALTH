@@ -1,0 +1,860 @@
+
+
+====================> NEW TCL SESSION
+
+(02/27/24 01:30:57)
+Command:
+set res [ winfo exists "%s" ]
+Message:
+can't read "list": no such variable
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/08/26 00:41:09)
+Command:
+set itext [ $ccanvas itemcget current -text ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+set ifont [ lindex [ $ccanvas itemcget current -font ] 0 ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+set idim [ lindex [ $ccanvas itemcget current -font ] 1 ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+set istyle [ lindex [ $ccanvas itemcget current -font ] 2 ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+set icolor [ $ccanvas itemcget current -fill ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+set wid $ccanvas.a
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+newtop $wid "Edit Text" { set choice 2 } $ccanvas
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+wm geometry $wid +$LX+$LY
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::frame $wid.l
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::label $wid.l.t -text "New text"
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::entry $wid.l.e -textvariable itext -width 30 -justify center
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+pack $wid.l.t $wid.l.e
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::frame $wid.format
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::label $wid.format.tit -text "Font name, size and style"
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::frame $wid.format.e
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::combobox $wid.format.e.font -values [ lsort -dictionary [ font families ] ] -width 15 -justify center -validate focusout -validatecommand { set n %%P; if { $n in [ font families ] } { set ifont %%P; return 1 } { %%W delete 0 end; %%W insert 0 $ifont; return 0 } } -invalidcommand { bell }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+write_any $wid.format.e.font $ifont
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::combobox $wid.format.e.dim -values [ list 4 6 8 9 10 11 12 14 18 24 32 48 60 ] -width 3 -justify center -validate focusout -validatecommand { set n %%P; if { [ string is integer -strict $n ] && $n >= 4 && $n <= 60 } { set idim %%P; return 1 } { %%W delete 0 end; %%W insert 0 $idim; return 0 } } -invalidcommand { bell }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+write_any $wid.format.e.dim $idim
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::combobox $wid.format.e.sty -values [ list normal bold italic "bold italic" ] -width 10 -justify center -validate focusout -validatecommand { set n %%P; if { $n in [ list normal bold italic "bold italic" ] } { set istyle %%P; return 1 } { %%W delete 0 end; %%W insert 0 $istyle; return 0 } } -invalidcommand { bell }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+write_any $wid.format.e.sty $istyle
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+pack $wid.format.e.font $wid.format.e.dim $wid.format.e.sty -padx 2 -side left
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+pack $wid.format.tit $wid.format.e
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::frame $wid.c
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::label $wid.c.l -text "Text color"
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::style configure icolor.TButton -foreground [ invert_color $icolor ] -background $icolor
+Message:
+can't read "icolor": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::button $wid.c.color -width 5 -text Set -style icolor.TButton -command { 						set app [ tk_chooseColor -parent $wid -title "Text Color" -initialcolor $icolor ]; 						if { $app != "" } { 							set icolor $app 						}; 						ttk::style configure icolor.TButton -foreground [ invert_color $icolor ] -background $icolor 					}
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+pack $wid.c.l $wid.c.color -padx 2 -side left
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::frame $wid.fall
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::checkbutton $wid.fall.font -text "Apply font to all text items" -variable fontall
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+ttk::checkbutton $wid.fall.color -text "Apply color to all text items" -variable colorall
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+pack $wid.fall.font $wid.fall.color
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+pack $wid.l $wid.format $wid.c $wid.fall -padx 5 -pady 5
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+okXhelpcancel $wid b Delete { set itext ""; set choice 1 } { set choice 1 } { LsdHelp menudata_res.html#graph } { set choice 2 }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+bind $wid.l.e <Return> { $wid.b.ok invoke }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+bind $wid.format.e.font <Return> { $wid.b.ok invoke }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+bind $wid.format.e.dim <Return> { $wid.b.ok invoke }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+bind $wid.format.e.sty <Return> { $wid.b.ok invoke }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+showtop $wid current
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+mousewarpto $wid.b.ok 0
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+$wid.l.e selection range 0 end
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 00:41:09)
+Command:
+focus $wid.l.e
+Message:
+can't read "wid": no such variable
+-----
+
+(01/08/26 02:20:12)
+Command:
+destroytop $wid
+Message:
+can't read "wid": no such variable
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/08/26 17:30:05)
+Command:
+can't use empty string as operand of "+"
+    while executing
+"expr { [ $ll curselection ] + 1 } "
+    invoked from within
+"if { [ string equal $kk underscore ] || ( [ string length $kk ] == 1 && [ string is alpha -strict $kk ] ) } { 						if [ string equal $kk underscore ]..."
+    (command bound to event)
+Message:
+can't use empty string as operand of "+"
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/09/26 21:47:29)
+Command:
+can't use empty string as operand of "+"
+    while executing
+"expr { [ $ll curselection ] + 1 } "
+    invoked from within
+"if { [ string equal $kk underscore ] || ( [ string length $kk ] == 1 && [ string is alpha -strict $kk ] ) } { 						if [ string equal $kk underscore ]..."
+    (command bound to event)
+Message:
+can't use empty string as operand of "+"
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/09/26 22:34:19)
+Command:
+can't use empty string as operand of "+"
+    while executing
+"expr { [ $ll curselection ] + 1 } "
+    invoked from within
+"if { [ string equal $kk underscore ] || ( [ string length $kk ] == 1 && [ string is alpha -strict $kk ] ) } { 						if [ string equal $kk underscore ]..."
+    (command bound to event)
+Message:
+can't use empty string as operand of "+"
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/09/26 23:24:10)
+Command:
+Command line parameters
+Message:
+Invalid option, available options: -i TCL_DIRECTORY / -f MODEL_NAME / -c MAX_THREADS
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/09/26 23:29:53)
+Command:
+Command line parameters
+Message:
+Invalid option, available options: -i TCL_DIRECTORY / -f MODEL_NAME / -c MAX_THREADS
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/09/26 23:38:11)
+Command:
+Command line parameters
+Message:
+Invalid option, available options: -i TCL_DIRECTORY / -f MODEL_NAME / -c MAX_THREADS
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/09/26 23:44:14)
+Command:
+Command line parameters
+Message:
+Invalid option, available options: -i TCL_DIRECTORY / -f MODEL_NAME / -c MAX_THREADS
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/09/26 23:44:59)
+Command:
+Command line parameters
+Message:
+Invalid option, available options: -i TCL_DIRECTORY / -f MODEL_NAME / -c MAX_THREADS
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/09/26 23:45:29)
+Command:
+FATAL ERROR
+Message:
+System Signal received: SIGSEGV (Segmentation violation)
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/09/26 23:46:15)
+Command:
+FATAL ERROR
+Message:
+System Signal received: SIGSEGV (Segmentation violation)
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/10/26 00:11:51)
+Command:
+FATAL ERROR
+Message:
+System Signal received: SIGSEGV (Segmentation violation)
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/10/26 00:20:04)
+Command:
+FATAL ERROR
+Message:
+System Signal received: SIGSEGV (Segmentation violation)
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/10/26 00:22:58)
+Command:
+FATAL ERROR
+Message:
+System Signal received: SIGSEGV (Segmentation violation)
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/10/26 00:29:10)
+Command:
+FATAL ERROR
+Message:
+System Signal received: SIGSEGV (Segmentation violation)
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/10/26 00:37:03)
+Command:
+FATAL ERROR
+Message:
+System Signal received: SIGSEGV (Segmentation violation)
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/10/26 00:43:01)
+Command:
+FATAL ERROR
+Message:
+System Signal received: SIGSEGV (Segmentation violation)
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/10/26 02:14:37)
+Command:
+can't use empty string as operand of "+"
+    while executing
+"expr { [ $ll curselection ] + 1 } "
+    invoked from within
+"if { [ string equal $kk underscore ] || ( [ string length $kk ] == 1 && [ string is alpha -strict $kk ] ) } { 						if [ string equal $kk underscore ]..."
+    (command bound to event)
+Message:
+can't use empty string as operand of "+"
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/14/26 01:03:30)
+Command:
+if [ string equal [ ttk::messageBox -parent . -type yesno -default yes -icon question -title Confirmation -message "Discard data?%s%s" -detail $question ] yes ] { 			set res 1 		} else { 			set res 0 		}
+Message:
+bad window path name ".msgBox_704"
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/14/26 01:16:40)
+Command:
+set itext [ $ccanvas itemcget current -text ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+set ifont [ lindex [ $ccanvas itemcget current -font ] 0 ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+set idim [ lindex [ $ccanvas itemcget current -font ] 1 ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+set istyle [ lindex [ $ccanvas itemcget current -font ] 2 ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+set icolor [ $ccanvas itemcget current -fill ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+set wid $ccanvas.a
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+newtop $wid "Edit Text" { set choice 2 } $ccanvas
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+wm geometry $wid +$LX+$LY
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::frame $wid.l
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::label $wid.l.t -text "New text"
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::entry $wid.l.e -textvariable itext -width 30 -justify center
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+pack $wid.l.t $wid.l.e
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::frame $wid.format
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::label $wid.format.tit -text "Font name, size and style"
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::frame $wid.format.e
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::combobox $wid.format.e.font -values [ lsort -dictionary [ font families ] ] -width 15 -justify center -validate focusout -validatecommand { set n %%P; if { $n in [ font families ] } { set ifont %%P; return 1 } { %%W delete 0 end; %%W insert 0 $ifont; return 0 } } -invalidcommand { bell }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+write_any $wid.format.e.font $ifont
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::combobox $wid.format.e.dim -values [ list 4 6 8 9 10 11 12 14 18 24 32 48 60 ] -width 3 -justify center -validate focusout -validatecommand { set n %%P; if { [ string is integer -strict $n ] && $n >= 4 && $n <= 60 } { set idim %%P; return 1 } { %%W delete 0 end; %%W insert 0 $idim; return 0 } } -invalidcommand { bell }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+write_any $wid.format.e.dim $idim
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::combobox $wid.format.e.sty -values [ list normal bold italic "bold italic" ] -width 10 -justify center -validate focusout -validatecommand { set n %%P; if { $n in [ list normal bold italic "bold italic" ] } { set istyle %%P; return 1 } { %%W delete 0 end; %%W insert 0 $istyle; return 0 } } -invalidcommand { bell }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+write_any $wid.format.e.sty $istyle
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+pack $wid.format.e.font $wid.format.e.dim $wid.format.e.sty -padx 2 -side left
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+pack $wid.format.tit $wid.format.e
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::frame $wid.c
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::label $wid.c.l -text "Text color"
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::style configure icolor.TButton -foreground [ invert_color $icolor ] -background $icolor
+Message:
+can't read "icolor": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::button $wid.c.color -width 5 -text Set -style icolor.TButton -command { 						set app [ tk_chooseColor -parent $wid -title "Text Color" -initialcolor $icolor ]; 						if { $app != "" } { 							set icolor $app 						}; 						ttk::style configure icolor.TButton -foreground [ invert_color $icolor ] -background $icolor 					}
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+pack $wid.c.l $wid.c.color -padx 2 -side left
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::frame $wid.fall
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::checkbutton $wid.fall.font -text "Apply font to all text items" -variable fontall
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+ttk::checkbutton $wid.fall.color -text "Apply color to all text items" -variable colorall
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+pack $wid.fall.font $wid.fall.color
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+pack $wid.l $wid.format $wid.c $wid.fall -padx 5 -pady 5
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+okXhelpcancel $wid b Delete { set itext ""; set choice 1 } { set choice 1 } { LsdHelp menudata_res.html#graph } { set choice 2 }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+bind $wid.l.e <Return> { $wid.b.ok invoke }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+bind $wid.format.e.font <Return> { $wid.b.ok invoke }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+bind $wid.format.e.dim <Return> { $wid.b.ok invoke }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+bind $wid.format.e.sty <Return> { $wid.b.ok invoke }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+showtop $wid current
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+mousewarpto $wid.b.ok 0
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+$wid.l.e selection range 0 end
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:16:40)
+Command:
+focus $wid.l.e
+Message:
+can't read "wid": no such variable
+-----
+
+(01/14/26 01:17:33)
+Command:
+destroytop $wid
+Message:
+can't read "wid": no such variable
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/14/26 10:56:00)
+Command:
+can't use empty string as operand of "+"
+    while executing
+"expr { [ $ll curselection ] + 1 } "
+    invoked from within
+"if { [ string equal $kk underscore ] || ( [ string length $kk ] == 1 && [ string is alpha -strict $kk ] ) } { 						if [ string equal $kk underscore ]..."
+    (command bound to event)
+Message:
+can't use empty string as operand of "+"
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/15/26 10:44:43)
+Command:
+if { [ .da.vars.pl.f.v size ] != 0 } { set answer [ ttk::messageBox -parent .da -type okcancel -title Confirmation -icon question -default ok -message "Exit Analysis of Results?" -detail "All the plots and series created and not saved will be lost."] } { set answer ok }
+Message:
+bad window path name ".da.msgBox_9935"
+-----
+
+(01/15/26 10:44:43)
+Command:
+if { ! [ string equal $answer ok ] } { set choice 0 }
+Message:
+can't read "answer": no such variable
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/15/26 19:48:19)
+Command:
+if { [ .da.vars.pl.f.v size ] != 0 } { set answer [ ttk::messageBox -parent .da -type okcancel -title Confirmation -icon question -default ok -message "Exit Analysis of Results?" -detail "All the plots and series created and not saved will be lost."] } { set answer ok }
+Message:
+bad window path name ".da.msgBox_4851"
+-----
