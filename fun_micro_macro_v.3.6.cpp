@@ -31,8 +31,12 @@ object *centralbank;
 // All consumption behavior now driven by HOUSEHOLD objects
 
 // Household disaggregation pointer (Stage 2+)
-// Will point to HOUSEHOLDS container when USE_HOUSEHOLD_DISAGGREGATION = 1
+// Points to CLASSES container (renamed from HOUSEHOLDS in LSD)
 object *households;
+
+// Phase 1: CLASS pointers for direct access (functional distribution)
+object *working_class;     // CLASS for workers (class_id=0)
+object *capitalist_class;  // CLASS for capitalists (class_id=1)
 
 #include "fun_diagnostics.h"        				// Diagnostic System (helper functions - needs global pointers)
 
@@ -43,7 +47,8 @@ MODELBEGIN
 #include "fun_time_step.h"          				// Time Step Variable
 #include "fun_init_2.h"               				// Initialization Variables
 #include "fun_macro.h"              				// Macro Object Variables
-	#include "fun_households.h"         			// Household/Class Object Variables (Stage 1: wraps fun_classes.h)
+	#include "fun_households.h"         			// Household Object Variables
+	#include "fun_classes.h"            			// CLASS Aggregation (Phase 1: functional distribution)
 	#include "fun_government.h"         			// Government Object Variables
 	#include "fun_external_sector.h"    			// External Sector Object Variables
 	#include "fun_financial.h"    					// Financial Sector Object Variables

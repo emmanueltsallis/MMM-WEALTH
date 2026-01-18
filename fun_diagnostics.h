@@ -37,6 +37,7 @@
 void log_dashboard(int t);
 void log_macro_aggregates();
 void log_household_summary();
+void log_class_structure();  // Phase 1: CLASS aggregation
 void log_income_distribution();
 void log_wealth_tax();  // Stage 7
 void log_wealth_transfer();  // Stage 7.5
@@ -110,7 +111,7 @@ void log_initialization_diagnostics()
     LOG("\n  [2] HOUSEHOLD DISTRIBUTION CHECKS");
     LOG("\n  ----------------------------------");
 
-    int worker_count = 0, capitalist_count = 0;
+    int working_class_count = 0, capitalist_count = 0;
     double sum_profit_shares = 0;
     double sum_skill = 0;
     double total_hh_deposits = 0, total_hh_assets = 0, total_hh_loans = 0;
@@ -127,7 +128,7 @@ void log_initialization_diagnostics()
         double assets = VLS(cur, "Household_Financial_Assets", 1);
         double loans = VS(cur, "Household_Stock_Loans");
 
-        if (hh_type == 0) worker_count++;
+        if (hh_type == 0) working_class_count++;
         else {
             capitalist_count++;
             sum_profit_shares += profit_share;
@@ -143,10 +144,10 @@ void log_initialization_diagnostics()
         if (deposits <= 0) zero_deposit_count++;
     }
 
-    int total_hh = worker_count + capitalist_count;
+    int total_hh = working_class_count + capitalist_count;
     double avg_skill = (total_hh > 0) ? sum_skill / total_hh : 0;
 
-    LOG("\n  Workers: %d  Capitalists: %d  Total: %d", worker_count, capitalist_count, total_hh);
+    LOG("\n  Workers: %d  Capitalists: %d  Total: %d", working_class_count, capitalist_count, total_hh);
 
     // Check profit shares sum to 1
     if (capitalist_count > 0) {
@@ -362,6 +363,7 @@ void log_diagnostic_report(object *p, int t)
     {
         log_macro_aggregates();
         log_household_summary();
+        log_class_structure();  // Phase 1: CLASS aggregation
         log_income_distribution();
         log_wealth_tax();  // Stage 7
         log_wealth_transfer();  // Stage 7.5
@@ -481,7 +483,7 @@ void log_household_summary()
 {
     if (households == NULL) return;
 
-    int worker_count = 0;
+    int working_class_count = 0;
     int capitalist_count = 0;
     int employed_count = 0;
     int unemployed_count = 0;
@@ -500,7 +502,7 @@ void log_household_summary()
 
         if (hh_type == 0)  // Worker
         {
-            worker_count++;
+            working_class_count++;
             if (status == 1) employed_count++;
             else if (status == 0) unemployed_count++;
         }
@@ -513,15 +515,15 @@ void log_household_summary()
         total_wealth += deposits + assets - loans;
     }
 
-    int total_hh = worker_count + capitalist_count;
-    double emp_rate = (worker_count > 0) ? (double)employed_count / worker_count * 100 : 0;
-    double u_rate = (worker_count > 0) ? (double)unemployed_count / worker_count * 100 : 0;
+    int total_hh = working_class_count + capitalist_count;
+    double emp_rate = (working_class_count > 0) ? (double)employed_count / working_class_count * 100 : 0;
+    double u_rate = (working_class_count > 0) ? (double)unemployed_count / working_class_count * 100 : 0;
 
     LOG("\n");
     LOG("\n  HOUSEHOLDS");
     LOG("\n  ----------");
     LOG("\n  Total:            %12d", total_hh);
-    LOG("\n  Workers:          %12d", worker_count);
+    LOG("\n  Workers:          %12d", working_class_count);
     LOG("\n  Capitalists:      %12d", capitalist_count);
     LOG("\n  Employed:         %8d (%5.1f%%)", employed_count, emp_rate);
     LOG("\n  Unemployed:       %8d (%5.1f%%)", unemployed_count, u_rate);
@@ -530,6 +532,74 @@ void log_household_summary()
 
     if (DIAG_EARLY_WARN && u_rate / 100.0 > WARN_UNEMPLOYMENT)
         LOG("\n  >>> WARNING: High unemployment rate! <<<");
+}
+
+
+/*******************************************************************************
+ * log_class_structure - Phase 1: CLASS-level aggregation diagnostics
+ * Uses the new CLASS structure (CLASSES → CLASS → HOUSEHOLD)
+ ******************************************************************************/
+void log_class_structure()
+{
+    // Only report if CLASS structure is initialized
+    if (working_class == NULL || capitalist_class == NULL)
+    {
+        LOG("\n");
+        LOG("\n  CLASS STRUCTURE: Not initialized (LSD setup required)");
+        return;
+    }
+
+    // Get class counts
+    double w_count = COUNTS(working_class, "HOUSEHOLD");
+    double c_count = COUNTS(capitalist_class, "HOUSEHOLD");
+    double total = w_count + c_count;
+
+    // Get class-level aggregates
+    double w_income = VS(working_class, "Class_Nominal_Disposable_Income");
+    double c_income = VS(capitalist_class, "Class_Nominal_Disposable_Income");
+    double total_income = w_income + c_income;
+
+    double w_wealth = VS(working_class, "Class_Net_Wealth");
+    double c_wealth = VS(capitalist_class, "Class_Net_Wealth");
+    double total_wealth = w_wealth + c_wealth;
+
+    double w_consumption = VS(working_class, "Class_Effective_Expenses");
+    double c_consumption = VS(capitalist_class, "Class_Effective_Expenses");
+    double total_consumption = w_consumption + c_consumption;
+
+    // Employment (working_class only)
+    double w_employed = VS(working_class, "Class_Employed_Count");
+    double w_unemployed = VS(working_class, "Class_Unemployed_Count");
+    double u_rate = (w_count > 0) ? w_unemployed / w_count * 100 : 0;
+
+    // Averages
+    double w_avg_income = VS(working_class, "Class_Avg_Disposable_Income");
+    double c_avg_income = VS(capitalist_class, "Class_Avg_Disposable_Income");
+    double w_avg_wealth = VS(working_class, "Class_Avg_Net_Wealth");
+    double c_avg_wealth = VS(capitalist_class, "Class_Avg_Net_Wealth");
+
+    LOG("\n");
+    LOG("\n  CLASS STRUCTURE (Phase 1)");
+    LOG("\n  -------------------------");
+    LOG("\n                        Workers      Capitalists       Total");
+    LOG("\n  Count:           %12.0f     %12.0f  %12.0f", w_count, c_count, total);
+    LOG("\n  Share:           %11.1f%%    %11.1f%%", w_count/total*100, c_count/total*100);
+    LOG("\n");
+    LOG("\n  Income:          %12.2f     %12.2f  %12.2f", w_income, c_income, total_income);
+    LOG("\n  Income Share:    %11.1f%%    %11.1f%%",
+        (total_income > 0) ? w_income/total_income*100 : 0,
+        (total_income > 0) ? c_income/total_income*100 : 0);
+    LOG("\n  Avg Income:      %12.2f     %12.2f", w_avg_income, c_avg_income);
+    LOG("\n");
+    LOG("\n  Wealth:          %12.2f     %12.2f  %12.2f", w_wealth, c_wealth, total_wealth);
+    LOG("\n  Wealth Share:    %11.1f%%    %11.1f%%",
+        (total_wealth > 0) ? w_wealth/total_wealth*100 : 0,
+        (total_wealth > 0) ? c_wealth/total_wealth*100 : 0);
+    LOG("\n  Avg Wealth:      %12.2f     %12.2f", w_avg_wealth, c_avg_wealth);
+    LOG("\n");
+    LOG("\n  Consumption:     %12.2f     %12.2f  %12.2f", w_consumption, c_consumption, total_consumption);
+    LOG("\n  Employed:        %12.0f     %12s", w_employed, "-");
+    LOG("\n  Unemployed:      %12.0f (%5.1f%%)", w_unemployed, u_rate);
 }
 
 

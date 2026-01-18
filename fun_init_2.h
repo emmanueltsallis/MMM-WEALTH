@@ -13,15 +13,106 @@ centralbank=SEARCH("CENTRAL_BANK");
 // NOTE: aclass, bclass, cclass searches removed (Stage 5.5 CLASS removal)
 // All consumption now driven by HOUSEHOLD objects
 
-// Stage 2: Initialize households pointer
-// HOUSEHOLDS container is under COUNTRY, with HOUSEHOLD instances inside
-households=SEARCH("HOUSEHOLDS");
+// Phase 1: Initialize CLASSES container (renamed from HOUSEHOLDS in LSD)
+// Structure: CLASSES → CLASS (workers/capitalists) → HOUSEHOLD
+households = SEARCH("CLASSES");
+if(households != NULL)
+{
+    // Initialize CLASS pointers for direct access
+    working_class = SEARCH_CNDS(households, "class_id", 0);     // class_id=0 → workers
+    capitalist_class = SEARCH_CNDS(households, "class_id", 1);  // class_id=1 → capitalists
+
+    if(working_class == NULL || capitalist_class == NULL)
+        LOG("\nWARNING: CLASS pointers not initialized - check LSD structure");
+    else
+        LOG("\nPhase 1: CLASSES structure initialized (working_class, capitalist_class)");
+}
 
 // =========================================================================
-// Stage 3+: Initialize household_type using SHARE-BASED assignment
-// Uses country_total_population and capitalist_population_share parameters
-// First N households → capitalist (type=1), rest → worker (type=0)
-// This is MORE FLEXIBLE than class-based assignment (no CLASS dependency)
+// Phase 1: AUTOMATIC HOUSEHOLD REDISTRIBUTION
+// Adjusts HOUSEHOLD counts in each CLASSES instance to match parameters
+// =========================================================================
+if(working_class != NULL && capitalist_class != NULL)
+{
+    // Read population parameters
+    v[950] = VS(country, "country_total_population");      // Total households (e.g., 100)
+    v[951] = VS(country, "capitalist_population_share");   // Capitalist share (e.g., 0.05 = 5%)
+    v[952] = round(v[950] * v[951]);                       // Target capitalists
+    v[954] = v[950] - v[952];                              // Target workers
+
+    // Count current households in each class
+    v[955] = COUNTS(working_class, "HOUSEHOLD");           // Current workers
+    v[956] = COUNTS(capitalist_class, "HOUSEHOLD");        // Current capitalists
+
+    LOG("\n========================================");
+    LOG("\nHOUSEHOLD REDISTRIBUTION (Phase 1):");
+    LOG("\n  Target Total: %.0f (Workers: %.0f, Capitalists: %.0f)", v[950], v[954], v[952]);
+    LOG("\n  Current: Workers=%.0f, Capitalists=%.0f", v[955], v[956]);
+
+    // Get template households for copying (first household in each class)
+    cur1 = SEARCHS(working_class, "HOUSEHOLD");      // Worker template
+    cur2 = SEARCHS(capitalist_class, "HOUSEHOLD");   // Capitalist template
+
+    if(cur1 == NULL || cur2 == NULL)
+    {
+        LOG("\nERROR: No HOUSEHOLD template found in one or both CLASSES!");
+    }
+    else
+    {
+        // Adjust WORKER count
+        if(v[955] < v[954])
+        {
+            // Need to ADD workers
+            for(v[957] = v[955]; v[957] < v[954]; v[957]++)
+                ADDOBJ_EXS(working_class, "HOUSEHOLD", cur1);
+            LOG("\n  Added %.0f workers", v[954] - v[955]);
+        }
+        else if(v[955] > v[954])
+        {
+            // Need to DELETE excess workers (keep first one as template)
+            v[958] = 0;
+            CYCLE_SAFES(working_class, cur, "HOUSEHOLD")
+            {
+                v[958]++;
+                if(v[958] > v[954])
+                    DELETE(cur);
+            }
+            LOG("\n  Deleted %.0f excess workers", v[955] - v[954]);
+        }
+
+        // Adjust CAPITALIST count
+        if(v[956] < v[952])
+        {
+            // Need to ADD capitalists
+            for(v[957] = v[956]; v[957] < v[952]; v[957]++)
+                ADDOBJ_EXS(capitalist_class, "HOUSEHOLD", cur2);
+            LOG("\n  Added %.0f capitalists", v[952] - v[956]);
+        }
+        else if(v[956] > v[952])
+        {
+            // Need to DELETE excess capitalists (keep first one as template)
+            v[958] = 0;
+            CYCLE_SAFES(capitalist_class, cur, "HOUSEHOLD")
+            {
+                v[958]++;
+                if(v[958] > v[952])
+                    DELETE(cur);
+            }
+            LOG("\n  Deleted %.0f excess capitalists", v[956] - v[952]);
+        }
+
+        // Verify final counts
+        v[955] = COUNTS(working_class, "HOUSEHOLD");
+        v[956] = COUNTS(capitalist_class, "HOUSEHOLD");
+        LOG("\n  Final: Workers=%.0f, Capitalists=%.0f, Total=%.0f", v[955], v[956], v[955] + v[956]);
+    }
+    LOG("\n========================================");
+}
+
+// =========================================================================
+// Stage 3+: Initialize household parameters
+// Now processes ALL households in BOTH CLASSES instances
+// household_type is set based on which CLASSES instance contains them
 // =========================================================================
 if(households != NULL)
 {
@@ -33,19 +124,12 @@ if(households != NULL)
     v[777] = VS(country, "switch_household_heterogeneity");
 
     // =========================================================================
-    // POPULATION PARAMETERS (Share-based type assignment)
+    // POPULATION PARAMETERS (now handled by redistribution above)
+    // Type assignment is based on parent CLASSES instance's class_id
     // =========================================================================
-    v[950] = VS(country, "country_total_population");      // Total households (e.g., 200)
-    v[951] = VS(country, "capitalist_population_share");   // Capitalist share (e.g., 0.05 = 5%)
-    v[952] = round(v[950] * v[951]);                       // Number of capitalists
-    v[953] = 0;  // Counter: capitalists assigned so far
-
     LOG("\n========================================");
-    LOG("\nHOUSEHOLD TYPE ASSIGNMENT (Share-Based):");
-    LOG("\n  Total Population: %.0f", v[950]);
-    LOG("\n  Capitalist Share: %.2f%%", v[951] * 100);
-    LOG("\n  Number of Capitalists: %.0f", v[952]);
-    LOG("\n  Number of Workers: %.0f", v[950] - v[952]);
+    LOG("\nHOUSEHOLD PARAMETER INITIALIZATION:");
+    LOG("\n  (Type assigned from parent CLASSES class_id)");
     LOG("\n========================================");
 
     // Stage 4.1a: Read skill stddev (SAFEGUARD: if 0, skip lnorm)
@@ -95,18 +179,10 @@ if(households != NULL)
     CYCLES(households, cur, "HOUSEHOLD")
     {
         // =====================================================================
-        // SHARE-BASED TYPE ASSIGNMENT (replaces class-based assignment)
-        // First v[952] households → capitalist, rest → worker
+        // TYPE ASSIGNMENT FROM PARENT CLASSES INSTANCE
+        // household_type = class_id of parent CLASSES (0=worker, 1=capitalist)
         // =====================================================================
-        if(v[953] < v[952])
-        {
-            v[901] = 1;   // Capitalist
-            v[953]++;     // Increment capitalist counter
-        }
-        else
-        {
-            v[901] = 0;   // Worker
-        }
+        v[901] = VS(cur->up, "class_id");  // Get type from parent's class_id
         WRITES(cur, "household_type", v[901]);
 
         // Stage 5.2: Initialize employment state (all workers start employed)

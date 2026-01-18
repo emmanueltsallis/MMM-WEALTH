@@ -607,3 +607,116 @@ else
 
 RESULT(v[12])
 
+
+/*****PHASE 1: CLASS STRUCTURE VERIFICATION*****/
+
+EQUATION("Test_Class_Household_Integrity")
+/*
+Phase 1: Verify CLASS structure integrity.
+Checks that household_type matches parent CLASS class_id:
+- class_id=0 (working_class) should contain household_type=0
+- class_id=1 (capitalist_class) should contain household_type=1
+
+Returns: Error count (should be 0)
+*/
+v[0] = 0;  // error count
+
+// Only run if CLASS structure is initialized
+if(working_class != NULL && capitalist_class != NULL)
+{
+    CYCLES(households, cur1, "CLASS")
+    {
+        v[1] = VS(cur1, "class_id");  // expected household_type (same value)
+
+        CYCLES(cur1, cur2, "HOUSEHOLD")
+        {
+            v[2] = VS(cur2, "household_type");
+            if(v[2] != v[1])
+            {
+                v[0]++;
+                if(v[0] <= 5)  // Log first 5 errors only
+                    PLOG("\n[Phase 1] ERROR: Household %g has type %.0f but is in CLASS %.0f",
+                         VS(cur2, "household_id"), v[2], v[1]);
+            }
+        }
+    }
+
+    if(v[0] > 0)
+        PLOG("\n[Phase 1] WARNING: %g households in wrong CLASS", v[0]);
+}
+
+RESULT(v[0])
+
+
+EQUATION("Test_Class_Aggregation_Identity")
+/*
+Phase 1: Verify CLASS aggregation identity.
+Checks that SUM(Class_X) = SUMS(households, Household_X)
+
+Returns: Relative error (should be < 0.001)
+*/
+v[0] = 0;  // Sum via CLASS equations
+v[1] = 0;  // Sum via direct household aggregation
+
+// Only run if CLASS structure is initialized
+if(working_class != NULL && capitalist_class != NULL)
+{
+    // Sum via CLASS equations
+    CYCLES(households, cur, "CLASS")
+        v[0] += VS(cur, "Class_Nominal_Disposable_Income");
+
+    // Sum via direct household aggregation
+    v[1] = SUMS(households, "Household_Nominal_Disposable_Income");
+
+    // Relative error
+    v[2] = (v[1] > 0) ? fabs(v[0] - v[1]) / v[1] : 0;
+
+    if(v[2] > 0.001)
+        PLOG("\n[Phase 1] WARNING: Class aggregation error = %.6f (CLASS=%.2f, Direct=%.2f)",
+             v[2], v[0], v[1]);
+}
+else
+{
+    v[2] = 0;  // Structure not initialized, no error
+}
+
+RESULT(v[2])
+
+
+EQUATION("Test_Class_Share_Sum")
+/*
+Phase 1: Verify CLASS share equations sum to 1.0.
+Checks that working_class + capitalist_class shares = 100%
+
+Returns: Deviation from 1.0 (should be < 0.001)
+*/
+v[0] = 0;  // error
+
+// Only run if CLASS structure is initialized
+if(working_class != NULL && capitalist_class != NULL)
+{
+    // Income shares
+    v[1] = VS(working_class, "Class_Income_Share");
+    v[2] = VS(capitalist_class, "Class_Income_Share");
+    v[3] = fabs((v[1] + v[2]) - 1.0);
+
+    // Wealth shares
+    v[4] = VS(working_class, "Class_Wealth_Share");
+    v[5] = VS(capitalist_class, "Class_Wealth_Share");
+    v[6] = fabs((v[4] + v[5]) - 1.0);
+
+    // Consumption shares
+    v[7] = VS(working_class, "Class_Consumption_Share");
+    v[8] = VS(capitalist_class, "Class_Consumption_Share");
+    v[9] = fabs((v[7] + v[8]) - 1.0);
+
+    // Max error
+    v[0] = max(v[3], max(v[6], v[9]));
+
+    if(v[0] > 0.001)
+        PLOG("\n[Phase 1] WARNING: Class shares don't sum to 1.0 (income=%.4f, wealth=%.4f, consumption=%.4f)",
+             v[1] + v[2], v[4] + v[5], v[7] + v[8]);
+}
+
+RESULT(v[0])
+

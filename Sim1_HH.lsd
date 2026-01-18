@@ -628,8 +628,8 @@ Label Root
 
 		}
 
-		Son: HOUSEHOLDS
-		Label HOUSEHOLDS
+		Son: CLASSES
+		Label CLASSES
 		{
 			Son: HOUSEHOLD
 			Label HOUSEHOLD
@@ -723,6 +723,41 @@ Label Root
 
 			}
 
+			Param: class_id
+			Var: Class_Avg_Debt_Rate
+			Var: Class_Avg_Disposable_Income
+			Var: Class_Avg_Net_Wealth
+			Var: Class_Avg_Propensity_to_Spend
+			Var: Class_Avg_Savings_Rate
+			Var: Class_Consumption_Share
+			Var: Class_Debt_Payment
+			Var: Class_Demand_Loans
+			Var: Class_Deposits_Return
+			Var: Class_Effective_Expenses
+			Var: Class_Effective_Loans
+			Var: Class_Employed_Count
+			Var: Class_Financial_Assets
+			Var: Class_Household_Count
+			Var: Class_Income_Share
+			Var: Class_Income_Taxation
+			Var: Class_Interest_Payment
+			Var: Class_Net_Wealth
+			Var: Class_Nominal_Disposable_Income
+			Var: Class_Nominal_Gross_Income
+			Var: Class_Profit_Income
+			Var: Class_Real_Autonomous_Consumption
+			Var: Class_Real_Desired_Imported_Consumption
+			Var: Class_Real_Domestic_Consumption_Demand
+			Var: Class_Savings
+			Var: Class_Stock_Deposits
+			Var: Class_Stock_Loans
+			Var: Class_Transfer_Received
+			Var: Class_Unemployed_Count
+			Var: Class_Unemployment_Benefits
+			Var: Class_Wage_Income
+			Var: Class_Wealth_Share
+			Var: Class_Wealth_Tax_Owed
+			Var: Class_Wealth_Tax_Payment
 
 		}
 
@@ -1383,99 +1418,99 @@ Param: firm_hedge 0 n + n n	0	0	0
 Param: firm_id 0 n + n n	0	0	0
 Param: firm_ponzi 0 n + n n	0	0	0
 Param: firm_speculative 0 n + n n	0	0	0
-Var: Firm_Available_Funds_After_Replacement 0 s + n n
-Var: Firm_Available_Funds_Replacement 0 s + n n
-Var: Firm_Available_Inputs_Ratio 0 s + n n
-Var: Firm_Available_Loans 0 s + n n
-Var: Firm_Avg_Debt_Rate 1 s + n n	0	0	0
-Var: Firm_Avg_Productivity 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Capacity_Utilization 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Capital 1 s + n n	0	0	0
-Var: Firm_Competitiveness 1 s + n n	1	1	1
-Var: Firm_Credit_Rationing 0 s + n n
-Var: Firm_Debt_Payment 0 s + n n
-Var: Firm_Debt_Rate 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Delivery_Delay 1 s + n n	1	1	1
-Var: Firm_Demand_Capital_Goods 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Demand_Capital_Goods_Expansion 7 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Demand_Capital_Goods_Replacement 7 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Demand_Loans 0 s + n n
-Var: Firm_Demand_Productive_Capacity_Expansion 7 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Demand_Productive_Capacity_Replacement 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Deposits_Return 0 s + n n
-Var: Firm_Depreciated_Productive_Capacity 0 s + n n
-Var: Firm_Max_Debt_Rate 1 s + n n	0.5	0.5	0.5
-Var: Firm_Desired_Expansion_Investment_Expenses 0 s + n n
-Var: Firm_Desired_Investment_Expenses 0 s + n n
-Var: Firm_Desired_Markup 1 s + n n	0	0	0
-Var: Firm_Desired_Price 0 s + n n
-Var: Firm_Desired_Replacement_Investment_Expenses 0 s + n n
-Var: Firm_Distributed_Profits 0 s + n n
-Var: Firm_Effective_Capital_Goods_Expansion 0 s + n n
-Var: Firm_Effective_Capital_Goods_Replacement 0 s + n n
-Var: Firm_Effective_Expansion_Investment_Expenses 0 s + n n
-Var: Firm_Effective_Investment_Expenses 0 s + n n
-Var: Firm_Effective_Loans 0 s + n n
-Var: Firm_Effective_Market_Share 1 s + n n	0	0	0
-Var: Firm_Effective_Markup 0 s + n n
-Var: Firm_Effective_Orders 12 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Effective_Orders_Capital_Goods 7 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Effective_Production 0 s + n n
-Var: Firm_Effective_Productive_Capacity_Variation 0 s + n n
-Var: Firm_Expected_Demand 0 s + n n
-Var: Firm_Expected_Sales_Long_Term 0 s + n n
-Var: Firm_External_Finance_Rate 0 s + n n
-Var: Firm_Financial_Obligations 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Financial_Position 0 s + n n
-Var: Firm_Frontier_Productivity 6 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
-Var: Firm_Imitation_Productivity 0 s + n n
-Var: Firm_Imitation_Quality 0 s + n n
-Var: Firm_Indirect_Tax 0 s + n n
-Var: Firm_Innovation_Productivity 0 s + n n
-Var: Firm_Innovation_Quality 0 s + n n
-Var: Firm_Input_Cost 0 s + n n
-Var: Firm_Input_Demand_Next_Period 0 s + n n
-Var: Firm_Interest_Payment 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Interest_Rate_Long_Term 0 s + n n
-Var: Firm_Interest_Rate_Short_Term 0 s + n n
-Var: Firm_Internal_Finance_Rate 0 s + n n
-Var: Firm_Internal_Funds 0 s + n n
-Var: Firm_Inventories_Variation 0 s + n n
-Var: Firm_Investment_Constraint_Rate 0 s + n n
-Var: Firm_Investment_Period 0 s + n n
-Var: Firm_Investment_Rate 0 s + n n
-Var: Firm_Liquidity_Preference 1 s + n n	0.05	0.05	0.05
-Var: Firm_Liquidity_Rate 0 s + n n
-Var: Firm_Market_Share 7 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Max_Productivity 6 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
-Var: Firm_Modernization_Rate 0 s + n n
-Var: Firm_Net_Profits 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Net_Revenue 0 s + n n
-Var: Firm_Planned_Production 0 s + n n
-Var: Firm_Price 1 s + n n	1	1	1
-Var: Firm_Price_Period 0 s + n n
-Var: Firm_Productive_Capacity 6 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Productive_Capacity_Depreciation 7 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Firm_Profit_Rate 0 s + n n
-Var: Firm_Profits 0 s + n n
-Var: Firm_Quality 1 s + n n	1	1	1
-Var: Firm_RND_Expenses 0 s + n n
-Var: Firm_Replacement_Expenses 0 s + n n
-Var: Firm_Retained_Deposits 0 s + n n
-Var: Firm_Retained_Profits 0 s + n n
-Var: Firm_Revenue 1 s + n n	10	10	10
-Var: Firm_Sales 1 s + n n	10	10	10
-Var: Firm_Stock_Deposits 1 s + n n	0	0	0
-Var: Firm_Stock_Inputs 1 s + n n	0	0	0
-Var: Firm_Stock_Inventories 1 s + n n	1	1	1
-Var: Firm_Stock_Loans 1 s + n n	0	0	0
-Var: Firm_Stock_Loans_Long_Term 0 s + n n
-Var: Firm_Stock_Loans_Short_Term 0 s + n n
-Var: Firm_Total_Funds 0 s + n n
-Var: Firm_Unit_Financial_Cost 0 s + n n
-Var: Firm_Variable_Cost 1 s + n n	0	0	0
-Var: Firm_Wage 1 s + n n	0	0	0
-Var: Firm_Input_Imports 0 s + n n
+Var: Firm_Available_Funds_After_Replacement 0 n + n n
+Var: Firm_Available_Funds_Replacement 0 n + n n
+Var: Firm_Available_Inputs_Ratio 0 n + n n
+Var: Firm_Available_Loans 0 n + n n
+Var: Firm_Avg_Debt_Rate 1 n + n n	0	0	0
+Var: Firm_Avg_Productivity 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Capacity_Utilization 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Capital 1 n + n n	0	0	0
+Var: Firm_Competitiveness 1 n + n n	1	1	1
+Var: Firm_Credit_Rationing 0 n + n n
+Var: Firm_Debt_Payment 0 n + n n
+Var: Firm_Debt_Rate 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Delivery_Delay 1 n + n n	1	1	1
+Var: Firm_Demand_Capital_Goods 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Demand_Capital_Goods_Expansion 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Demand_Capital_Goods_Replacement 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Demand_Loans 0 n + n n
+Var: Firm_Demand_Productive_Capacity_Expansion 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Demand_Productive_Capacity_Replacement 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Deposits_Return 0 n + n n
+Var: Firm_Depreciated_Productive_Capacity 0 n + n n
+Var: Firm_Max_Debt_Rate 1 n + n n	0.5	0.5	0.5
+Var: Firm_Desired_Expansion_Investment_Expenses 0 n + n n
+Var: Firm_Desired_Investment_Expenses 0 n + n n
+Var: Firm_Desired_Markup 1 n + n n	0	0	0
+Var: Firm_Desired_Price 0 n + n n
+Var: Firm_Desired_Replacement_Investment_Expenses 0 n + n n
+Var: Firm_Distributed_Profits 0 n + n n
+Var: Firm_Effective_Capital_Goods_Expansion 0 n + n n
+Var: Firm_Effective_Capital_Goods_Replacement 0 n + n n
+Var: Firm_Effective_Expansion_Investment_Expenses 0 n + n n
+Var: Firm_Effective_Investment_Expenses 0 n + n n
+Var: Firm_Effective_Loans 0 n + n n
+Var: Firm_Effective_Market_Share 1 n + n n	0	0	0
+Var: Firm_Effective_Markup 0 n + n n
+Var: Firm_Effective_Orders 12 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Effective_Orders_Capital_Goods 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Effective_Production 0 n + n n
+Var: Firm_Effective_Productive_Capacity_Variation 0 n + n n
+Var: Firm_Expected_Demand 0 n + n n
+Var: Firm_Expected_Sales_Long_Term 0 n + n n
+Var: Firm_External_Finance_Rate 0 n + n n
+Var: Firm_Financial_Obligations 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Financial_Position 0 n + n n
+Var: Firm_Frontier_Productivity 6 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Var: Firm_Imitation_Productivity 0 n + n n
+Var: Firm_Imitation_Quality 0 n + n n
+Var: Firm_Indirect_Tax 0 n + n n
+Var: Firm_Innovation_Productivity 0 n + n n
+Var: Firm_Innovation_Quality 0 n + n n
+Var: Firm_Input_Cost 0 n + n n
+Var: Firm_Input_Demand_Next_Period 0 n + n n
+Var: Firm_Interest_Payment 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Interest_Rate_Long_Term 0 n + n n
+Var: Firm_Interest_Rate_Short_Term 0 n + n n
+Var: Firm_Internal_Finance_Rate 0 n + n n
+Var: Firm_Internal_Funds 0 n + n n
+Var: Firm_Inventories_Variation 0 n + n n
+Var: Firm_Investment_Constraint_Rate 0 n + n n
+Var: Firm_Investment_Period 0 n + n n
+Var: Firm_Investment_Rate 0 n + n n
+Var: Firm_Liquidity_Preference 1 n + n n	0.05	0.05	0.05
+Var: Firm_Liquidity_Rate 0 n + n n
+Var: Firm_Market_Share 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Max_Productivity 6 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Var: Firm_Modernization_Rate 0 n + n n
+Var: Firm_Net_Profits 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Net_Revenue 0 n + n n
+Var: Firm_Planned_Production 0 n + n n
+Var: Firm_Price 1 n + n n	1	1	1
+Var: Firm_Price_Period 0 n + n n
+Var: Firm_Productive_Capacity 6 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Productive_Capacity_Depreciation 7 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Firm_Profit_Rate 0 n + n n
+Var: Firm_Profits 0 n + n n
+Var: Firm_Quality 1 n + n n	1	1	1
+Var: Firm_RND_Expenses 0 n + n n
+Var: Firm_Replacement_Expenses 0 n + n n
+Var: Firm_Retained_Deposits 0 n + n n
+Var: Firm_Retained_Profits 0 n + n n
+Var: Firm_Revenue 1 n + n n	10	10	10
+Var: Firm_Sales 1 n + n n	10	10	10
+Var: Firm_Stock_Deposits 1 n + n n	0	0	0
+Var: Firm_Stock_Inputs 1 n + n n	0	0	0
+Var: Firm_Stock_Inventories 1 n + n n	1	1	1
+Var: Firm_Stock_Loans 1 n + n n	0	0	0
+Var: Firm_Stock_Loans_Long_Term 0 n + n n
+Var: Firm_Stock_Loans_Short_Term 0 n + n n
+Var: Firm_Total_Funds 0 n + n n
+Var: Firm_Unit_Financial_Cost 0 n + n n
+Var: Firm_Variable_Cost 1 n + n n	0	0	0
+Var: Firm_Wage 1 n + n n	0	0	0
+Var: Firm_Input_Imports 0 n + n n
 
 Object: CAPITALS C	1	1	1
 Param: capital_good_date_birth 0 n + n n	-59	-59	-59
@@ -1635,29 +1670,64 @@ Var: WTAX_AST 0 s + n n
 Var: WTAX_BOR 0 s + n n
 Var: WTAX_COUNT 0 s + n n
 
-Object: HOUSEHOLDS C	1
+Object: CLASSES C	2
+Param: class_id 0 n + n n	0	1
+Var: Class_Avg_Debt_Rate 0 s + n n
+Var: Class_Avg_Disposable_Income 0 s + n n
+Var: Class_Avg_Net_Wealth 0 s + n n
+Var: Class_Avg_Propensity_to_Spend 0 s + n n
+Var: Class_Avg_Savings_Rate 0 s + n n
+Var: Class_Consumption_Share 0 s + n n
+Var: Class_Debt_Payment 0 s + n n
+Var: Class_Demand_Loans 0 s + n n
+Var: Class_Deposits_Return 0 s + n n
+Var: Class_Effective_Expenses 0 s + n n
+Var: Class_Effective_Loans 0 s + n n
+Var: Class_Employed_Count 0 s + n n
+Var: Class_Financial_Assets 0 s + n n
+Var: Class_Household_Count 0 s + n n
+Var: Class_Income_Share 0 s + n n
+Var: Class_Income_Taxation 0 s + n n
+Var: Class_Interest_Payment 0 s + n n
+Var: Class_Net_Wealth 0 s + n n
+Var: Class_Nominal_Disposable_Income 0 s + n n
+Var: Class_Nominal_Gross_Income 0 s + n n
+Var: Class_Profit_Income 0 s + n n
+Var: Class_Real_Autonomous_Consumption 0 s + n n
+Var: Class_Real_Desired_Imported_Consumption 0 s + n n
+Var: Class_Real_Domestic_Consumption_Demand 0 s + n n
+Var: Class_Savings 0 s + n n
+Var: Class_Stock_Deposits 0 s + n n
+Var: Class_Stock_Loans 0 s + n n
+Var: Class_Transfer_Received 0 s + n n
+Var: Class_Unemployed_Count 0 s + n n
+Var: Class_Unemployment_Benefits 0 s + n n
+Var: Class_Wage_Income 0 s + n n
+Var: Class_Wealth_Share 0 s + n n
+Var: Class_Wealth_Tax_Owed 0 s + n n
+Var: Class_Wealth_Tax_Payment 0 s + n n
 
-Object: HOUSEHOLD C	100
-Param: household_id 0 n + n n	1	2	3	4	5	6	7	8	9	10	11	12	13	14	15	16	17	18	19	20	21	22	23	24	25	26	27	28	29	30	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
-Param: household_class_id 0 n + n n	1	1	1	1	1	1	1	1	1	1	2	2	2	2	2	2	2	2	2	2	3	3	3	3	3	3	3	3	3	3	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Object: HOUSEHOLD C	1	1
+Param: household_id 0 n + n n	1	1
+Param: household_class_id 0 n + n n	1	1
 Var: Household_Id 0 s + n n
-Param: household_type 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Household_Employment_Status 1 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Param: household_type 0 n + n n	0	0
+Var: Household_Employment_Status 1 s + n n	1	1
 Var: Household_Wage_Income 0 s + n n
 Var: Household_Profit_Income 0 s + n n
-Param: household_skill 0 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
-Param: household_autonomous_consumption_adjustment 0 s + n n	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5
-Param: household_import_propensity 0 s + n n	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5
-Var: Household_Nominal_Disposable_Income 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Household_Real_Disposable_Income 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Household_Avg_Nominal_Income 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Household_Avg_Real_Income 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Param: household_habit_persistence 0 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Param: household_habit_inflation 0 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Param: household_habit_deflation 0 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Household_Reference_Income 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Param: household_skill 0 s + n n	1	1
+Param: household_autonomous_consumption_adjustment 0 s + n n	0.5	0.5
+Param: household_import_propensity 0 s + n n	0.5	0.5
+Var: Household_Nominal_Disposable_Income 5 s + n n	0	0	0	0	0	0	0	0	0	0
+Var: Household_Real_Disposable_Income 4 s + n n	0	0	0	0	0	0	0	0
+Var: Household_Avg_Nominal_Income 1 s + n n	0	0
+Var: Household_Avg_Real_Income 1 s + n n	0	0
+Param: household_habit_persistence 0 s + n n	0	0
+Param: household_habit_inflation 0 s + n n	0	0
+Param: household_habit_deflation 0 s + n n	0	0
+Var: Household_Reference_Income 1 s + n n	0	0
 Var: Household_Income_Percentile 0 s + n n
-Var: Household_Real_Autonomous_Consumption 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Household_Real_Autonomous_Consumption 1 s + n n	0	0
 Var: Household_Imports_Share 0 s + n n
 Var: Household_Propensity_to_Spend 0 s + n n
 Var: Household_Real_Desired_Domestic_Consumption 0 s + n n
@@ -1668,13 +1738,13 @@ Var: Household_Maximum_Expenses 0 s + n n
 Var: Household_Real_Domestic_Consumption_Demand 0 s + n n
 Var: Household_Real_Imported_Consumption_Demand 0 s + n n
 Var: Household_Retained_Deposits 0 s + n n
-Var: Household_Stock_Deposits 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Household_Stock_Loans 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Household_Savings 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Household_Stock_Deposits 1 s + n n	0	0
+Var: Household_Stock_Loans 1 s + n n	0	0
+Var: Household_Savings 1 s + n n	0	0
 Var: Household_Savings_Rate 0 n + n n
 Var: Household_Effective_Expenses 0 s + n n
 Var: Household_Effective_Real_Domestic_Consumption 0 s + n n
-Param: household_profit_share 0 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Param: household_profit_share 0 s + n n	0	0
 Var: Household_Unemployment_Benefits 0 s + n n
 Var: Household_Nominal_Gross_Income 0 s + n n
 Var: Household_Avg_Debt_Rate 0 s + n n
@@ -1682,16 +1752,16 @@ Var: Household_Interest_Rate 0 s + n n
 Var: Household_Interest_Payment 0 s + n n
 Var: Household_Debt_Payment 0 s + n n
 Var: Household_Financial_Obligations 0 s + n n
-Var: Household_Max_Debt_Rate 1 s + n n	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3
-Var: Household_Debt_Rate 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Household_Max_Debt_Rate 1 s + n n	0.3	0.3
+Var: Household_Debt_Rate 4 s + n n	0	0	0	0	0	0	0	0
 Var: Household_Max_Loans 0 s + n n
 Var: Household_Demand_Loans 0 s + n n
 Var: Household_Effective_Loans 0 s + n n
 Var: Household_Funds 0 s + n n
-Var: Household_Financial_Assets 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Household_Net_Wealth 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Household_Financial_Assets 1 s + n n	0	0
+Var: Household_Net_Wealth 1 s + n n	0	0
 Var: Country_Total_Household_Deposits_Return 0 n + n n
-Var: Household_Deposits_Return 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Household_Deposits_Return 1 s + n n	0	0
 Var: Household_Available_Deposits 0 s + n n
 Var: Household_Income_Taxation 0 s + n n
 Var: Household_Effective_Real_Imported_Consumption 0 s + n n
@@ -1701,25 +1771,25 @@ Var: Household_Wealth_Tax_From_Deposits 0 s + n n
 Var: Household_Wealth_Tax_From_Assets 0 s + n n
 Var: Household_Wealth_Tax_From_Borrowing 0 s + n n
 Var: Household_Asset_Purchases 0 s + n n
-Param: household_liquidity_preference 0 s + n n	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3	0.3
+Param: household_liquidity_preference 0 s + n n	0.3	0.3
 Var: Household_Transfer_Received 0 s + n n
 Var: Household_Transfer_Eligible 0 n + n n
-Param: household_propensity_evade 0 s + n n	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5	0.5
-Var: Household_Deposits_Offshore 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Param: household_propensity_evade 0 s + n n	0.5	0.5
+Var: Household_Deposits_Offshore 1 s + n n	0	0
 Var: Household_Decision_Flight 0 s + n n
 Var: Household_Offshore_Interest 0 s + n n
-Var: Household_Deposits_Domestic 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Household_Assets_Undeclared 1 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Household_Deposits_Domestic 1 s + n n	0	0
+Var: Household_Assets_Undeclared 1 s + n n	0	0
 Var: Household_Decision_Evasion 0 s + n n
 Var: Household_Assets_Declared 0 s + n n
 Var: Household_Repatriated_Deposits 0 s + n n
 Var: Household_Is_Audited 0 s + n n
 Var: Household_Asset_Penalty 0 s + n n
 
-Object: HOUSEHOLD_LOANS C	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
-Param: household_loan_total_amount 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Param: household_loan_interest_rate 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Param: household_loan_fixed_amortization 0 n + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Object: HOUSEHOLD_LOANS C	1	1
+Param: household_loan_total_amount 0 n + n n	0	0
+Param: household_loan_interest_rate 0 n + n n	0	0
+Param: household_loan_fixed_amortization 0 n + n n	0	0
 
 SIM_NUM 1
 SEED 1
@@ -5212,8 +5282,156 @@ Variable_WTAX_COUNT
 
 END_DESCRIPTION
 
-Object_HOUSEHOLDS
+Object_CLASSES
 
+END_DESCRIPTION
+
+Parameter_class_id
+
+END_DESCRIPTION
+
+Variable_Class_Avg_Debt_Rate
+Average debt rate across households in this class.Average debt rate across households in this class.
+END_DESCRIPTION
+
+Variable_Class_Avg_Disposable_Income
+Average disposable income per household in this class.
+END_DESCRIPTION
+
+Variable_Class_Avg_Net_Wealth
+Average net wealth per household in this class.Average net wealth per household in this class.
+END_DESCRIPTION
+
+Variable_Class_Avg_Propensity_to_Spend
+Average propensity to spend across households in this class.Average propensity to spend across households in this class.
+END_DESCRIPTION
+
+Variable_Class_Avg_Savings_Rate
+Average savings rate across households in this class.Average savings rate across households in this class.
+END_DESCRIPTION
+
+Variable_Class_Consumption_Share
+This class's share of total household consumption.This class's share of total household consumption.
+END_DESCRIPTION
+
+Variable_Class_Debt_Payment
+Total debt payments by all households in this class.Total debt payments by all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Demand_Loans
+Total loan demand by all households in this class.Total loan demand by all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Deposits_Return
+Total interest income on deposits for all households in this class.Total interest income on deposits for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Effective_Expenses
+Total effective expenses for all households in this class.Total effective expenses for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Effective_Loans
+Total effective (granted) loans to all households in this class.Total effective (granted) loans to all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Employed_Count
+Number of employed households in this class.
+For workers: count those with Employment_Status > 0
+For capitalists: always 0 (capitalists don't have employment status)Number of employed households in this class.
+For workers: count those with Employment_Status > 0
+For capitalists: always 0 (capitalists don't have employment status)
+END_DESCRIPTION
+
+Variable_Class_Financial_Assets
+Total financial assets held by all households in this class.Total financial assets held by all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Household_Count
+Total number of households in this class.Total number of households in this class.
+END_DESCRIPTION
+
+Variable_Class_Income_Share
+This class's share of total household disposable income.This class's share of total household disposable income.
+END_DESCRIPTION
+
+Variable_Class_Income_Taxation
+Total income tax paid by all households in this class.Total income tax paid by all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Interest_Payment
+Total interest payments by all households in this class.Total interest payments by all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Net_Wealth
+Total net wealth for all households in this class.Total net wealth for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Nominal_Disposable_Income
+Total disposable income for all households in this class.Total disposable income for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Nominal_Gross_Income
+Total gross income for all households in this class.Total gross income for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Profit_Income
+Total profit income for all households in this class.Total profit income for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Real_Autonomous_Consumption
+Total real autonomous consumption for all households in this class.Total real autonomous consumption for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Real_Desired_Imported_Consumption
+Total real desired imported consumption for all households in this class.Total real desired imported consumption for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Real_Domestic_Consumption_Demand
+Total real domestic consumption demand for all households in this class.Total real domestic consumption demand for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Savings
+Total savings for all households in this class.Total savings for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Stock_Deposits
+Total deposits held by all households in this class.Total deposits held by all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Stock_Loans
+Total loans owed by all households in this class.Total loans owed by all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Transfer_Received
+Total transfers received by all households in this class.Total transfers received by all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Unemployed_Count
+Number of unemployed households in this class.
+For workers: count those with Employment_Status == 0
+For capitalists: always 0Number of unemployed households in this class.
+For workers: count those with Employment_Status == 0
+For capitalists: always 0
+END_DESCRIPTION
+
+Variable_Class_Unemployment_Benefits
+Total unemployment benefits for all households in this class.Total unemployment benefits for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Wage_Income
+Total wage income for all households in this class.Total wage income for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Wealth_Share
+This class's share of total household net wealth.This class's share of total household net wealth.
+END_DESCRIPTION
+
+Variable_Class_Wealth_Tax_Owed
+Total wealth tax owed by all households in this class.Total wealth tax owed by all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Wealth_Tax_Payment
+Total wealth tax paid by all households in this class.Total wealth tax paid by all households in this class.
 END_DESCRIPTION
 
 Object_HOUSEHOLD
@@ -5937,8 +6155,12 @@ object *centralbank;
 // All consumption behavior now driven by HOUSEHOLD objects
 
 // Household disaggregation pointer (Stage 2+)
-// Will point to HOUSEHOLDS container when USE_HOUSEHOLD_DISAGGREGATION = 1
+// Points to CLASSES container (renamed from HOUSEHOLDS in LSD)
 object *households;
+
+// Phase 1: CLASS pointers for direct access (functional distribution)
+object *working_class;     // CLASS for workers (class_id=0)
+object *capitalist_class;  // CLASS for capitalists (class_id=1)
 
 #include "fun_diagnostics.h"        				// Diagnostic System (helper functions - needs global pointers)
 
@@ -5949,7 +6171,8 @@ MODELBEGIN
 #include "fun_time_step.h"          				// Time Step Variable
 #include "fun_init_2.h"               				// Initialization Variables
 #include "fun_macro.h"              				// Macro Object Variables
-	#include "fun_households.h"         			// Household/Class Object Variables (Stage 1: wraps fun_classes.h)
+	#include "fun_households.h"         			// Household Object Variables
+	#include "fun_classes.h"            			// CLASS Aggregation (Phase 1: functional distribution)
 	#include "fun_government.h"         			// Government Object Variables
 	#include "fun_external_sector.h"    			// External Sector Object Variables
 	#include "fun_financial.h"    					// Financial Sector Object Variables
