@@ -13,19 +13,29 @@ centralbank=SEARCH("CENTRAL_BANK");
 // NOTE: aclass, bclass, cclass searches removed (Stage 5.5 CLASS removal)
 // All consumption now driven by HOUSEHOLD objects
 
-// Phase 1: Initialize CLASSES container (renamed from HOUSEHOLDS in LSD)
-// Structure: CLASSES → CLASS (workers/capitalists) → HOUSEHOLD
-households = SEARCH("CLASSES");
-if(households != NULL)
-{
-    // Initialize CLASS pointers for direct access
-    working_class = SEARCH_CNDS(households, "class_id", 0);     // class_id=0 → workers
-    capitalist_class = SEARCH_CNDS(households, "class_id", 1);  // class_id=1 → capitalists
+// Phase 1: Initialize household pointers
+// Structure: COUNTRY → CLASSES (workers/capitalists) → HOUSEHOLD
+// (Mirrors: COUNTRY → SECTORS → FIRMS)
+//
+// Pointers:
+//   households       → country (common ancestor, for SUMS across all households)
+//   working_class    → CLASSES instance with class_id=0
+//   capitalist_class → CLASSES instance with class_id=1
+households = country;  // Use country as search root for all household aggregations
 
-    if(working_class == NULL || capitalist_class == NULL)
-        LOG("\nWARNING: CLASS pointers not initialized - check LSD structure");
-    else
-        LOG("\nPhase 1: CLASSES structure initialized (working_class, capitalist_class)");
+// Initialize individual CLASS pointers for direct access
+working_class = SEARCH_CND("class_id", 0);     // class_id=0 → workers
+capitalist_class = SEARCH_CND("class_id", 1);  // class_id=1 → capitalists
+
+if(working_class == NULL || capitalist_class == NULL)
+    LOG("\nWARNING: CLASS pointers not initialized - check LSD structure");
+else
+{
+    LOG("\nPhase 1: CLASSES structure initialized (households, working_class, capitalist_class)");
+    // DEBUG: Verify pointer addresses
+    LOG("\n  DEBUG: households=%p, country=%p, working_class=%p, capitalist_class=%p",
+        households, country, working_class, capitalist_class);
+    LOG("\n  DEBUG: households==country? %s", (households == country) ? "YES" : "NO");
 }
 
 // =========================================================================
@@ -59,28 +69,7 @@ if(working_class != NULL && capitalist_class != NULL)
     }
     else
     {
-        // Adjust WORKER count
-        if(v[955] < v[954])
-        {
-            // Need to ADD workers
-            for(v[957] = v[955]; v[957] < v[954]; v[957]++)
-                ADDOBJ_EXS(working_class, "HOUSEHOLD", cur1);
-            LOG("\n  Added %.0f workers", v[954] - v[955]);
-        }
-        else if(v[955] > v[954])
-        {
-            // Need to DELETE excess workers (keep first one as template)
-            v[958] = 0;
-            CYCLE_SAFES(working_class, cur, "HOUSEHOLD")
-            {
-                v[958]++;
-                if(v[958] > v[954])
-                    DELETE(cur);
-            }
-            LOG("\n  Deleted %.0f excess workers", v[955] - v[954]);
-        }
-
-        // Adjust CAPITALIST count
+        // Adjust CAPITALIST count FIRST (so capitalists are created before workers)
         if(v[956] < v[952])
         {
             // Need to ADD capitalists
@@ -99,6 +88,27 @@ if(working_class != NULL && capitalist_class != NULL)
                     DELETE(cur);
             }
             LOG("\n  Deleted %.0f excess capitalists", v[956] - v[952]);
+        }
+
+        // Adjust WORKER count SECOND
+        if(v[955] < v[954])
+        {
+            // Need to ADD workers
+            for(v[957] = v[955]; v[957] < v[954]; v[957]++)
+                ADDOBJ_EXS(working_class, "HOUSEHOLD", cur1);
+            LOG("\n  Added %.0f workers", v[954] - v[955]);
+        }
+        else if(v[955] > v[954])
+        {
+            // Need to DELETE excess workers (keep first one as template)
+            v[958] = 0;
+            CYCLE_SAFES(working_class, cur, "HOUSEHOLD")
+            {
+                v[958]++;
+                if(v[958] > v[954])
+                    DELETE(cur);
+            }
+            LOG("\n  Deleted %.0f excess workers", v[955] - v[954]);
         }
 
         // Verify final counts
@@ -176,7 +186,11 @@ if(households != NULL)
     v[96] = 0;  // worker_skill_sum (for skill-weighted deposit distribution)
     v[330] = 0; // propensity_evade_sum (Stage 9)
 
-    CYCLES(households, cur, "HOUSEHOLD")
+    // Use nested CYCLES to iterate through ALL households across BOTH classes
+    // (CYCLES from country only finds siblings in the first CLASSES found)
+    CYCLE(cur1, "CLASSES")
+    {
+    CYCLES(cur1, cur, "HOUSEHOLD")
     {
         // =====================================================================
         // TYPE ASSIGNMENT FROM PARENT CLASSES INSTANCE
@@ -300,6 +314,7 @@ if(households != NULL)
 
         v[81]++;
     }
+    }  // End CYCLE(cur1, "CLASSES")
 
     LOG("\nSTAGE 4: Initialized %.0f households (%.0f workers, %.0f capitalists)", v[81], v[98], v[99]);
     if(v[777] == 0)
@@ -326,7 +341,9 @@ if(households != NULL)
         v[405] = 0;  // min_share
         v[406] = 1e10;  // Initialize min to large value
 
-        CYCLES(households, cur, "HOUSEHOLD")
+        CYCLE(cur1, "CLASSES")
+        {
+        CYCLES(cur1, cur, "HOUSEHOLD")
         {
             v[407] = VS(cur, "household_type");
             if(v[407] == 1)  // Capitalist
@@ -340,6 +357,7 @@ if(households != NULL)
                 if(v[409] < v[406]) v[406] = v[409];  // min
             }
         }
+        }  // End CYCLE(cur1, "CLASSES")
 
         // Log profit distribution statistics
         v[410] = (v[99] > 0) ? 1.0 / v[99] : 0;  // Equal share reference
@@ -777,7 +795,9 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 	v[241] = 0;  // Count
 	if(households != NULL)
 	{
-		CYCLES(households, cur, "HOUSEHOLD")
+		CYCLE(cur1, "CLASSES")
+		{
+		CYCLES(cur1, cur, "HOUSEHOLD")
 		{
 			// Read household_type parameter (0=worker, 1=capitalist)
 			v[244] = VS(cur, "household_type");
@@ -786,6 +806,7 @@ v[226]+=(v[193]-v[194]);											//total demand loans
 			v[240] += v[242];
 			v[241] += 1;
 		}
+		}  // End CYCLE(cur1, "CLASSES")
 	}
 	v[243] = (v[241] > 0) ? (v[240] / v[241]) : 0.7;  // Average propensity (default 0.7)
 
@@ -823,7 +844,9 @@ if(households != NULL)
 
     // Initialize each household's autonomous consumption
     v[610] = 0;  // Sum for verification
-    CYCLES(households, cur, "HOUSEHOLD")
+    CYCLE(cur1, "CLASSES")
+    {
+    CYCLES(cur1, cur, "HOUSEHOLD")
     {
         // Individual adjustment factor (heterogeneous taste)
         v[608] = VS(cur, "household_autonomous_consumption_adjustment");
@@ -835,6 +858,7 @@ if(households != NULL)
         WRITELLS(cur, "Household_Real_Autonomous_Consumption", v[609], 0, 1);
         v[610] += v[609];
     }
+    }  // End CYCLE(cur1, "CLASSES")
 
     LOG("\n[Phase D] Initialized Household_Real_Autonomous_Consumption (EGALITARIAN):");
     LOG("\n  Total autonomous (nominal): %.4f", v[253]);
@@ -860,7 +884,9 @@ if(households != NULL)
 
     // Initialize each household's reference income
     v[625] = 0;  // Sum for verification
-    CYCLES(households, cur, "HOUSEHOLD")
+    CYCLE(cur2, "CLASSES")
+    {
+    CYCLES(cur2, cur, "HOUSEHOLD")
     {
         v[626] = VS(cur, "household_type");
 
@@ -881,6 +907,7 @@ if(households != NULL)
         WRITELLS(cur, "Household_Reference_Income", v[624], 0, 1);
         v[625] += v[624];
     }
+    }  // End CYCLE(cur2, "CLASSES")
 
     LOG("\n[Phase D.2] Initialized Household_Reference_Income (Skill/Profit-Share Weighted):");
     LOG("\n  Total disposable income: %.4f", v[623]);
@@ -904,7 +931,9 @@ if(households != NULL)
     v[703] = max(0.001, v[96]);  // Prevent division by zero
 
     v[705] = 0;  // Sum for verification
-    CYCLES(households, cur, "HOUSEHOLD")
+    CYCLE(cur2, "CLASSES")
+    {
+    CYCLES(cur2, cur, "HOUSEHOLD")
     {
         v[706] = VS(cur, "household_type");
 
@@ -926,6 +955,7 @@ if(households != NULL)
         WRITELLS(cur, "Household_Stock_Deposits", v[704], 0, 1);  // Set lag value
         v[705] += v[704];
     }
+    }  // End CYCLE(cur2, "CLASSES")
 
     LOG("\n[Phase C] Initialized Household_Stock_Deposits (Skill/Profit-Share Weighted):");
     LOG("\n  Total deposits to distribute: %.4f", v[700]);
@@ -938,7 +968,9 @@ if(households != NULL)
     // =========================================================================
     v[800] = VS(country, "household_initial_max_debt_rate");
 
-    CYCLES(households, cur, "HOUSEHOLD")
+    CYCLE(cur2, "CLASSES")
+    {
+    CYCLES(cur2, cur, "HOUSEHOLD")
     {
         // Initialize max debt rate from country-level parameter
         WRITES(cur, "Household_Max_Debt_Rate", v[800]);
@@ -952,14 +984,15 @@ if(households != NULL)
         WRITES(cur, "Household_Stock_Loans", 0);
 
         // Initialize dummy HOUSEHOLD_LOANS object (all params = 0)
-        cur1 = SEARCHS(cur, "HOUSEHOLD_LOANS");
-        if(cur1 != NULL)
+        cur3 = SEARCHS(cur, "HOUSEHOLD_LOANS");
+        if(cur3 != NULL)
         {
-            WRITES(cur1, "household_loan_total_amount", 0);
-            WRITES(cur1, "household_loan_interest_rate", 0);
-            WRITES(cur1, "household_loan_fixed_amortization", 0);
+            WRITES(cur3, "household_loan_total_amount", 0);
+            WRITES(cur3, "household_loan_interest_rate", 0);
+            WRITES(cur3, "household_loan_fixed_amortization", 0);
         }
     }
+    }  // End CYCLE(cur2, "CLASSES")
 
     LOG("\n[Stage 5.3] Initialized Household Loan Parameters");
     LOG("\n  Initial max debt rate: %.4f", v[800]);
@@ -972,20 +1005,23 @@ if(households != NULL)
     v[851] = VS(country, "initial_valuation_ratio");
     v[852] = v[850] * v[851];  // Total initial financial wealth
 
-    CYCLES(households, cur1, "HOUSEHOLD")
+    CYCLE(cur2, "CLASSES")
     {
-        v[853] = VS(cur1, "household_type");
+    CYCLES(cur2, cur, "HOUSEHOLD")
+    {
+        v[853] = VS(cur, "household_type");
         if(v[853] == 1)  // Capitalist
         {
-            v[854] = VS(cur1, "household_profit_share");
+            v[854] = VS(cur, "household_profit_share");
             v[855] = v[852] * v[854];  // Distribute by profit share
-            WRITELLS(cur1, "Household_Financial_Assets", v[855], t, 1);
+            WRITELLS(cur, "Household_Financial_Assets", v[855], t, 1);
         }
         else  // Worker
         {
-            WRITELLS(cur1, "Household_Financial_Assets", 0, t, 1);
+            WRITELLS(cur, "Household_Financial_Assets", 0, t, 1);
         }
     }
+    }  // End CYCLE(cur2, "CLASSES")
     LOG("\n[Stage 5.4] Financial Assets initialized");
     LOG("\n  Total financial wealth: %.2f", v[852]);
     LOG("\n  Initial valuation ratio: %.2f", v[851]);
@@ -999,7 +1035,9 @@ if(households != NULL)
     v[702] = VS(country, "switch_class_tax_structure");
 
     // Initialize wealth tax variables for all households
-    CYCLES(households, cur, "HOUSEHOLD")
+    CYCLE(cur2, "CLASSES")
+    {
+    CYCLES(cur2, cur, "HOUSEHOLD")
     {
         // All wealth tax variables start at 0
         WRITES(cur, "Household_Wealth_Tax_Owed", 0);
@@ -1008,6 +1046,7 @@ if(households != NULL)
         WRITES(cur, "Household_Wealth_Tax_From_Assets", 0);
         WRITES(cur, "Household_Wealth_Tax_From_Borrowing", 0);
     }
+    }  // End CYCLE(cur2, "CLASSES")
 
     LOG("\n[Stage 7] Wealth Tax Parameters initialized");
     LOG("\n  Wealth tax rate: %.4f", v[700]);
@@ -1029,7 +1068,9 @@ if(households != NULL)
     WRITES(government, "Government_Dynamic_Audit_Probability", v[711]);
 
     // Initialize evasion variables for all households (10 variables)
-    CYCLES(households, cur, "HOUSEHOLD")
+    CYCLE(cur2, "CLASSES")
+    {
+    CYCLES(cur2, cur, "HOUSEHOLD")
     {
         // Capital Flight: 4 variables (1 core + 2 dummies + 1 derived)
         WRITES(cur, "Household_Deposits_Offshore", 0);
@@ -1050,6 +1091,7 @@ if(households != NULL)
         // Repatriation: 1 variable (consolidated)
         WRITES(cur, "Household_Repatriated_Deposits", 0);
     }
+    }  // End CYCLE(cur2, "CLASSES")
 
     LOG("\n[Stage 9] Tax Evasion Variables initialized (10 vars/household)");
     LOG("\n  Offshore rate (= external_interest_rate): %.4f", v[710]);

@@ -858,3 +858,307 @@ if { [ .da.vars.pl.f.v size ] != 0 } { set answer [ ttk::messageBox -parent .da 
 Message:
 bad window path name ".da.msgBox_4851"
 -----
+
+
+====================> NEW TCL SESSION
+
+(01/19/26 01:52:33)
+Command:
+set itext [ $ccanvas itemcget current -text ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+set ifont [ lindex [ $ccanvas itemcget current -font ] 0 ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+set idim [ lindex [ $ccanvas itemcget current -font ] 1 ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+set istyle [ lindex [ $ccanvas itemcget current -font ] 2 ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+set icolor [ $ccanvas itemcget current -fill ]
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+set wid $ccanvas.a
+Message:
+can't read "ccanvas": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+newtop $wid "Edit Text" { set choice 2 } $ccanvas
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+wm geometry $wid +$LX+$LY
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::frame $wid.l
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::label $wid.l.t -text "New text"
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::entry $wid.l.e -textvariable itext -width 30 -justify center
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+pack $wid.l.t $wid.l.e
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::frame $wid.format
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::label $wid.format.tit -text "Font name, size and style"
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::frame $wid.format.e
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::combobox $wid.format.e.font -values [ lsort -dictionary [ font families ] ] -width 15 -justify center -validate focusout -validatecommand { set n %%P; if { $n in [ font families ] } { set ifont %%P; return 1 } { %%W delete 0 end; %%W insert 0 $ifont; return 0 } } -invalidcommand { bell }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+write_any $wid.format.e.font $ifont
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::combobox $wid.format.e.dim -values [ list 4 6 8 9 10 11 12 14 18 24 32 48 60 ] -width 3 -justify center -validate focusout -validatecommand { set n %%P; if { [ string is integer -strict $n ] && $n >= 4 && $n <= 60 } { set idim %%P; return 1 } { %%W delete 0 end; %%W insert 0 $idim; return 0 } } -invalidcommand { bell }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+write_any $wid.format.e.dim $idim
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::combobox $wid.format.e.sty -values [ list normal bold italic "bold italic" ] -width 10 -justify center -validate focusout -validatecommand { set n %%P; if { $n in [ list normal bold italic "bold italic" ] } { set istyle %%P; return 1 } { %%W delete 0 end; %%W insert 0 $istyle; return 0 } } -invalidcommand { bell }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+write_any $wid.format.e.sty $istyle
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+pack $wid.format.e.font $wid.format.e.dim $wid.format.e.sty -padx 2 -side left
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+pack $wid.format.tit $wid.format.e
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::frame $wid.c
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::label $wid.c.l -text "Text color"
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::style configure icolor.TButton -foreground [ invert_color $icolor ] -background $icolor
+Message:
+can't read "icolor": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::button $wid.c.color -width 5 -text Set -style icolor.TButton -command { 						set app [ tk_chooseColor -parent $wid -title "Text Color" -initialcolor $icolor ]; 						if { $app != "" } { 							set icolor $app 						}; 						ttk::style configure icolor.TButton -foreground [ invert_color $icolor ] -background $icolor 					}
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+pack $wid.c.l $wid.c.color -padx 2 -side left
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::frame $wid.fall
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::checkbutton $wid.fall.font -text "Apply font to all text items" -variable fontall
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+ttk::checkbutton $wid.fall.color -text "Apply color to all text items" -variable colorall
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+pack $wid.fall.font $wid.fall.color
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+pack $wid.l $wid.format $wid.c $wid.fall -padx 5 -pady 5
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+okXhelpcancel $wid b Delete { set itext ""; set choice 1 } { set choice 1 } { LsdHelp menudata_res.html#graph } { set choice 2 }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+bind $wid.l.e <Return> { $wid.b.ok invoke }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+bind $wid.format.e.font <Return> { $wid.b.ok invoke }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+bind $wid.format.e.dim <Return> { $wid.b.ok invoke }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+bind $wid.format.e.sty <Return> { $wid.b.ok invoke }
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+showtop $wid current
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+mousewarpto $wid.b.ok 0
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+$wid.l.e selection range 0 end
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:52:33)
+Command:
+focus $wid.l.e
+Message:
+can't read "wid": no such variable
+-----
+
+(01/19/26 01:54:18)
+Command:
+destroytop $wid
+Message:
+can't read "wid": no such variable
+-----

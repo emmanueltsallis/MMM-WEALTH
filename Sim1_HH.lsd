@@ -1711,8 +1711,8 @@ Object: HOUSEHOLD C	1	1
 Param: household_id 0 n + n n	1	1
 Param: household_class_id 0 n + n n	1	1
 Var: Household_Id 0 s + n n
-Param: household_type 0 n + n n	0	0
-Var: Household_Employment_Status 1 s + n n	1	1
+Param: household_type 0 s + n n	0	0
+Var: Household_Employment_Status 1 s + n n	1	-1
 Var: Household_Wage_Income 0 s + n n
 Var: Household_Profit_Income 0 s + n n
 Param: household_skill 0 s + n n	1	1

@@ -45,7 +45,7 @@ Total imports in nominal value are obtained from the sum of imports of all secto
 Stage 4.7: Uses household imports instead of class imports.
 */
 	v[0]=WHTAVES(country, "Sector_Extra_Imports", "Sector_External_Price");
-	v[1]=SUMS(households, "Household_Real_Imported_Consumption_Demand");  // Stage 4.7: Switched from Class
+	v[1]=SUMS(working_class, "Household_Real_Imported_Consumption_Demand") + SUMS(capitalist_class, "Household_Real_Imported_Consumption_Demand");  // Stage 4.7: Switched from Class
 	v[2]=VS(external,"Country_Exchange_Rate");
 	v[4]=VS(consumption, "Sector_External_Price");
 	v[3]=(v[0]+v[1]*v[4])*v[2];

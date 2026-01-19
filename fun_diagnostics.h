@@ -97,7 +97,7 @@ void log_initialization_diagnostics()
 
     // Count agents
     double firm_count = COUNT_ALLS(country, "FIRMS");
-    double hh_count = COUNTS(households, "HOUSEHOLD");
+    double hh_count = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
     double bank_count = COUNT_ALLS(financial, "BANKS");
     LOG("\n  [INFO] Firms: %.0f  Households: %.0f  Banks: %.0f", firm_count, hh_count, bank_count);
 
@@ -118,8 +118,10 @@ void log_initialization_diagnostics()
     double min_deposit = 1e20, max_deposit = -1;
     int zero_deposit_count = 0;
 
-    object *cur;
-    CYCLES(households, cur, "HOUSEHOLD")
+    object *cur, *cur1;
+    CYCLES(country, cur1, "CLASSES")  // Use CYCLES with country pointer (CYCLE requires 'p' from equations)
+    {
+    CYCLES(cur1, cur, "HOUSEHOLD")
     {
         double hh_type = VS(cur, "household_type");
         double profit_share = VS(cur, "household_profit_share");
@@ -142,6 +144,7 @@ void log_initialization_diagnostics()
         if (deposits < min_deposit) min_deposit = deposits;
         if (deposits > max_deposit) max_deposit = deposits;
         if (deposits <= 0) zero_deposit_count++;
+    }
     }
 
     int total_hh = working_class_count + capitalist_count;
@@ -490,8 +493,10 @@ void log_household_summary()
     double total_income = 0;
     double total_wealth = 0;
 
-    object *cur;
-    CYCLES(households, cur, "HOUSEHOLD")
+    object *cur, *cur1;
+    CYCLES(country, cur1, "CLASSES")  // Use CYCLES with country pointer (CYCLE requires 'p' from equations)
+    {
+    CYCLES(cur1, cur, "HOUSEHOLD")
     {
         double hh_type = VS(cur, "household_type");  // Parameter
         double status = VS(cur, "Household_Employment_Status");
@@ -513,6 +518,7 @@ void log_household_summary()
 
         total_income += income;
         total_wealth += deposits + assets - loans;
+    }
     }
 
     int total_hh = working_class_count + capitalist_count;
@@ -705,14 +711,14 @@ void log_wealth_transfer()
     double scale = (desired > 0.01) ? effective / desired : 1.0;
 
     // Calculate total households for context
-    double total_hh = COUNTS(households, "HOUSEHOLD");
+    double total_hh = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
     double pct_eligible = (total_hh > 0) ? eligible / total_hh * 100 : 0;
 
     // Equal transfer per eligible household
     double transfer_each = (eligible > 0) ? effective / eligible : 0;
 
     // Calculate income threshold (same as Country_Transfer_Desired)
-    double threshold = PERCLS(households, "Household_Avg_Real_Income", target_pct, 1);
+    double threshold = household_percentile(country, "Household_Avg_Real_Income", target_pct, 1);
 
     LOG("\n");
     LOG("\n  WEALTH TRANSFER [EQUAL TO BOTTOM %.0f%%]", target_pct * 100);
@@ -754,7 +760,7 @@ void log_evasion()
     // Asset Evasion (Financial Assets)
     double undeclared = VS(country, "Country_Total_Assets_Undeclared");
     double declared = VS(country, "Country_Total_Assets_Declared");
-    double total_assets = SUMS(households, "Household_Financial_Assets");
+    double total_assets = SUMS(working_class, "Household_Financial_Assets") + SUMS(capitalist_class, "Household_Financial_Assets");
     double evasion_rate = VS(country, "Country_Asset_Evasion_Rate");
 
     // Enforcement
@@ -772,7 +778,7 @@ void log_evasion()
     double domestic_rate = VS(centralbank, "Central_Bank_Basic_Interest_Rate");
 
     // Total households for context
-    double total_hh = COUNTS(households, "HOUSEHOLD");
+    double total_hh = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
     double pct_evaders = (total_hh > 0) ? evader_count / total_hh * 100 : 0;
 
     LOG("\n");
@@ -1011,13 +1017,13 @@ void log_household_identity_check()
     if (households == NULL) return;
 
     // Wage identity: SUM(Household_Wage_Income) = Country_Total_Wages
-    double hh_wages = SUMS(households, "Household_Wage_Income");
+    double hh_wages = SUMS(working_class, "Household_Wage_Income") + SUMS(capitalist_class, "Household_Wage_Income");
     double country_wages = VS(country, "Country_Total_Wages");
     double wage_diff = fabs(hh_wages - country_wages);
     double wage_pct = (country_wages > 0) ? wage_diff / country_wages * 100 : 0;
 
     // Profit identity: SUM(Household_Profit_Income) = Country_Total_Profits
-    double hh_profits = SUMS(households, "Household_Profit_Income");
+    double hh_profits = SUMS(working_class, "Household_Profit_Income") + SUMS(capitalist_class, "Household_Profit_Income");
     double country_profits = VS(country, "Country_Total_Profits");
     double profit_diff = fabs(hh_profits - country_profits);
     double profit_pct = (country_profits > 0) ? profit_diff / country_profits * 100 : 0;

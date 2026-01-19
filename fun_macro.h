@@ -13,7 +13,7 @@ There are some underlying hypothesis:
 */
 
 v[0]=SUM("Firm_Demand_Loans");						//total demand of firm loans
-v[12]=SUMS(households, "Household_Demand_Loans");  // Phase E: replaced Class with Household
+v[12]=SUMS(working_class, "Household_Demand_Loans") + SUMS(capitalist_class, "Household_Demand_Loans");  // Phase E: sum both classes
 
 CYCLE(cur, "BANKS")
 {
@@ -92,7 +92,7 @@ Must be called by the sector.
 SWITCHED: From SUM("Class_Real_Domestic_Consumption_Demand")
           To SUMS(households, "Household_Real_Domestic_Consumption_Demand")
 */
-	v[0]=SUMS(households, "Household_Real_Domestic_Consumption_Demand");
+	v[0]=SUMS(working_class, "Household_Real_Domestic_Consumption_Demand") + SUMS(capitalist_class, "Household_Real_Domestic_Consumption_Demand");
 	v[1]=VS(consumption, "Sector_Avg_Price");
 	v[2]=V("Government_Effective_Consumption");
 	v[3]= v[1]!=0? v[2]/v[1] : 0;
@@ -151,12 +151,15 @@ Reduces O(2N) to O(N) - 25% overall household scan reduction.
 	v[10]=0;  // total_lagged_income = Σ(income_i)
 	v[11]=0;  // weighted_import_sum = Σ(import_share_i × income_i)
 
-	CYCLES(households, cur, "HOUSEHOLD")
+	CYCLE(cur1, "CLASSES")
+	{
+	CYCLES(cur1, cur, "HOUSEHOLD")
 	{
 		v[5]=VS(cur, "Household_Imports_Share");
 		v[6]=VLS(cur, "Household_Nominal_Disposable_Income", 1);
 		v[10]+=v[6];           // accumulate total income
 		v[11]+=v[5]*v[6];      // accumulate weighted import (import_share × income)
+	}
 	}
 
 	// weighted_avg_import_share = Σ(m_i × y_i) / Σ(y_i)
@@ -254,10 +257,13 @@ Computed ONCE per period at country level for efficiency.
 Households reference this via VS(country, "Country_Labor_Force") - O(1) lookup.
 */
 v[0] = 0;
-CYCLES(households, cur, "HOUSEHOLD")
+CYCLE(cur1, "CLASSES")
+{
+CYCLES(cur1, cur, "HOUSEHOLD")
 {
     if(VS(cur, "household_type") == 0)  // Worker
         v[0]++;
+}
 }
 RESULT(max(1, v[0]))
 
@@ -268,7 +274,9 @@ Stage 5.2: Total employed workers (in any sector).
 Computed ONCE per period at country level for efficiency.
 */
 v[0] = 0;
-CYCLES(households, cur, "HOUSEHOLD")
+CYCLE(cur1, "CLASSES")
+{
+CYCLES(cur1, cur, "HOUSEHOLD")
 {
     if(VS(cur, "household_type") == 0)  // Worker only
     {
@@ -276,6 +284,7 @@ CYCLES(households, cur, "HOUSEHOLD")
         if(v[1] > 0)  // Employed (status 1, 2, or 3)
             v[0]++;
     }
+}
 }
 RESULT(v[0])
 
@@ -299,7 +308,9 @@ Used by Household_Wage_Income for normalized wage distribution.
 Ensures identity: SUM(Household_Wage_Income) = Country_Total_Wages
 */
 v[0] = 0;
-CYCLES(households, cur, "HOUSEHOLD")
+CYCLE(cur1, "CLASSES")
+{
+CYCLES(cur1, cur, "HOUSEHOLD")
 {
     v[1] = VS(cur, "household_type");
     v[2] = VS(cur, "Household_Employment_Status");
@@ -308,6 +319,7 @@ CYCLES(households, cur, "HOUSEHOLD")
         v[3] = VS(cur, "household_skill");
         v[0] += v[3];
     }
+}
 }
 RESULT(max(0.001, v[0]))  // Prevent division by zero
 
@@ -323,7 +335,7 @@ Used for:
 
 Uses lagged values to avoid circular dependency.
 */
-v[0] = PERCLS(households, "Household_Avg_Real_Income", 0.5, 1);
+v[0] = household_percentile(country, "Household_Avg_Real_Income", 0.5, 1);  // Custom function for cross-class percentile
 RESULT(max(0.01, v[0]))
 
 
@@ -583,11 +595,14 @@ Uses lagged employment state to avoid circular dependencies with income calculat
 Capitalist households (state = -1) are excluded from unemployment count.
 */
 v[0] = 0;
-CYCLES(households, cur, "HOUSEHOLD")
+CYCLE(cur1, "CLASSES")
+{
+CYCLES(cur1, cur, "HOUSEHOLD")
 {
     v[1] = VLS(cur, "Household_Employment_Status", 1);
     if(v[1] == 0)  // Unemployed worker (state = 0)
         v[0] = v[0] + 1;
+}
 }
 RESULT(v[0])
 
@@ -599,11 +614,14 @@ Uses lagged employment state to avoid circular dependencies.
 Needed for calculating actual average wage per worker (for unemployment benefits).
 */
 v[0] = 0;
-CYCLES(households, cur, "HOUSEHOLD")
+CYCLE(cur1, "CLASSES")
+{
+CYCLES(cur1, cur, "HOUSEHOLD")
 {
     v[1] = VLS(cur, "Household_Employment_Status", 1);
     if(v[1] == 1)  // Employed worker (state = 1)
         v[0] = v[0] + 1;
+}
 }
 RESULT(v[0])
 
@@ -640,7 +658,7 @@ Stage 4.7 SWITCH #2: Household expenses.
 SWITCHED: From SUM("Class_Effective_Expenses")
           To SUMS(households, "Household_Effective_Expenses")
 */
-	v[0] = SUMS(households, "Household_Effective_Expenses") 
+	v[0] = SUMS(working_class, "Household_Effective_Expenses") + SUMS(capitalist_class, "Household_Effective_Expenses");
 RESULT(v[0])
 
 
@@ -654,7 +672,7 @@ EQUATION("Country_Total_Household_Stock_Loans")
 Stage 5.3: Total household loan stock across all households.
 Used by Bank_Stock_Loans_Short_Term for bank accounting.
 */
-RESULT(SUMS(households, "Household_Stock_Loans"))
+RESULT(SUMS(working_class, "Household_Stock_Loans") + SUMS(capitalist_class, "Household_Stock_Loans"))
 
 
 EQUATION("Country_Total_Household_Demand_Loans")
@@ -662,7 +680,7 @@ EQUATION("Country_Total_Household_Demand_Loans")
 Stage 5.3: Total household loan demand across all households.
 Used by Bank_Demand_Loans for credit allocation.
 */
-RESULT(SUMS(households, "Household_Demand_Loans"))
+RESULT(SUMS(working_class, "Household_Demand_Loans") + SUMS(capitalist_class, "Household_Demand_Loans"))
 
 
 EQUATION("Country_Total_Household_Interest_Payment")
@@ -670,7 +688,7 @@ EQUATION("Country_Total_Household_Interest_Payment")
 Stage 5.3: Total interest payments from all households.
 Used by Bank_Interest_Receivment for bank income.
 */
-RESULT(SUMS(households, "Household_Interest_Payment"))
+RESULT(SUMS(working_class, "Household_Interest_Payment") + SUMS(capitalist_class, "Household_Interest_Payment"))
 
 
 EQUATION("Country_Total_Household_Debt_Payment")
@@ -678,7 +696,7 @@ EQUATION("Country_Total_Household_Debt_Payment")
 Stage 5.3: Total debt amortization from all households.
 Used by Bank_Debt_Payment for loan stock reduction.
 */
-RESULT(SUMS(households, "Household_Debt_Payment"))
+RESULT(SUMS(working_class, "Household_Debt_Payment") + SUMS(capitalist_class, "Household_Debt_Payment"))
 
 
 /******************************************************************************
@@ -692,7 +710,7 @@ EQUATION("Country_Total_Financial_Assets")
 Stage 5.4: Aggregate financial asset holdings across all households.
 Only capitalists hold financial assets (workers have deposits only).
 */
-RESULT(SUMS(households, "Household_Financial_Assets"))
+RESULT(SUMS(working_class, "Household_Financial_Assets") + SUMS(capitalist_class, "Household_Financial_Assets"))
 
 
 EQUATION("Country_Total_Household_Stock_Deposits")
@@ -700,7 +718,7 @@ EQUATION("Country_Total_Household_Stock_Deposits")
 Stage 5.4: Aggregate deposit holdings across all households.
 Both workers and capitalists hold deposits.
 */
-RESULT(SUMS(households, "Household_Stock_Deposits"))
+RESULT(SUMS(working_class, "Household_Stock_Deposits") + SUMS(capitalist_class, "Household_Stock_Deposits"))
 
 
 EQUATION("Country_Total_Household_Deposits_Return")
@@ -708,7 +726,7 @@ EQUATION("Country_Total_Household_Deposits_Return")
 Aggregate interest earned on household deposits.
 Used by banking sector for interest payments.
 */
-RESULT(SUMS(households, "Household_Deposits_Return"))
+RESULT(SUMS(working_class, "Household_Deposits_Return") + SUMS(capitalist_class, "Household_Deposits_Return"))
 
 
 EQUATION("Country_Income_Tax")
@@ -716,7 +734,7 @@ EQUATION("Country_Income_Tax")
 Aggregate income taxation collected from all households.
 Used by government for income tax collection.
 */
-RESULT(SUMS(households, "Household_Income_Taxation"))
+RESULT(SUMS(working_class, "Household_Income_Taxation") + SUMS(capitalist_class, "Household_Income_Taxation"))
 
 
 EQUATION("Country_Wealth_Tax_Revenue")
@@ -728,7 +746,7 @@ v[0] = V("switch_class_tax_structure");
 if(v[0] < 5)
     v[1] = 0;
 else
-    v[1] = SUMS(households, "Household_Wealth_Tax_Payment");
+    v[1] = SUMS(working_class, "Household_Wealth_Tax_Payment") + SUMS(capitalist_class, "Household_Wealth_Tax_Payment");
 RESULT(v[1])
 
 
@@ -745,11 +763,14 @@ if(v[0] < 5)
 else
 {
     v[1] = 0;
-    CYCLES(households, cur, "HOUSEHOLD")
+    CYCLE(cur1, "CLASSES")
+    {
+    CYCLES(cur1, cur, "HOUSEHOLD")
     {
         v[2] = VS(cur, "Household_Wealth_Tax_Payment");
         if(v[2] > 0.01)
             v[1]++;
+    }
     }
 }
 RESULT(v[1])
@@ -763,7 +784,7 @@ v[0] = V("switch_class_tax_structure");
 if(v[0] < 5)
     v[1] = 0;
 else
-    v[1] = SUMS(households, "Household_Wealth_Tax_From_Deposits");
+    v[1] = SUMS(working_class, "Household_Wealth_Tax_From_Deposits") + SUMS(capitalist_class, "Household_Wealth_Tax_From_Deposits");
 RESULT(v[1])
 
 
@@ -775,7 +796,7 @@ v[0] = V("switch_class_tax_structure");
 if(v[0] < 5)
     v[1] = 0;
 else
-    v[1] = SUMS(households, "Household_Wealth_Tax_From_Assets");
+    v[1] = SUMS(working_class, "Household_Wealth_Tax_From_Assets") + SUMS(capitalist_class, "Household_Wealth_Tax_From_Assets");
 RESULT(v[1])
 
 
@@ -787,7 +808,7 @@ v[0] = V("switch_class_tax_structure");
 if(v[0] < 5)
     v[1] = 0;
 else
-    v[1] = SUMS(households, "Household_Wealth_Tax_From_Borrowing");
+    v[1] = SUMS(working_class, "Household_Wealth_Tax_From_Borrowing") + SUMS(capitalist_class, "Household_Wealth_Tax_From_Borrowing");
 RESULT(v[1])
 
 
@@ -801,8 +822,8 @@ Watch this grow as secular stagnation progresses!
 - v > 1.5: Financialization (paper wealth decoupled from production)
 - v > 2.0: Significant asset bubble territory
 */
-v[0] = SUMS(households, "Household_Financial_Assets");  // Paper wealth
-v[1] = SUMS(households, "Household_Stock_Deposits");    // Liquid wealth
+v[0] = SUMS(working_class, "Household_Financial_Assets") + SUMS(capitalist_class, "Household_Financial_Assets");  // Paper wealth
+v[1] = SUMS(working_class, "Household_Stock_Deposits") + SUMS(capitalist_class, "Household_Stock_Deposits");    // Liquid wealth
 v[2] = V("Country_Capital_Stock");
 v[3] = (v[2] > 0) ? ((v[0] + v[1]) / v[2]) : 1.0;
 RESULT(v[3])
@@ -830,7 +851,9 @@ Total Wealth = Financial Assets + Deposits - Loans (for each household)
 */
 v[0] = 0;  // Capitalist wealth
 v[1] = 0;  // Worker wealth
-CYCLES(households, cur, "HOUSEHOLD")
+CYCLE(cur1, "CLASSES")
+{
+CYCLES(cur1, cur, "HOUSEHOLD")
 {
     v[2] = VS(cur, "household_type");
     v[3] = VS(cur, "Household_Financial_Assets");
@@ -843,6 +866,7 @@ CYCLES(households, cur, "HOUSEHOLD")
     else
         v[1] += v[6];  // Worker
 }
+}
 v[7] = v[0] + v[1];
 v[8] = (v[7] > 0) ? (v[0] / v[7]) : 0;
 RESULT(v[8])
@@ -853,7 +877,7 @@ EQUATION("Country_Total_Household_Net_Wealth")
 Stage 5.4: Total net wealth across all households.
 Net Wealth = Deposits + Financial Assets - Loans
 */
-RESULT(SUMS(households, "Household_Net_Wealth"))
+RESULT(SUMS(working_class, "Household_Net_Wealth") + SUMS(capitalist_class, "Household_Net_Wealth"))
 
 
 /******************************************************************************
@@ -866,7 +890,7 @@ EQUATION("Country_Total_Deposits_Offshore")
 Stage 9: Total deposits held in offshore tax havens.
 Invisible to government, not subject to wealth tax.
 */
-RESULT(SUMS(households, "Household_Deposits_Offshore"))
+RESULT(SUMS(working_class, "Household_Deposits_Offshore") + SUMS(capitalist_class, "Household_Deposits_Offshore"))
 
 
 EQUATION("Country_Total_Assets_Undeclared")
@@ -874,14 +898,14 @@ EQUATION("Country_Total_Assets_Undeclared")
 Stage 9: Total financial assets not declared to tax authority.
 Subject to audit risk and penalties if caught.
 */
-RESULT(SUMS(households, "Household_Assets_Undeclared"))
+RESULT(SUMS(working_class, "Household_Assets_Undeclared") + SUMS(capitalist_class, "Household_Assets_Undeclared"))
 
 
 EQUATION("Country_Total_Assets_Declared")
 /*
 Stage 9: Total financial assets declared to tax authority.
 */
-RESULT(SUMS(households, "Household_Assets_Declared"))
+RESULT(SUMS(working_class, "Household_Assets_Declared") + SUMS(capitalist_class, "Household_Assets_Declared"))
 
 
 EQUATION("Country_Capital_Flight_Rate")
@@ -901,7 +925,7 @@ Stage 9: Fraction of financial assets undeclared.
 = Undeclared_Assets / Total_Financial_Assets
 */
 v[0] = V("Country_Total_Assets_Undeclared");
-v[1] = SUMS(households, "Household_Financial_Assets");
+v[1] = SUMS(working_class, "Household_Financial_Assets") + SUMS(capitalist_class, "Household_Financial_Assets");
 v[2] = (v[1] > 0.01) ? v[0] / v[1] : 0;
 RESULT(v[2])
 
@@ -912,12 +936,15 @@ Stage 9: Number of households with hidden wealth.
 = Offshore_Deposits > 0 OR Undeclared_Assets > 0
 */
 v[0] = 0;
-CYCLES(households, cur, "HOUSEHOLD")
+CYCLE(cur1, "CLASSES")
+{
+CYCLES(cur1, cur, "HOUSEHOLD")
 {
     v[1] = VS(cur, "Household_Deposits_Offshore");
     v[2] = VS(cur, "Household_Assets_Undeclared");
     if(v[1] > 0.01 || v[2] > 0.01)
         v[0] += 1;
+}
 }
 RESULT(v[0])
 
@@ -926,7 +953,7 @@ EQUATION("Country_Audit_Count")
 /*
 Stage 9: Number of households audited this period.
 */
-RESULT(SUMS(households, "Household_Is_Audited"))
+RESULT(SUMS(working_class, "Household_Is_Audited") + SUMS(capitalist_class, "Household_Is_Audited"))
 
 
 EQUATION("Country_Penalty_Revenue")
@@ -934,7 +961,7 @@ EQUATION("Country_Penalty_Revenue")
 Stage 9: Total penalties collected from caught evaders.
 Goes to Government_Penalty_Revenue.
 */
-RESULT(SUMS(households, "Household_Asset_Penalty"))
+RESULT(SUMS(working_class, "Household_Asset_Penalty") + SUMS(capitalist_class, "Household_Asset_Penalty"))
 
 
 // Country_Tax_Gap moved to Government_Wealth_Tax_Gap in fun_government.h (Stage 9)
@@ -1037,7 +1064,7 @@ Sum up nominal value of autonomous consumption.
 SWITCHED: From SUM("Class_Real_Autonomous_Consumption")
           To SUMS(households, "Household_Real_Autonomous_Consumption")
 */
-	v[0]=SUMS(households, "Household_Real_Autonomous_Consumption");
+	v[0]=SUMS(working_class, "Household_Real_Autonomous_Consumption") + SUMS(capitalist_class, "Household_Real_Autonomous_Consumption");
 	v[1]=VS(consumption, "Sector_Avg_Price");
 	v[2]=v[0]*v[1];
 RESULT(v[2])
@@ -1050,7 +1077,9 @@ Debt Rate = Stock_Loans / Stock_Deposits for each household.
 */
 	v[10] = 0;  // weighted sum of debt rates
 	v[11] = 0;  // sum of incomes (weights)
-	CYCLES(households, cur, "HOUSEHOLD")
+	CYCLE(cur1, "CLASSES")
+	{
+	CYCLES(cur1, cur, "HOUSEHOLD")
 	{
 		v[0] = VS(cur, "Household_Stock_Deposits");
 		v[1] = VS(cur, "Household_Stock_Loans");
@@ -1058,6 +1087,7 @@ Debt Rate = Stock_Loans / Stock_Deposits for each household.
 		v[3] = (v[0] > 0.001) ? v[1] / v[0] : 0;  // debt rate = loans/deposits
 		v[10] += v[3] * v[2];  // weighted by income
 		v[11] += v[2];
+	}
 	}
 	v[12] = (v[11] > 0.001) ? v[10] / v[11] : 0;
 RESULT(v[12])
@@ -1069,17 +1099,20 @@ Gini coefficient for disposable income distribution across households.
 SWITCHED: From 3-class Lorenz approximation to proper N-household Gini.
 Uses gini_coefficient() from fun_support.h.
 */
-	v[0] = COUNTS(households, "HOUSEHOLD");
+	v[0] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
 	i = (int) v[0];
 	if(i <= 1)
 		END_EQUATION(0);
 
 	double* incomes = new double[i];
 	j = 0;
-	CYCLES(households, cur, "HOUSEHOLD")
+	CYCLE(cur1, "CLASSES")
+	{
+	CYCLES(cur1, cur, "HOUSEHOLD")
 	{
 		incomes[j] = VS(cur, "Household_Nominal_Disposable_Income");
 		j++;
+	}
 	}
 	v[1] = gini_coefficient(incomes, i);
 	delete[] incomes;
@@ -1091,17 +1124,20 @@ Gini coefficient for gross (pre-tax) income distribution across households.
 SWITCHED: From 3-class Lorenz approximation to proper N-household Gini.
 Uses Household_Nominal_Gross_Income (wages + profits before taxes).
 */
-	v[0] = COUNTS(households, "HOUSEHOLD");
+	v[0] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
 	i = (int) v[0];
 	if(i <= 1)
 		END_EQUATION(0);
 
 	double* incomes = new double[i];
 	j = 0;
-	CYCLES(households, cur, "HOUSEHOLD")
+	CYCLE(cur1, "CLASSES")
+	{
+	CYCLES(cur1, cur, "HOUSEHOLD")
 	{
 		incomes[j] = VS(cur, "Household_Nominal_Gross_Income");
 		j++;
+	}
 	}
 	v[1] = gini_coefficient(incomes, i);
 	delete[] incomes;
@@ -1113,17 +1149,20 @@ Gini coefficient for wealth (deposits) distribution across households.
 SWITCHED: From 3-class Lorenz approximation to proper N-household Gini.
 Uses Household_Stock_Deposits as wealth measure.
 */
-	v[0] = COUNTS(households, "HOUSEHOLD");
+	v[0] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
 	i = (int) v[0];
 	if(i <= 1)
 		END_EQUATION(0);
 
 	double* wealth = new double[i];
 	j = 0;
-	CYCLES(households, cur, "HOUSEHOLD")
+	CYCLE(cur1, "CLASSES")
+	{
+	CYCLES(cur1, cur, "HOUSEHOLD")
 	{
 		wealth[j] = VS(cur, "Household_Stock_Deposits");
 		j++;
+	}
 	}
 	v[1] = gini_coefficient(wealth, i);
 	delete[] wealth;
@@ -1135,8 +1174,8 @@ Stage 4.7 SWITCH #4: Household-based average propensity.
 SWITCHED: From SUM("Class_*") To SUMS(households, "Household_*")
 */
 	v[0]=VS(consumption, "Sector_Avg_Price");
-	v[1]=SUMS(households, "Household_Effective_Real_Domestic_Consumption");
-	v[2]=SUMS(households, "Household_Nominal_Disposable_Income");  // Phase F: replaced bridge
+	v[1]=SUMS(working_class, "Household_Effective_Real_Domestic_Consumption") + SUMS(capitalist_class, "Household_Effective_Real_Domestic_Consumption");
+	v[2]=SUMS(working_class, "Household_Nominal_Disposable_Income") + SUMS(capitalist_class, "Household_Nominal_Disposable_Income");
 	v[3]= v[2]!=0? v[0]*v[1]/v[2] : 0;
 RESULT(v[3])
 
@@ -1175,9 +1214,12 @@ v[0] = VS(country, "switch_class_tax_structure");
 if(v[0] < 5)
 {
     // Clear all eligibility flags
-    CYCLES(households, cur, "HOUSEHOLD")
+    CYCLE(cur1, "CLASSES")
+    {
+    CYCLES(cur1, cur, "HOUSEHOLD")
     {
         WRITES(cur, "Household_Transfer_Eligible", 0);
+    }
     }
     WRITE("Country_Transfer_Eligible", 0);
     v[10] = 0;
@@ -1188,12 +1230,14 @@ else
     v[1] = V("wealth_transfer_target_percentile");
     if(v[1] <= 0 || v[1] > 1) v[1] = 0.5;  // Safety default
 
-    // Calculate income threshold at target percentile
-    v[2] = PERCLS(households, "Household_Avg_Real_Income", v[1], 1);
+    // Calculate income threshold at target percentile (cross-class)
+    v[2] = household_percentile(country, "Household_Avg_Real_Income", v[1], 1);
 
     // Count eligible AND mark each household in ONE pass
     v[3] = 0;  // Eligible count
-    CYCLES(households, cur, "HOUSEHOLD")
+    CYCLE(cur1, "CLASSES")
+    {
+    CYCLES(cur1, cur, "HOUSEHOLD")
     {
         v[4] = VLS(cur, "Household_Avg_Real_Income", 1);
         if(v[4] <= v[2])  // Income at or below threshold
@@ -1205,6 +1249,7 @@ else
         {
             WRITES(cur, "Household_Transfer_Eligible", 0);
         }
+    }
     }
 
     WRITE("Country_Transfer_Eligible", v[3]);

@@ -295,27 +295,30 @@ RESULT(AVE("Household_Debt_Rate"))
 EQUATION("Class_Income_Share")
 /*
 This class's share of total household disposable income.
+NOTE: Explicitly sums both classes because SUMS(country, ...) only finds first CLASSES.
 */
 v[0] = V("Class_Nominal_Disposable_Income");
-v[1] = SUMS(households, "Household_Nominal_Disposable_Income");
+v[1] = VS(working_class, "Class_Nominal_Disposable_Income") + VS(capitalist_class, "Class_Nominal_Disposable_Income");
 RESULT((v[1] > 0) ? v[0] / v[1] : 0)
 
 
 EQUATION("Class_Wealth_Share")
 /*
 This class's share of total household net wealth.
+NOTE: Explicitly sums both classes because SUMS(country, ...) only finds first CLASSES.
 */
 v[0] = V("Class_Net_Wealth");
-v[1] = SUMS(households, "Household_Net_Wealth");
+v[1] = VS(working_class, "Class_Net_Wealth") + VS(capitalist_class, "Class_Net_Wealth");
 RESULT((v[1] > 0) ? v[0] / v[1] : 0)
 
 
 EQUATION("Class_Consumption_Share")
 /*
 This class's share of total household consumption.
+NOTE: Explicitly sums both classes because SUMS(country, ...) only finds first CLASSES.
 */
 v[0] = V("Class_Effective_Expenses");
-v[1] = SUMS(households, "Household_Effective_Expenses");
+v[1] = VS(working_class, "Class_Effective_Expenses") + VS(capitalist_class, "Class_Effective_Expenses");
 RESULT((v[1] > 0) ? v[0] / v[1] : 0)
 
 

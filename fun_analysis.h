@@ -192,12 +192,15 @@ EQUATION("YSH_w")
 // Worker income share = SUM(Worker_Income) / Total_Income
 	v[0] = 0;  // worker income
 	v[1] = 0;  // total income
-	CYCLES(households, cur, "HOUSEHOLD")
+	CYCLE(cur1, "CLASSES")
+	{
+	CYCLES(cur1, cur, "HOUSEHOLD")
 	{
 		v[2] = VS(cur, "Household_Nominal_Disposable_Income");
 		v[3] = VS(cur, "household_type");
 		if(v[3] == 0) v[0] += v[2];  // worker
 		v[1] += v[2];
+	}
 	}
 RESULT(v[1] > 0 ? v[0] / v[1] : 0)
 
@@ -205,12 +208,15 @@ EQUATION("YSH_c")
 // Capitalist income share = SUM(Capitalist_Income) / Total_Income
 	v[0] = 0;  // capitalist income
 	v[1] = 0;  // total income
-	CYCLES(households, cur, "HOUSEHOLD")
+	CYCLE(cur1, "CLASSES")
+	{
+	CYCLES(cur1, cur, "HOUSEHOLD")
 	{
 		v[2] = VS(cur, "Household_Nominal_Disposable_Income");
 		v[3] = VS(cur, "household_type");
 		if(v[3] == 1) v[0] += v[2];  // capitalist
 		v[1] += v[2];
+	}
 	}
 RESULT(v[1] > 0 ? v[0] / v[1] : 0)
 
@@ -218,12 +224,15 @@ EQUATION("WSH_w")
 // Worker wealth share = SUM(Worker_Deposits) / Total_Deposits
 	v[0] = 0;  // worker wealth
 	v[1] = 0;  // total wealth
-	CYCLES(households, cur, "HOUSEHOLD")
+	CYCLE(cur1, "CLASSES")
+	{
+	CYCLES(cur1, cur, "HOUSEHOLD")
 	{
 		v[2] = VS(cur, "Household_Stock_Deposits");
 		v[3] = VS(cur, "household_type");
 		if(v[3] == 0) v[0] += v[2];  // worker
 		v[1] += v[2];
+	}
 	}
 RESULT(v[1] > 0 ? v[0] / v[1] : 0)
 
@@ -231,12 +240,15 @@ EQUATION("WSH_c")
 // Capitalist wealth share = SUM(Capitalist_Deposits) / Total_Deposits
 	v[0] = 0;  // capitalist wealth
 	v[1] = 0;  // total wealth
-	CYCLES(households, cur, "HOUSEHOLD")
+	CYCLE(cur1, "CLASSES")
+	{
+	CYCLES(cur1, cur, "HOUSEHOLD")
 	{
 		v[2] = VS(cur, "Household_Stock_Deposits");
 		v[3] = VS(cur, "household_type");
 		if(v[3] == 1) v[0] += v[2];  // capitalist
 		v[1] += v[2];
+	}
 	}
 RESULT(v[1] > 0 ? v[0] / v[1] : 0)
 
@@ -502,7 +514,7 @@ else
 {
     // Check 1: Government revenue = household sum
     v[1] = VS(government, "Government_Wealth_Tax_Revenue");
-    v[2] = SUMS(households, "Household_Wealth_Tax_Payment");
+    v[2] = SUMS(working_class, "Household_Wealth_Tax_Payment") + SUMS(capitalist_class, "Household_Wealth_Tax_Payment");
     v[3] = fabs(v[1] - v[2]);
 
     // Check 2: Payment sources sum to total
@@ -514,7 +526,9 @@ else
     // Check 3: Threshold logic (count errors)
     v[8] = VS(country, "wealth_tax_threshold");
     v[9] = 0;  // Error count
-    CYCLES(households, cur, "HOUSEHOLD")
+    CYCLE(cur1, "CLASSES")
+    {
+    CYCLES(cur1, cur, "HOUSEHOLD")
     {
         v[10] = VLS(cur, "Household_Net_Wealth", 1);  // Lagged wealth (tax base)
         v[11] = VS(cur, "Household_Wealth_Tax_Payment");
@@ -522,6 +536,7 @@ else
         // Error if: below threshold but paid, OR above threshold but didn't pay
         if(v[10] < v[8] && v[11] > 0.01) v[9]++;
         if(v[10] > v[8] && v[11] < 0.01) v[9]++;
+    }
     }
 
     // Total error metric
@@ -583,19 +598,19 @@ else
 {
     // Check 1: Deposit split (Offshore + Domestic = Total)
     v[1] = VS(country, "Country_Total_Deposits_Offshore");
-    v[2] = SUMS(households, "Household_Deposits_Domestic");
+    v[2] = SUMS(working_class, "Household_Deposits_Domestic") + SUMS(capitalist_class, "Household_Deposits_Domestic");
     v[3] = VS(country, "Country_Total_Household_Stock_Deposits");
     v[4] = fabs((v[1] + v[2]) - v[3]);
 
     // Check 2: Asset split (Declared + Undeclared = Total)
     v[5] = VS(country, "Country_Total_Assets_Declared");
     v[6] = VS(country, "Country_Total_Assets_Undeclared");
-    v[7] = SUMS(households, "Household_Financial_Assets");
+    v[7] = SUMS(working_class, "Household_Financial_Assets") + SUMS(capitalist_class, "Household_Financial_Assets");
     v[8] = fabs((v[5] + v[6]) - v[7]);
 
     // Check 3: Penalty revenue = SUM(Asset_Penalty)
     v[9] = VS(country, "Country_Penalty_Revenue");
-    v[10] = SUMS(households, "Household_Asset_Penalty");
+    v[10] = SUMS(working_class, "Household_Asset_Penalty") + SUMS(capitalist_class, "Household_Asset_Penalty");
     v[11] = fabs(v[9] - v[10]);
 
     // Total error metric
@@ -624,7 +639,7 @@ v[0] = 0;  // error count
 // Only run if CLASS structure is initialized
 if(working_class != NULL && capitalist_class != NULL)
 {
-    CYCLES(households, cur1, "CLASS")
+    CYCLE(cur1, "CLASSES")
     {
         v[1] = VS(cur1, "class_id");  // expected household_type (same value)
 
@@ -662,11 +677,11 @@ v[1] = 0;  // Sum via direct household aggregation
 if(working_class != NULL && capitalist_class != NULL)
 {
     // Sum via CLASS equations
-    CYCLES(households, cur, "CLASS")
+    CYCLE(cur, "CLASSES")
         v[0] += VS(cur, "Class_Nominal_Disposable_Income");
 
     // Sum via direct household aggregation
-    v[1] = SUMS(households, "Household_Nominal_Disposable_Income");
+    v[1] = SUMS(working_class, "Household_Nominal_Disposable_Income") + SUMS(capitalist_class, "Household_Nominal_Disposable_Income");
 
     // Relative error
     v[2] = (v[1] > 0) ? fabs(v[0] - v[1]) / v[1] : 0;

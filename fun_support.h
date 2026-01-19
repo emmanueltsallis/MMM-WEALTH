@@ -151,3 +151,75 @@ double gini_coefficient(double* values, int n)
 	return (2.0 * sum_ix - (n + 1) * sum_x) / (n * sum_x);
 }
 
+
+/*
+HOUSEHOLD_PERCENTILE(parent, var, percentile, lag)
+Computes the percentile of a household variable across ALL households in both CLASSES.
+
+This function solves the LSD sibling-only limitation of PERCLS when households
+are distributed across multiple parent objects (working_class, capitalist_class).
+
+Parameters:
+- parent: Parent object containing CLASSES (typically 'country' pointer)
+- var: Variable name (e.g., "Household_Avg_Real_Income")
+- percentile: Target percentile in [0,1] (e.g., 0.5 for median)
+- lag: Lag value (0 = current, 1 = previous period)
+
+Returns: The value at the specified percentile of the distribution
+
+Example: household_percentile(country, "Household_Avg_Real_Income", 0.5, 1)
+         returns the median income from the previous period
+*/
+double household_percentile(object* parent, const char* var, double percentile, int lag)
+{
+	// Count total households across both classes
+	int n = 0;
+	object *cur, *cur1;
+	CYCLES(parent, cur1, "CLASSES")
+	{
+		CYCLES(cur1, cur, "HOUSEHOLD")
+			n++;
+	}
+
+	if(n == 0) return 0.0;
+
+	// Collect values from all households
+	double* values = new double[n];
+	int idx = 0;
+	CYCLES(parent, cur1, "CLASSES")
+	{
+		CYCLES(cur1, cur, "HOUSEHOLD")
+		{
+			values[idx++] = VLS(cur, var, lag);
+		}
+	}
+
+	// Sort values (simple insertion sort - efficient for small n)
+	for(int i = 1; i < n; i++)
+	{
+		double key = values[i];
+		int j = i - 1;
+		while(j >= 0 && values[j] > key)
+		{
+			values[j + 1] = values[j];
+			j--;
+		}
+		values[j + 1] = key;
+	}
+
+	// Compute percentile index (linear interpolation)
+	double pos = percentile * (n - 1);
+	int lower = (int)floor(pos);
+	int upper = (int)ceil(pos);
+	double frac = pos - lower;
+
+	double result;
+	if(lower == upper || upper >= n)
+		result = values[lower];
+	else
+		result = values[lower] * (1.0 - frac) + values[upper] * frac;
+
+	delete[] values;
+	return result;
+}
+
