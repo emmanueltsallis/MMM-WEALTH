@@ -625,6 +625,10 @@ Label Root
 			Var: WTAX_AST
 			Var: WTAX_BOR
 			Var: WTAX_COUNT
+			Var: NW_c
+			Var: NW_w
+			Var: NW_c_G
+			Var: NW_w_G
 
 		}
 
@@ -943,7 +947,7 @@ Param: country_initial_exports_share_GDP 0 n + n n	0.1
 Param: country_initial_government_share_GDP 0 n + n n	0.2
 Param: entry_debt_share 0 n + n n	0
 Param: survival_period 0 n + n n	0
-Param: switch_class_tax_structure 0 n + n n	5
+Param: switch_class_tax_structure 0 n + n n	4
 Param: switch_creditworthness 0 n + n n	0
 Param: switch_entry 0 n + n n	1
 Param: switch_extra_gov_expenses 0 n + n n	0
@@ -1669,6 +1673,10 @@ Var: WTAX_DEP 0 s + n n
 Var: WTAX_AST 0 s + n n
 Var: WTAX_BOR 0 s + n n
 Var: WTAX_COUNT 0 s + n n
+Var: NW_c 1 s + n n	0
+Var: NW_w 1 s + n n	0
+Var: NW_c_G 0 s + n n
+Var: NW_w_G 0 s + n n
 
 Object: CLASSES C	2
 Param: class_id 0 n + n n	0	1
@@ -1880,7 +1888,7 @@ END_DESCRIPTION
 Parameter_switch_class_tax_structure
 
 _INIT_
-All 1 instances equal to 5
+All 1 instances equal to 4
 END_DESCRIPTION
 
 Parameter_switch_creditworthness
@@ -5280,6 +5288,26 @@ END_DESCRIPTION
 
 Variable_WTAX_COUNT
 
+END_DESCRIPTION
+
+Variable_NW_c
+Total capitalist net wealth (absolute value)
+_INIT_
+All 1 instances equal to 0
+END_DESCRIPTION
+
+Variable_NW_w
+Total worker net wealth (absolute value)Total worker net wealth (absolute value)
+_INIT_
+All 1 instances equal to 0
+END_DESCRIPTION
+
+Variable_NW_c_G
+Growth rate of capitalist net wealthGrowth rate of capitalist net wealth
+END_DESCRIPTION
+
+Variable_NW_w_G
+Growth rate of worker net wealthGrowth rate of worker net wealth
 END_DESCRIPTION
 
 Object_CLASSES

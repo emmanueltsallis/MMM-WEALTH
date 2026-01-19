@@ -252,6 +252,42 @@ EQUATION("WSH_c")
 	}
 RESULT(v[1] > 0 ? v[0] / v[1] : 0)
 
+EQUATION("NW_w")
+// Total worker net wealth (absolute value)
+	v[0] = 0;  // worker net wealth
+	CYCLE(cur1, "CLASSES")
+	{
+	CYCLES(cur1, cur, "HOUSEHOLD")
+	{
+		v[1] = VS(cur, "household_type");
+		if(v[1] == 0)  // worker
+			v[0] += VS(cur, "Household_Net_Wealth");
+	}
+	}
+RESULT(v[0])
+
+EQUATION("NW_c")
+// Total capitalist net wealth (absolute value)
+	v[0] = 0;  // capitalist net wealth
+	CYCLE(cur1, "CLASSES")
+	{
+	CYCLES(cur1, cur, "HOUSEHOLD")
+	{
+		v[1] = VS(cur, "household_type");
+		if(v[1] == 1)  // capitalist
+			v[0] += VS(cur, "Household_Net_Wealth");
+	}
+	}
+RESULT(v[0])
+
+EQUATION("NW_w_G")
+// Growth rate of worker net wealth
+RESULT(LAG_GROWTH(p, "NW_w", 1))
+
+EQUATION("NW_c_G")
+// Growth rate of capitalist net wealth
+RESULT(LAG_GROWTH(p, "NW_c", 1))
+
 
 /*****SECTORAL STATS*****/
 

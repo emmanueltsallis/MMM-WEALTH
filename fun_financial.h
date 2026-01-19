@@ -373,21 +373,23 @@ v[0] = VS(country, "Country_Total_Investment_Expenses");
 
 // 2. DEMAND: Capitalist savings (use SUMLS with lag to avoid circular dep)
 // Note: Workers have ~0 savings, so sum effectively = capitalist savings
-v[1] = SUMLS(households, "Household_Savings", 1);
+// FIX: Use two-pointer pattern for CLASSES/HOUSEHOLDS hierarchy
+v[1] = SUMLS(working_class, "Household_Savings", 1) + SUMLS(capitalist_class, "Household_Savings", 1);
 v[1] = max(0, v[1]);  // Only positive savings create demand
 
 // 3. VALUATION RATIO (for tracking financialization)
-v[2] = SUMLS(households, "Household_Financial_Assets", 1);  // Opening wealth
+// FIX: Use two-pointer pattern for CLASSES/HOUSEHOLDS hierarchy
+v[2] = SUMLS(working_class, "Household_Financial_Assets", 1) + SUMLS(capitalist_class, "Household_Financial_Assets", 1);
 v[3] = VS(country, "Country_Capital_Stock");
 v[4] = (v[3] > 0) ? (v[2] / v[3]) : 1.0;
 WRITE("Financial_Sector_Valuation_Ratio", v[4]);
 
-// 4. PRICE ADJUSTMENT = sensitivity × (D - S) / Wealth
-// Stage 5.4 FIX: Use proportion of capital as threshold (not arbitrary "1")
-// Compute inflation if wealth > 1% of capital stock
+// 4. PRICE ADJUSTMENT = sensitivity × (D - S) / Capital_Stock
+// Using Capital Stock as denominator prevents self-limiting behavior:
+// - Financial Assets can grow faster than Capital Stock via capital gains
+// - This maintains positive inflation rates, enabling wealth divergence (r > g)
 v[5] = V("financial_asset_price_sensitivity");
-v[8] = 0.01 * v[3];  // 1% of capital stock
-v[6] = (v[2] > v[8] && v[2] > 0) ? v[5] * (v[1] - v[0]) / v[2] : 0;
+v[6] = (v[3] > 0) ? v[5] * (v[1] - v[0]) / v[3] : 0;
 
 // Bounds to prevent numerical explosion
 v[7] = max(-0.10, min(0.20, v[6]));
