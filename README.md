@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-This document details the **MMM-WEALTH** household-disaggregated agent-based model, transformed from the UFRJ Micro-Macro Multisectoral Model (MMM v3.6). The transformation preserves stock-flow consistency while enabling endogenous wealth inequality dynamics within a heterodox macroeconomic framework.
+This document details the **MMM-WEALTH** household-disaggregated agent-based model, transformed from the UFRJ Micro-Macro Multisectoral Model (MMM v3.6) from Vianna (2021). The transformation preserves stock-flow consistency while enabling endogenous wealth inequality dynamics within a heterodox macroeconomic framework.
 
 ### Core Transformation
 
