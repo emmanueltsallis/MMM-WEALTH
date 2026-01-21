@@ -271,18 +271,6 @@ The model generates **emergent macro phenomena** from micro interactions:
 
 ## 9. Technical Implementation
 
-### 9.1 Code Metrics
-
-| Component | Lines of Code | Change vs UFRJ |
-|-----------|---------------|----------------|
-| Household equations | ~1,200+ | +140% |
-| Macro aggregation | ~1,200+ | +20% |
-| Initialization | ~700+ | +75% |
-| Diagnostics | ~500+ | +150% |
-| **Total** | ~9,500+ | +30% |
-
-### 9.2 New Parameters
-
 | Category | Parameters | Purpose |
 |----------|------------|---------|
 | Heterogeneity | 8 | Skill, habit, liquidity distributions |
