@@ -6,7 +6,7 @@ This document details the **MMM-WEALTH** household-disaggregated agent-based mod
 
 ### Core Transformation
 
-| Dimension | UFRJ Reference (Class-Based) | MMM-WEALTH (Household-Based) |
+| Dimension | Vianna, 2021 (Class-Based) | MMM-WEALTH (Household-Based) |
 |-----------|------------------------------|------------------------------|
 | **Agent granularity** | 3 income classes (A, B, C) | N individual households (100-10,000+) |
 | **Behavioral heterogeneity** | Class-average parameters | Individual parameters via distributions |
