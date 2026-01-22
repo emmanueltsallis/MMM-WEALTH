@@ -1,5 +1,6 @@
 //**********C++ SUPPORT FUNCTIONS*********//
 
+#include <algorithm>  // For std::sort (optimized inequality calculations)
 
 /*
 ROUND(value, "direction")

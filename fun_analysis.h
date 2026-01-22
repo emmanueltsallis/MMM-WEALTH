@@ -65,8 +65,68 @@ RESULT(VS(country,"Country_Profit_Share"))
 EQUATION("WSH")//Wage Share
 RESULT(VS(country,"Country_Wage_Share"))
 
-EQUATION("GINI")//Wage Share
+EQUATION("GINI")//Gini Index (Disposable Income, post-tax)
 RESULT(VS(country,"Country_Gini_Index"))
+
+EQUATION("GINI_PRETAX")//Gini Index (Gross Income, pre-tax)
+RESULT(VS(country,"Country_Gini_Index_Pretax"))
+
+EQUATION("GINI_W")//Gini Index (Net Wealth, post-tax)
+RESULT(VS(country,"Country_Gini_Index_Wealth"))
+
+EQUATION("GINI_W_PRETAX")//Gini Index (Net Wealth, pre-tax)
+RESULT(VS(country,"Country_Gini_Index_Wealth_Pretax"))
+
+/*****INCOME INEQUALITY INDICES (post-tax)*****/
+
+EQUATION("PALMA")//Palma Ratio (Disposable Income)
+RESULT(VS(country,"Country_Palma_Ratio_Income"))
+
+EQUATION("TOP10")//Top 10% Share (Disposable Income)
+RESULT(VS(country,"Country_Top10_Share_Income"))
+
+EQUATION("TOP1")//Top 1% Share (Disposable Income)
+RESULT(VS(country,"Country_Top1_Share_Income"))
+
+EQUATION("BOT50")//Bottom 50% Share (Disposable Income)
+RESULT(VS(country,"Country_Bottom50_Share_Income"))
+
+EQUATION("THEIL")//Theil Index (Disposable Income)
+RESULT(VS(country,"Country_Theil_Index_Income"))
+
+/*****WEALTH INEQUALITY INDICES (post-tax)*****/
+
+EQUATION("PALMA_W")//Palma Ratio (Net Wealth, post-tax)
+RESULT(VS(country,"Country_Palma_Ratio_Wealth"))
+
+EQUATION("TOP10_W")//Top 10% Share (Net Wealth, post-tax)
+RESULT(VS(country,"Country_Top10_Share_Wealth"))
+
+EQUATION("TOP1_W")//Top 1% Share (Net Wealth, post-tax)
+RESULT(VS(country,"Country_Top1_Share_Wealth"))
+
+EQUATION("BOT50_W")//Bottom 50% Share (Net Wealth, post-tax)
+RESULT(VS(country,"Country_Bottom50_Share_Wealth"))
+
+EQUATION("THEIL_W")//Theil Index (Net Wealth, post-tax)
+RESULT(VS(country,"Country_Theil_Index_Wealth"))
+
+/*****WEALTH INEQUALITY INDICES (pre-tax)*****/
+
+EQUATION("PALMA_W_PRETAX")//Palma Ratio (Net Wealth, pre-tax)
+RESULT(VS(country,"Country_Palma_Ratio_Wealth_Pretax"))
+
+EQUATION("TOP10_W_PRETAX")//Top 10% Share (Net Wealth, pre-tax)
+RESULT(VS(country,"Country_Top10_Share_Wealth_Pretax"))
+
+EQUATION("TOP1_W_PRETAX")//Top 1% Share (Net Wealth, pre-tax)
+RESULT(VS(country,"Country_Top1_Share_Wealth_Pretax"))
+
+EQUATION("BOT50_W_PRETAX")//Bottom 50% Share (Net Wealth, pre-tax)
+RESULT(VS(country,"Country_Bottom50_Share_Wealth_Pretax"))
+
+EQUATION("THEIL_W_PRETAX")//Theil Index (Net Wealth, pre-tax)
+RESULT(VS(country,"Country_Theil_Index_Wealth_Pretax"))
 
 
 /*****REAL STATS*****/

@@ -1162,3 +1162,1531 @@ destroytop $wid
 Message:
 can't read "wid": no such variable
 -----
+
+
+====================> NEW TCL SESSION
+
+(01/19/26 13:55:53)
+Command:
+if { [ .da.vars.pl.f.v size ] != 0 } { set answer [ ttk::messageBox -parent .da -type okcancel -title Confirmation -icon question -default ok -message "Exit Analysis of Results?" -detail "All the plots and series created and not saved will be lost."] } { set answer ok }
+Message:
+bad window path name ".da.msgBox_2884"
+-----
+
+(01/19/26 13:55:53)
+Command:
+if { ! [ string equal $answer ok ] } { set choice 0 }
+Message:
+can't read "answer": no such variable
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+lappend modVar %s
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+lappend modElem %s
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:46)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:48)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:48)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:03:48)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:52)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:52)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:03:52)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:03:52)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:55)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:55)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:03:55)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:03:55)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:03:56)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:58)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:03:58)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:03:58)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:03:58)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:03:58)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:03:59)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:04:02)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:04:02)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:04:02)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:04:02)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:04:02)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:04:02)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:04:02)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:04:05)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:04:05)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:04:05)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:04:05)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:04:05)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:04:05)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:04:05)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:04:05)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:04:10)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:04:10)
+Command:
+if [ regexp {^[a-zA-Z_][a-zA-Z0-9_]*$} "%s" ] { set res 1 } { set res 0 }
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:04:48)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:04:48)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:04:48)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:04:48)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:04:48)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:04:48)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:04:48)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:04:48)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:04:48)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:29)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:29)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:29)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:29)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:29)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:29)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:29)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:29)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:29)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:30)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:30)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:30)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:30)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:30)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:30)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:30)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:30)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:31)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:31)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:31)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:31)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:31)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:31)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:31)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:31)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:31)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:32)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:33)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:33)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:33)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:33)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:33)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:33)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:33)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:33)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:33)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:34)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:34)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:34)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:34)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:34)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:34)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:34)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:34)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:34)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:35)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:35)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:35)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:35)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:35)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:35)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:35)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:35)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:35)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:36)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:36)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:36)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:36)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:36)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:36)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:36)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:36)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:36)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:37)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:37)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:37)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:37)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:37)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:37)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:37)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:37)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:37)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:38)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:38)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:38)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:38)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:38)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:38)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:38)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:38)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:38)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:39)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:39)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:39)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:39)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:39)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:39)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:39)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:39)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:39)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:40)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:40)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:40)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:40)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:40)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:40)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:40)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:40)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:40)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:41)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:41)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:41)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:41)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:41)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:41)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:41)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:41)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:41)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:42)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:42)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:42)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:42)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:42)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:42)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:42)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:42)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:42)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:43)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:43)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:43)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:43)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:43)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:43)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:43)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:43)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:43)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:45)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:45)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:45)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:45)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:45)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:45)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:45)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:45)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:45)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:46)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:46)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:46)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:46)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:46)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:46)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:46)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:46)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+(01/21/26 19:05:46)
+Command:
+lappend tlist_%s "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:54)
+Command:
+.l.v.c.var_name insert end "%s (V$varFlags)"
+Message:
+wrong # args: should be "info subcommand ?arg ...?"
+-----
+
+(01/21/26 19:05:54)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "164" out of range
+-----
+
+(01/21/26 19:05:54)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "165" out of range
+-----
+
+(01/21/26 19:05:54)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "166" out of range
+-----
+
+(01/21/26 19:05:54)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "167" out of range
+-----
+
+(01/21/26 19:05:54)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "168" out of range
+-----
+
+(01/21/26 19:05:54)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "169" out of range
+-----
+
+(01/21/26 19:05:54)
+Command:
+.l.v.c.var_name itemconf %d -fg $colorsTheme(var)
+Message:
+item number "170" out of range
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/21/26 22:33:53)
+Command:
+set it [ .da.vars.pl.f.v get $iti ]
+Message:
+bad listbox index "": must be active, anchor, end, @x,y, or a number
+-----

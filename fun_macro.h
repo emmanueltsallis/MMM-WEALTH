@@ -1093,80 +1093,318 @@ Debt Rate = Stock_Loans / Stock_Deposits for each household.
 RESULT(v[12])
 
 
+/******************************************************************************
+ * OPTIMIZED INEQUALITY INDICES
+ *
+ * Performance optimizations:
+ * 1. std::sort instead of bubble sort: O(n log n) vs O(n²)
+ * 2. Master equations compute all indices in single pass
+ * 3. Data collected once, sorted once, all shares computed together
+ * 4. Individual equations are thin wrappers returning pre-computed values
+ ******************************************************************************/
+
 EQUATION("Country_Gini_Index")
 /*
-Gini coefficient for disposable income distribution across households.
-SWITCHED: From 3-class Lorenz approximation to proper N-household Gini.
-Uses gini_coefficient() from fun_support.h.
+MASTER EQUATION for income inequality (disposable, post-tax).
+Computes: Gini, Palma, Top10, Top1, Bottom50, Theil
+Uses std::sort for O(n log n) performance.
+WRITEs results to individual variables.
 */
 	v[0] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
 	i = (int) v[0];
 	if(i <= 1)
+	{
+		WRITE("Country_Palma_Ratio_Income", 0);
+		WRITE("Country_Top10_Share_Income", 0);
+		WRITE("Country_Top1_Share_Income", 0);
+		WRITE("Country_Bottom50_Share_Income", 0);
+		WRITE("Country_Theil_Index_Income", 0);
 		END_EQUATION(0);
+	}
 
-	double* incomes = new double[i];
+	double* values = new double[i];
+	double total = 0;
 	j = 0;
 	CYCLE(cur1, "CLASSES")
 	{
 	CYCLES(cur1, cur, "HOUSEHOLD")
 	{
-		incomes[j] = VS(cur, "Household_Nominal_Disposable_Income");
+		values[j] = VS(cur, "Household_Nominal_Disposable_Income");
+		total += values[j];
 		j++;
 	}
 	}
-	v[1] = gini_coefficient(incomes, i);
-	delete[] incomes;
-RESULT(v[1])
+
+	// Compute Theil BEFORE sorting (doesn't need sorted data)
+	double mean = total / i;
+	double theil = 0;
+	for(int k = 0; k < i; k++) {
+		double val = max(1e-10, values[k]);
+		double ratio = val / mean;
+		if(ratio > 1e-10)
+			theil += ratio * log(ratio);
+	}
+	theil /= i;
+	WRITE("Country_Theil_Index_Income", theil);
+
+	// Sort using std::sort - O(n log n)
+	std::sort(values, values + i);
+
+	// Compute Gini from sorted array
+	double sum_ix = 0, sum_x = 0;
+	for(int k = 0; k < i; k++) {
+		sum_ix += (k + 1) * values[k];
+		sum_x += values[k];
+	}
+	double gini = (sum_x > 1e-10) ? (2.0 * sum_ix - (i + 1) * sum_x) / (i * sum_x) : 0;
+
+	// Compute all shares in single pass through sorted array
+	int bottom40_idx = (int)(i * 0.4);
+	int bottom50_idx = (int)(i * 0.5);
+	int top10_idx = (int)(i * 0.9);
+	int top1_idx = (int)(i * 0.99);
+	if(top1_idx >= i) top1_idx = i - 1;
+
+	double bottom40_sum = 0, bottom50_sum = 0, top10_sum = 0, top1_sum = 0;
+	for(int k = 0; k < i; k++) {
+		if(k < bottom40_idx) bottom40_sum += values[k];
+		if(k < bottom50_idx) bottom50_sum += values[k];
+		if(k >= top10_idx) top10_sum += values[k];
+		if(k >= top1_idx) top1_sum += values[k];
+	}
+
+	// Write all computed values
+	WRITE("Country_Palma_Ratio_Income", (fabs(bottom40_sum) > 1e-10) ? top10_sum / bottom40_sum : 9999);
+	WRITE("Country_Top10_Share_Income", (total > 1e-10) ? top10_sum / total : 0);
+	WRITE("Country_Top1_Share_Income", (total > 1e-10) ? top1_sum / total : 0);
+	WRITE("Country_Bottom50_Share_Income", (total > 1e-10) ? bottom50_sum / total : 0);
+
+	delete[] values;
+RESULT(gini)
 
 EQUATION("Country_Gini_Index_Pretax")
 /*
-Gini coefficient for gross (pre-tax) income distribution across households.
-SWITCHED: From 3-class Lorenz approximation to proper N-household Gini.
-Uses Household_Nominal_Gross_Income (wages + profits before taxes).
+Gini coefficient for gross (pre-tax) income distribution.
+Standalone equation (different data source than post-tax).
 */
 	v[0] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
 	i = (int) v[0];
 	if(i <= 1)
 		END_EQUATION(0);
 
-	double* incomes = new double[i];
+	double* values = new double[i];
 	j = 0;
 	CYCLE(cur1, "CLASSES")
 	{
 	CYCLES(cur1, cur, "HOUSEHOLD")
 	{
-		incomes[j] = VS(cur, "Household_Nominal_Gross_Income");
+		values[j] = VS(cur, "Household_Nominal_Gross_Income");
 		j++;
 	}
 	}
-	v[1] = gini_coefficient(incomes, i);
-	delete[] incomes;
-RESULT(v[1])
+
+	// Sort and compute Gini
+	std::sort(values, values + i);
+	double sum_ix = 0, sum_x = 0;
+	for(int k = 0; k < i; k++) {
+		sum_ix += (k + 1) * values[k];
+		sum_x += values[k];
+	}
+	double gini = (sum_x > 1e-10) ? (2.0 * sum_ix - (i + 1) * sum_x) / (i * sum_x) : 0;
+
+	delete[] values;
+RESULT(gini)
 
 EQUATION("Country_Gini_Index_Wealth")
 /*
-Gini coefficient for wealth (deposits) distribution across households.
-SWITCHED: From 3-class Lorenz approximation to proper N-household Gini.
-Uses Household_Stock_Deposits as wealth measure.
+MASTER EQUATION for wealth inequality (post-tax).
+Computes: Gini, Palma, Top10, Top1, Bottom50, Theil
+Uses std::sort for O(n log n) performance.
 */
 	v[0] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
 	i = (int) v[0];
 	if(i <= 1)
+	{
+		WRITE("Country_Palma_Ratio_Wealth", 0);
+		WRITE("Country_Top10_Share_Wealth", 0);
+		WRITE("Country_Top1_Share_Wealth", 0);
+		WRITE("Country_Bottom50_Share_Wealth", 0);
+		WRITE("Country_Theil_Index_Wealth", 0);
 		END_EQUATION(0);
+	}
 
-	double* wealth = new double[i];
+	double* values = new double[i];
+	double total = 0;
 	j = 0;
 	CYCLE(cur1, "CLASSES")
 	{
 	CYCLES(cur1, cur, "HOUSEHOLD")
 	{
-		wealth[j] = VS(cur, "Household_Stock_Deposits");
+		values[j] = VS(cur, "Household_Net_Wealth");
+		total += values[j];
 		j++;
 	}
 	}
-	v[1] = gini_coefficient(wealth, i);
-	delete[] wealth;
-RESULT(v[1])
+
+	// Compute Theil BEFORE sorting
+	double mean = total / i;
+	double theil = 0;
+	for(int k = 0; k < i; k++) {
+		double val = max(1e-10, values[k]);
+		double ratio = val / mean;
+		if(ratio > 1e-10)
+			theil += ratio * log(ratio);
+	}
+	theil /= i;
+	WRITE("Country_Theil_Index_Wealth", theil);
+
+	// Sort using std::sort
+	std::sort(values, values + i);
+
+	// Compute Gini
+	double sum_ix = 0, sum_x = 0;
+	for(int k = 0; k < i; k++) {
+		sum_ix += (k + 1) * values[k];
+		sum_x += values[k];
+	}
+	double gini = (sum_x > 1e-10) ? (2.0 * sum_ix - (i + 1) * sum_x) / (i * sum_x) : 0;
+
+	// Compute all shares
+	int bottom40_idx = (int)(i * 0.4);
+	int bottom50_idx = (int)(i * 0.5);
+	int top10_idx = (int)(i * 0.9);
+	int top1_idx = (int)(i * 0.99);
+	if(top1_idx >= i) top1_idx = i - 1;
+
+	double bottom40_sum = 0, bottom50_sum = 0, top10_sum = 0, top1_sum = 0;
+	for(int k = 0; k < i; k++) {
+		if(k < bottom40_idx) bottom40_sum += values[k];
+		if(k < bottom50_idx) bottom50_sum += values[k];
+		if(k >= top10_idx) top10_sum += values[k];
+		if(k >= top1_idx) top1_sum += values[k];
+	}
+
+	WRITE("Country_Palma_Ratio_Wealth", (fabs(bottom40_sum) > 1e-10) ? top10_sum / bottom40_sum : 9999);
+	WRITE("Country_Top10_Share_Wealth", (total > 1e-10) ? top10_sum / total : 0);
+	WRITE("Country_Top1_Share_Wealth", (total > 1e-10) ? top1_sum / total : 0);
+	WRITE("Country_Bottom50_Share_Wealth", (total > 1e-10) ? bottom50_sum / total : 0);
+
+	delete[] values;
+RESULT(gini)
+
+EQUATION("Country_Gini_Index_Wealth_Pretax")
+/*
+MASTER EQUATION for wealth inequality (pre-tax).
+Computes: Gini, Palma, Top10, Top1, Bottom50, Theil
+Pre-tax wealth = current net wealth + wealth tax paid this period.
+*/
+	v[0] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
+	i = (int) v[0];
+	if(i <= 1)
+	{
+		WRITE("Country_Palma_Ratio_Wealth_Pretax", 0);
+		WRITE("Country_Top10_Share_Wealth_Pretax", 0);
+		WRITE("Country_Top1_Share_Wealth_Pretax", 0);
+		WRITE("Country_Bottom50_Share_Wealth_Pretax", 0);
+		WRITE("Country_Theil_Index_Wealth_Pretax", 0);
+		END_EQUATION(0);
+	}
+
+	double* values = new double[i];
+	double total = 0;
+	j = 0;
+	CYCLE(cur1, "CLASSES")
+	{
+	CYCLES(cur1, cur, "HOUSEHOLD")
+	{
+		values[j] = VS(cur, "Household_Net_Wealth") + VS(cur, "Household_Wealth_Tax_Payment");
+		total += values[j];
+		j++;
+	}
+	}
+
+	// Compute Theil BEFORE sorting
+	double mean = total / i;
+	double theil = 0;
+	for(int k = 0; k < i; k++) {
+		double val = max(1e-10, values[k]);
+		double ratio = val / mean;
+		if(ratio > 1e-10)
+			theil += ratio * log(ratio);
+	}
+	theil /= i;
+	WRITE("Country_Theil_Index_Wealth_Pretax", theil);
+
+	// Sort using std::sort
+	std::sort(values, values + i);
+
+	// Compute Gini
+	double sum_ix = 0, sum_x = 0;
+	for(int k = 0; k < i; k++) {
+		sum_ix += (k + 1) * values[k];
+		sum_x += values[k];
+	}
+	double gini = (sum_x > 1e-10) ? (2.0 * sum_ix - (i + 1) * sum_x) / (i * sum_x) : 0;
+
+	// Compute all shares
+	int bottom40_idx = (int)(i * 0.4);
+	int bottom50_idx = (int)(i * 0.5);
+	int top10_idx = (int)(i * 0.9);
+	int top1_idx = (int)(i * 0.99);
+	if(top1_idx >= i) top1_idx = i - 1;
+
+	double bottom40_sum = 0, bottom50_sum = 0, top10_sum = 0, top1_sum = 0;
+	for(int k = 0; k < i; k++) {
+		if(k < bottom40_idx) bottom40_sum += values[k];
+		if(k < bottom50_idx) bottom50_sum += values[k];
+		if(k >= top10_idx) top10_sum += values[k];
+		if(k >= top1_idx) top1_sum += values[k];
+	}
+
+	WRITE("Country_Palma_Ratio_Wealth_Pretax", (fabs(bottom40_sum) > 1e-10) ? top10_sum / bottom40_sum : 9999);
+	WRITE("Country_Top10_Share_Wealth_Pretax", (total > 1e-10) ? top10_sum / total : 0);
+	WRITE("Country_Top1_Share_Wealth_Pretax", (total > 1e-10) ? top1_sum / total : 0);
+	WRITE("Country_Bottom50_Share_Wealth_Pretax", (total > 1e-10) ? bottom50_sum / total : 0);
+
+	delete[] values;
+RESULT(gini)
+
+
+/******************************************************************************
+ * INEQUALITY INDICES: Dummy Variables (Income)
+ * These are computed by Country_Gini_Index via WRITE()
+ ******************************************************************************/
+
+EQUATION_DUMMY("Country_Palma_Ratio_Income", "Country_Gini_Index")
+EQUATION_DUMMY("Country_Top10_Share_Income", "Country_Gini_Index")
+EQUATION_DUMMY("Country_Top1_Share_Income", "Country_Gini_Index")
+EQUATION_DUMMY("Country_Bottom50_Share_Income", "Country_Gini_Index")
+EQUATION_DUMMY("Country_Theil_Index_Income", "Country_Gini_Index")
+
+
+/******************************************************************************
+ * INEQUALITY INDICES: Dummy Variables (Wealth, post-tax)
+ * These are computed by Country_Gini_Index_Wealth via WRITE()
+ ******************************************************************************/
+
+EQUATION_DUMMY("Country_Palma_Ratio_Wealth", "Country_Gini_Index_Wealth")
+EQUATION_DUMMY("Country_Top10_Share_Wealth", "Country_Gini_Index_Wealth")
+EQUATION_DUMMY("Country_Top1_Share_Wealth", "Country_Gini_Index_Wealth")
+EQUATION_DUMMY("Country_Bottom50_Share_Wealth", "Country_Gini_Index_Wealth")
+EQUATION_DUMMY("Country_Theil_Index_Wealth", "Country_Gini_Index_Wealth")
+
+
+/******************************************************************************
+ * INEQUALITY INDICES: Dummy Variables (Wealth, pre-tax)
+ * These are computed by Country_Gini_Index_Wealth_Pretax via WRITE()
+ ******************************************************************************/
+
+EQUATION_DUMMY("Country_Palma_Ratio_Wealth_Pretax", "Country_Gini_Index_Wealth_Pretax")
+EQUATION_DUMMY("Country_Top10_Share_Wealth_Pretax", "Country_Gini_Index_Wealth_Pretax")
+EQUATION_DUMMY("Country_Top1_Share_Wealth_Pretax", "Country_Gini_Index_Wealth_Pretax")
+EQUATION_DUMMY("Country_Bottom50_Share_Wealth_Pretax", "Country_Gini_Index_Wealth_Pretax")
+EQUATION_DUMMY("Country_Theil_Index_Wealth_Pretax", "Country_Gini_Index_Wealth_Pretax")
+
 
 EQUATION("Country_Avg_Propensity_Consume")
 /*

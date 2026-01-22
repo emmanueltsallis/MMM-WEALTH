@@ -919,6 +919,22 @@ Label Root
 		Var: Country_Audit_Count
 		Var: Country_Penalty_Revenue
 		Var: Country_Total_Assets_Declared
+		Var: Country_Bottom50_Share_Income
+		Var: Country_Bottom50_Share_Wealth
+		Var: Country_Bottom50_Share_Wealth_Pretax
+		Var: Country_Gini_Index_Wealth_Pretax
+		Var: Country_Palma_Ratio_Income
+		Var: Country_Palma_Ratio_Wealth
+		Var: Country_Palma_Ratio_Wealth_Pretax
+		Var: Country_Theil_Index_Income
+		Var: Country_Theil_Index_Wealth
+		Var: Country_Theil_Index_Wealth_Pretax
+		Var: Country_Top1_Share_Income
+		Var: Country_Top1_Share_Wealth
+		Var: Country_Top1_Share_Wealth_Pretax
+		Var: Country_Top10_Share_Income
+		Var: Country_Top10_Share_Wealth
+		Var: Country_Top10_Share_Wealth_Pretax
 
 	}
 
@@ -1089,6 +1105,22 @@ Var: Country_Evader_Count 0 s + n n
 Var: Country_Audit_Count 0 s + n n
 Var: Country_Penalty_Revenue 0 s + n n
 Var: Country_Total_Assets_Declared 0 s + n n
+Var: Country_Bottom50_Share_Income 0 s + n n
+Var: Country_Bottom50_Share_Wealth 0 s + n n
+Var: Country_Bottom50_Share_Wealth_Pretax 0 s + n n
+Var: Country_Gini_Index_Wealth_Pretax 0 s + n n
+Var: Country_Palma_Ratio_Income 0 s + n n
+Var: Country_Palma_Ratio_Wealth 0 s + n n
+Var: Country_Palma_Ratio_Wealth_Pretax 0 s + n n
+Var: Country_Theil_Index_Income 0 s + n n
+Var: Country_Theil_Index_Wealth 0 s + n n
+Var: Country_Theil_Index_Wealth_Pretax 0 s + n n
+Var: Country_Top1_Share_Income 0 s + n n
+Var: Country_Top1_Share_Wealth 0 s + n n
+Var: Country_Top1_Share_Wealth_Pretax 0 s + n n
+Var: Country_Top10_Share_Income 0 s + n n
+Var: Country_Top10_Share_Wealth 0 s + n n
+Var: Country_Top10_Share_Wealth_Pretax 0 s + n n
 
 Object: EXTERNAL_SECTOR C	1
 Param: exchange_rate_adjustment 0 n + n n	1
@@ -2610,92 +2642,135 @@ Variable_Country_Total_Assets_Declared
 Stage 9: Total financial assets declared to tax authority.Stage 9: Total financial assets declared to tax authority.
 END_DESCRIPTION
 
+Variable_Country_Bottom50_Share_Income
+Thin wrapper: Bottom 50% share of disposable income.Thin wrapper: Bottom 50% share of disposable income.
+END_DESCRIPTION
+
+Variable_Country_Bottom50_Share_Wealth
+Thin wrapper: Bottom 50% share of net wealth (post-tax).Thin wrapper: Bottom 50% share of net wealth (post-tax).
+END_DESCRIPTION
+
+Variable_Country_Bottom50_Share_Wealth_Pretax
+Thin wrapper: Bottom 50% share of net wealth (pre-tax).Thin wrapper: Bottom 50% share of net wealth (pre-tax).
+END_DESCRIPTION
+
+Variable_Country_Gini_Index_Wealth_Pretax
+MASTER EQUATION for wealth inequality (pre-tax).
+Computes: Gini, Palma, Top10, Top1, Bottom50, Theil
+Pre-tax wealth = current net wealth + wealth tax paid this period.
+END_DESCRIPTION
+
+Variable_Country_Palma_Ratio_Income
+Thin wrapper: Palma Ratio for disposable income.
+Triggers master equation which WRITEs the computed value.
+END_DESCRIPTION
+
+Variable_Country_Palma_Ratio_Wealth
+Thin wrapper: Palma Ratio for net wealth (post-tax).
+END_DESCRIPTION
+
+Variable_Country_Palma_Ratio_Wealth_Pretax
+Thin wrapper: Palma Ratio for net wealth (pre-tax).
+END_DESCRIPTION
+
+Variable_Country_Theil_Index_Income
+Thin wrapper: Theil Index for disposable income.
+END_DESCRIPTION
+
+Variable_Country_Theil_Index_Wealth
+Thin wrapper: Theil Index for net wealth (post-tax).
+END_DESCRIPTION
+
+Variable_Country_Theil_Index_Wealth_Pretax
+Thin wrapper: Theil Index for net wealth (pre-tax).
+END_DESCRIPTION
+
+Variable_Country_Top1_Share_Income
+
+END_DESCRIPTION
+
+Variable_Country_Top1_Share_Wealth
+
+END_DESCRIPTION
+
+Variable_Country_Top1_Share_Wealth_Pretax
+
+END_DESCRIPTION
+
+Variable_Country_Top10_Share_Income
+
+END_DESCRIPTION
+
+Variable_Country_Top10_Share_Wealth
+
+END_DESCRIPTION
+
+Variable_Country_Top10_Share_Wealth_Pretax
+
+END_DESCRIPTION
+
 Object_EXTERNAL_SECTOR
 
 END_DESCRIPTION
 
 Parameter_exchange_rate_adjustment
-determines how exchange rate adjusts each period based on balance of payments
-_INIT_
-All 1 instances equal to 1.
+
 END_DESCRIPTION
 
 Parameter_exchange_rate_max
 
-_INIT_
-All 1 instances equal to 5.
 END_DESCRIPTION
 
 Parameter_exchange_rate_min
 
-_INIT_
-All 1 instances equal to 0.001.
 END_DESCRIPTION
 
 Parameter_external_capital_flow_adjustment
-determines the intensity and scale of capital flows based on external income
-_INIT_
-All 1 instances equal to 10.
+
 END_DESCRIPTION
 
 Parameter_external_income_adjustmnent
-determines how external income is adjusted or depends on domestic income growth
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Parameter_external_income_growth
-determines the external income fixed and exogenous annual nominal growth
-_INIT_
-All 1 instances equal to 0.001
+
 END_DESCRIPTION
 
 Parameter_external_income_sd
-determines the standard deviation of external income growth
-_INIT_
-All 1 instances equal to 0.01
+
 END_DESCRIPTION
 
 Parameter_external_interest_rate
-determines the external annual nominal interest rate to be compared with domestic and determine capital flows
-_INIT_
-All 1 instances equal to 0.002
+
 END_DESCRIPTION
 
 Parameter_external_interest_sd
 
-_INIT_
-All 1 instances equal to 0.001
 END_DESCRIPTION
 
 Parameter_external_shock_begin
-determines when the external income shock begins
+
 END_DESCRIPTION
 
 Parameter_external_shock_duration
-determines how long the external income show will take
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Parameter_external_shock_size
-determines the intensity of external income shock, as a multiple to normal growth rate
+
 END_DESCRIPTION
 
 Parameter_initial_exchange_rate
-determines the inital exchange rateused in calibration
-_INIT_
-All 1 instances equal to 1.
+
 END_DESCRIPTION
 
 Parameter_initial_external_income_scale
-determines the initial scale beteen domestic nominal GDP and  nominal external income
+
 END_DESCRIPTION
 
 Parameter_initial_reserves_ratio
-determines the inital stock of international reserves in relation to nominal GDPused in calibration
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Country_Capital_Flows
@@ -2704,8 +2779,6 @@ END_DESCRIPTION
 
 Variable_Country_Exchange_Rate
 
-_INIT_
-All 1 instances equal to 1.
 END_DESCRIPTION
 
 Variable_Country_External_Debt
@@ -2718,8 +2791,6 @@ END_DESCRIPTION
 
 Variable_Country_International_Reserves
 
-_INIT_
-All 1 instances equal to 10000.
 END_DESCRIPTION
 
 Variable_Country_International_Reserves_GDP_Ratio
@@ -2736,8 +2807,6 @@ END_DESCRIPTION
 
 Variable_Country_Trade_Balance
 
-_INIT_
-All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_External_Real_Income
@@ -2749,145 +2818,107 @@ Object_FINANCIAL
 END_DESCRIPTION
 
 Parameter_fs_elasticity_default
-determines the financial sector competitiveness elasticity to default rate
-_INIT_
-All 1 instances equal to 0.1.
+
 END_DESCRIPTION
 
 Parameter_fs_elasticity_interest_long_term
-determines the financial sector competitiveness elasticity to long term interest rate
+
 END_DESCRIPTION
 
 Parameter_fs_elasticity_interest_short_term
-determines the financial sector competitiveness elasticity to short term interest rate
+
 END_DESCRIPTION
 
 Parameter_fs_elasticity_rationing
-determines the financial sector competitiveness elasticity to credit rationing
-_INIT_
-All 1 instances equal to 0.1.
+
 END_DESCRIPTION
 
 Parameter_fs_expectations
-financial sector (and banks) expectation parameter
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Parameter_fs_initial_leverage
-determines the initial relation between loans and depositsused in calibration
-_INIT_
-All 1 instances equal to 1.
+
 END_DESCRIPTION
 
 Parameter_fs_number_object_banks
-determines the initial number of banks
-_INIT_
-All 1 instances equal to 10.
+
 END_DESCRIPTION
 
 Parameter_fs_price_strategy_long_term
-determines the financial sector (and banks) price strategy in long term interest rate setting.
-_INIT_
-All 1 instances equal to 1.
+
 END_DESCRIPTION
 
 Parameter_fs_price_strategy_short_term
-determines the financial sector (and banks) price strategy in long term interest rate setting.
-_INIT_
-All 1 instances equal to 1.
+
 END_DESCRIPTION
 
 Parameter_fs_profit_distribution_rate
 
-_INIT_
-All 1 instances equal to 0.9.
 END_DESCRIPTION
 
 Parameter_fs_risk_premium_class
-determines the risk premium on debt rate applied to class' loans
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Parameter_fs_risk_premium_long_term
-determines the risk premium on debt rate applied to firms' long term loans
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Parameter_fs_risk_premium_short_term
-determines the risk premium on debt rate applied to firms' short term loans
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Parameter_fs_sensitivity_debt_rate
-determines the financial sector (and banks) sensitivity to avg debt rate on credit rationing
-_INIT_
-All 1 instances equal to 0.1.
+
 END_DESCRIPTION
 
 Parameter_fs_sensitivity_default
-determines the financial sector (and banks) sensitivity to own default rate on credit rationing
-_INIT_
-All 1 instances equal to 0.1.
+
 END_DESCRIPTION
 
 Parameter_fs_spread_deposits
-determines the spread to be subtracted from basic interest rate to define interest rate on deposits. the higher the parameter value, lower (or zero) the interest rate on deposits will be
-_INIT_
-All 1 instances equal to 0.0075.
+
 END_DESCRIPTION
 
 Parameter_fs_spread_long_term
-determines the spread to be added to basic interest rate to define the base interest rate on long term loans
+
 END_DESCRIPTION
 
 Parameter_fs_spread_long_term_adjustment
-determines the intensity of desired long term spreads adjustment to competitiveness
-_INIT_
-All 1 instances equal to 0.1.
+
 END_DESCRIPTION
 
 Parameter_fs_spread_short_term
-determines the spread to be added to basic interest rate to define the base interest rate on short term loans
+
 END_DESCRIPTION
 
 Parameter_fs_spread_short_term_adjustment
-determines the intensity of desired short term spreads adjustment to competitiveness
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Accumulated_Defaulted_Loans
-Total accumulated rescue of the financial sector
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Accumulated_Profits
-Total Stock of deposits of the financial sector
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Accumulated_Rescue
-Total accumulated rescue of the financial sectorTotal accumulated rescue of the financial sector
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Avg_Competitiveness
-Average competitiveness, weighted by firm's market share
-_INIT_
-All 1 instances equal to 1.
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Avg_Interest_Rate_Long_Term
-Average weighted by firm's market share
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Avg_Interest_Rate_Short_Term
-Average weighted by firm's market shareAverage weighted by firm's market share
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Debt_Payment
@@ -2895,11 +2926,11 @@ Variable_Financial_Sector_Debt_Payment
 END_DESCRIPTION
 
 Variable_Financial_Sector_Default_Rate
-Total Stock of loansTotal Stock of loans
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Defaulted_Loans
-Total defaulted of loansTotal defaulted of loans
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Demand_Loans
@@ -2907,19 +2938,19 @@ Variable_Financial_Sector_Demand_Loans
 END_DESCRIPTION
 
 Variable_Financial_Sector_Demand_Met
-Share of demand for new loans met
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Distributed_Profits
-Total Stock of deposits of the financial sectorTotal Stock of deposits of the financial sector
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Effective_Capital_Ratio
-Accumulated profits over total loansAnalysis Variable
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Effective_Loans
-Effectrive Loans is the minimum between demanded loans and max loans.
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Interest_Payment
@@ -2927,9 +2958,7 @@ Variable_Financial_Sector_Interest_Payment
 END_DESCRIPTION
 
 Variable_Financial_Sector_Interest_Rate_Deposits
-Interest Rate on Bank deposits is a negative spreaded base interest rate
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Interest_Receivment
@@ -2937,61 +2966,55 @@ Variable_Financial_Sector_Interest_Receivment
 END_DESCRIPTION
 
 Variable_Financial_Sector_Leverage
-Total Stock of Loans over Total Stock of Deposits
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Max_Total_Loans
-Maximum new loans. Follows basileia or similar ruleMight impact effect loans
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Normalized_HHI
-Sector Variable for AnalysisSector Variable for Analysis
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Profits
-Total Stock of deposits of the financial sector
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Rescue
-Total rescue of the financial sectorTotal rescue of the financial sector
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Short_Term_Rate
-Share of short term loans over total loans
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Stock_Deposits
-Total Stock of deposits of the financial sector
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Stock_Loans_Long_Term
-Total Stock of long term loans, firms loans for investment
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Stock_Loans_Short_Term
-Total Stock of short term loans, firms and classes
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Total_Stock_Loans
-Total Stock of loans
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Total_Stock_Loans_Growth
-Average weighted by firm's market shareAverage weighted by firm's market share
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Financial_Sector_Turbulence
-Financial Sector Variable for AnalysisFinancial Sector Variable for Analysis
+
 END_DESCRIPTION
 
 Parameter_fs_risk_premium_household
 
-_INIT_
-All 1 instances equal to 0.1
 END_DESCRIPTION
 
 Parameter_financial_asset_price_sensitivity
@@ -3001,22 +3024,11 @@ All 1 instances equal to 0.1
 END_DESCRIPTION
 
 Variable_Financial_Asset_Inflation
-Stage 5.4: Asset price inflation from asset shortage mechanism.
-Kaldor's valuation ratio approach.
 
-MECHANISM:
-- Supply = Nominal Investment Expenses (firms issue assets to finance)
-- Demand = Capitalist Savings seeking placement
-- When D > S: Asset prices rise (shortage)
-- When D < S: Asset prices fall (glut)
-
-This allows the Valuation Ratio (v = Financial Wealth / Real Capital) to grow
-as financialization progresses, demonstrating wealth decoupling from production.
 END_DESCRIPTION
 
 Variable_Financial_Sector_Valuation_Ratio
-Stage 5.4: Kaldor's valuation ratio v = Financial Assets / Capital Stock.
-Computed by Financial_Asset_Inflation via WRITE, just returns current value.
+
 END_DESCRIPTION
 
 Object_BANKS
@@ -3024,121 +3036,95 @@ Object_BANKS
 END_DESCRIPTION
 
 Parameter_bank_defaulted_loans_temporary
-temporaty parameter that writes the defaulted loans of each bank. It is written during sumulation
+
 END_DESCRIPTION
 
 Parameter_bank_id
-determines the bank number
+
 END_DESCRIPTION
 
 Variable_Bank_Accumulated_Defaulted_Loans
-Current bank defaulted loans
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Accumulated_Profits
-Total Stock of deposits of the financial sector
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Competitiveness
-Bank competitiveness depends negativelly on the bank interest rate on loans and the loans not met
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Debt_Payment
-Total interest payment from firms and classes
+
 END_DESCRIPTION
 
 Variable_Bank_Default_Share
-Current bank defaulted loans
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Defaulted_Loans
-Current bankdefaulted loans
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Demand_Loans
-Total demand for loans, firms and classes
+
 END_DESCRIPTION
 
 Variable_Bank_Demand_Met
-Share of demand for new loans met
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Desired_Interest_Rate_Long_Term
-Bank desired interest rate on loans is the current base interest rate with a bank desired spread
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Desired_Interest_Rate_Short_Term
-Bank desired interest rate on loans is the current base interest rate with a bank desired spreadBank desired interest rate on loans is the current base interest rate with a bank desired spread
+
 END_DESCRIPTION
 
 Variable_Bank_Desired_Long_Term_Spread
 
-_INIT_
-All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Bank_Desired_Short_Term_Spread
-Bank VariableBank Variable
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Distributed_Profits
-Current bank profits distributed
+
 END_DESCRIPTION
 
 Variable_Bank_Effective_Loans
-Effectrive Loans is the minimum between demanded loans and max loans.
+
 END_DESCRIPTION
 
 Variable_Bank_Interest_Payment
-Bank Interest Return, calculated in the "Sector_Interest_Return_Distribution"
+
 END_DESCRIPTION
 
 Variable_Bank_Interest_Rate_Long_Term
-Bank's effective interest rate on loans is a average between the desired interest rate and the sector average interest rate
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Interest_Rate_Short_Term
-Bank's effective interest rate on loans is a average between the desired interest rate and the sector average interest rateBank's effective interest rate on loans is a average between the desired interest rate and the sector average interest rate
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Interest_Receivment
-Total interest payment from firms and classes
+
 END_DESCRIPTION
 
 Variable_Bank_Leverage
-Total Stock of loans over total stock of depositsTotal Stock of loans over total stock of deposits
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Market_Share
-Bank Market Share evolves based on the bank competitiveness and sector average competitivenessBank Market Share evolves based on the bank competitiveness and sector average competitiveness
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Max_Total_Loans
-Maximum new loans. Follows basileia or similar ruleMight impact effective loans
+
 END_DESCRIPTION
 
 Variable_Bank_Number_Clients
@@ -3146,7 +3132,7 @@ Variable_Bank_Number_Clients
 END_DESCRIPTION
 
 Variable_Bank_Profits
-Current bank profits is the difference between Interest Return and Interest Payment
+
 END_DESCRIPTION
 
 Variable_Bank_Rescue
@@ -3154,41 +3140,35 @@ Variable_Bank_Rescue
 END_DESCRIPTION
 
 Variable_Bank_Short_Term_Rate
-Share of short term loans over total loans
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Stock_Deposits
-Total Stock of deposits, firms and classesTotal Stock of deposits, firms and classes
+
 END_DESCRIPTION
 
 Variable_Bank_Stock_Loans_Long_Term
-Total Stock of short term loans, firms and classes
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Stock_Loans_Short_Term
-Total Stock of short term loans, firms and classes
+
 END_DESCRIPTION
 
 Variable_Bank_Total_Stock_Loans
-Total Stock of loans
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Bank_Effective_Profit_Rate
-Effective retained profit rate on total loansEffective retained profit rate on total loans
+
 END_DESCRIPTION
 
 Variable_Bank_Retained_Profits
-Current bank profits distributed Current bank profits distributed
+
 END_DESCRIPTION
 
 Variable_Bank_Effective_Capital_Ratio
-Current bank accumulated profits over stock of loans
+
 END_DESCRIPTION
 
 Object_CENTRAL_BANK
@@ -3196,99 +3176,71 @@ Object_CENTRAL_BANK
 END_DESCRIPTION
 
 Parameter_cb_quarterly_nominal_interest_rate
-determines the initial real annual interest rate used by the central bank and governmentused in calibration
-_INIT_
-All 1 instances equal to 0.003.
+
 END_DESCRIPTION
 
 Parameter_cb_smoothing
-determines how much the central bank can increase or decrease the basic rate each period
-_INIT_
-All 1 instances equal to 0.8
+
 END_DESCRIPTION
 
 Parameter_cb_minimum_capital_ratio
-regulatory policy parameter, determines the banks minimum capital requirement
+
 END_DESCRIPTION
 
 Parameter_cb_sensitivity_capacity
-determines the central bank's sensitivity to capacity utilzation gaps in the taylor rule
-_INIT_
-All 1 instances equal to 1.1.
+
 END_DESCRIPTION
 
 Parameter_cb_sensitivity_credit_growth
-determines the central bank's sensitivity to gredit growth gaps in the taylor rule
+
 END_DESCRIPTION
 
 Parameter_cb_sensitivity_debt_rate
-determines the central bank's sensitivity to debt rate gaps in the taylor rule
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Parameter_cb_sensitivity_inflation
-determines the central bank's sensitivity to inflation gaps in the taylor rule
-_INIT_
-All 1 instances equal to 1.1.
+
 END_DESCRIPTION
 
 Parameter_cb_sensitivity_exchange
 
-_INIT_
-All 1 instances equal to 1.1.
 END_DESCRIPTION
 
 Parameter_cb_target_annual_inflation
-monetary policy parameter, determines the annual cpi inflation target
-_INIT_
-All 1 instances equal to 0.015.
+
 END_DESCRIPTION
 
 Parameter_cb_target_capacity
-monetary policy parameter, determines the capacity utilization target
-_INIT_
-All 1 instances equal to 0.1.
+
 END_DESCRIPTION
 
 Parameter_cb_target_credit_growth
-monetary policy parameter, determines the credit growth target
+
 END_DESCRIPTION
 
 Parameter_cb_target_debt_rate
-monetary policy parameter, determines the debt rate target
-_INIT_
-All 1 instances equal to 0.5.
+
 END_DESCRIPTION
 
 Parameter_cb_target_reserves
 
-_INIT_
-All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Central_Bank_Basic_Interest_Rate
 
-_INIT_
-All 1 instances equal to 0.001.
 END_DESCRIPTION
 
 Variable_CB_Credibility
 
-_INIT_
-All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_cb_credibility_adjustment
 
-_INIT_
-All 1 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_cb_credibility_tolerance
 
-_INIT_
-All 1 instances equal to 0.5.
 END_DESCRIPTION
 
 Variable_CB_Quarterly_Real_Interest_Rate
@@ -3305,32 +3257,22 @@ END_DESCRIPTION
 
 Parameter_cb_interest_rate_max
 
-_INIT_
-All 1 instances equal to 0.1
 END_DESCRIPTION
 
 Parameter_cb_interest_rate_min
 
-_INIT_
-All 1 instances equal to 0
 END_DESCRIPTION
 
 Parameter_interest_shock_begin
 
-_INIT_
-All 1 instances equal to 400
 END_DESCRIPTION
 
 Parameter_interest_shock_size
 
-_INIT_
-All 1 instances equal to 0.01
 END_DESCRIPTION
 
 Parameter_interest_shock_duration
 
-_INIT_
-All 1 instances equal to 0
 END_DESCRIPTION
 
 Object_GOVERNMENT
@@ -3339,162 +3281,106 @@ END_DESCRIPTION
 
 Parameter_penalty_rate
 
-_INIT_
-All 1 instances equal to 2
 END_DESCRIPTION
 
 Parameter_government_surplus_target_adjustment
-Determines how much to increase or decrease the surplus rate target each period if surplus target if flexible
-_INIT_
-All 1 instances equal to 0.001.
+
 END_DESCRIPTION
 
 Parameter_government_real_wage_growth
 
-_INIT_
-All 1 instances equal to 0.003
 END_DESCRIPTION
 
 Parameter_government_real_investment_growth
 
-_INIT_
-All 1 instances equal to 0.001
 END_DESCRIPTION
 
 Parameter_government_real_input_growth
 
-_INIT_
-All 1 instances equal to 0.003
 END_DESCRIPTION
 
 Parameter_government_real_consumption_growth
 
-_INIT_
-All 1 instances equal to 0.003
 END_DESCRIPTION
 
 Parameter_government_min_surplus_target
 
-_INIT_
-All 1 instances equal to -0.1.
 END_DESCRIPTION
 
 Parameter_government_min_debt_ratio
-Determines the minimum government debt to GDP ratio accepted in fiscal policies decisions
-_INIT_
-All 1 instances equal to 0.4.
+
 END_DESCRIPTION
 
 Parameter_government_max_surplus_target
 
-_INIT_
-All 1 instances equal to 0.1.
 END_DESCRIPTION
 
 Parameter_government_max_debt_ratio
-Determines the maximum government debt to GDP ratio accepted in fiscal policies decisions
-_INIT_
-All 1 instances equal to 0.6.
+
 END_DESCRIPTION
 
 Parameter_government_initial_share_input
-Determines th inital participation of intermediate goods in government's budget.Used in calibration.
-_INIT_
-All 1 instances equal to 0
+
 END_DESCRIPTION
 
 Parameter_government_initial_share_consumption
-Determines th inital participation of consumption goods in government's budget.Used in calibration.
-_INIT_
-All 1 instances equal to 0
+
 END_DESCRIPTION
 
 Parameter_government_initial_share_capital
-Determines th inital participation of investment in government's budget.Used in calibration.
-_INIT_
-All 1 instances equal to 0.4
+
 END_DESCRIPTION
 
 Parameter_government_initial_debt_gdp_ratio
-Determines the initial relation between GDP and Government Debt.Used in calibration.
-_INIT_
-All 1 instances equal to 1.
+
 END_DESCRIPTION
 
 Parameter_government_expectations
-Government expectation parameter, to adjust past growth
-_INIT_
-All 1 instances equal to 1.
+
 END_DESCRIPTION
 
 Parameter_government_cut_weight_wages
 
-_INIT_
-All 1 instances equal to 0.3
 END_DESCRIPTION
 
 Parameter_government_cut_weight_transfer
 
-_INIT_
-All 1 instances equal to 0.6
 END_DESCRIPTION
 
 Parameter_government_cut_weight_investment
 
-_INIT_
-All 1 instances equal to 1.5
 END_DESCRIPTION
 
 Parameter_government_cut_weight_inputs
 
-_INIT_
-All 1 instances equal to 1
 END_DESCRIPTION
 
 Parameter_government_cut_weight_consumption
 
-_INIT_
-All 1 instances equal to 1
 END_DESCRIPTION
 
 Parameter_government_cut_weight_benefits
 
-_INIT_
-All 1 instances equal to 0.5
 END_DESCRIPTION
 
 Parameter_government_benefit_rate
-Share of Sectoral Avg Wage paid as unemployment benefit by the Government
-_INIT_
-All 1 instances equal to 0.4
+
 END_DESCRIPTION
 
 Parameter_enforcement_sensitivity
 
-_INIT_
-All 1 instances equal to 1
 END_DESCRIPTION
 
 Parameter_audit_probability
 
-_INIT_
-All 1 instances equal to 0.05
 END_DESCRIPTION
 
 Variable_Government_Wealth_Tax_Revenue
-Stage 7: Wealth tax revenue collected from households.
-Only active when switch_class_tax_structure >= 5.
+
 END_DESCRIPTION
 
 Variable_Government_Wealth_Tax_Gap
-Stage 9: Revenue lost to tax evasion.
-= Tax that WOULD have been owed on hidden wealth.
 
-Tax_Gap = (Offshore_Deposits + Undeclared_Assets) × wealth_tax_rate
-Only wealth ABOVE threshold would have been taxed, but this simplified
-measure assumes all hidden wealth is above threshold (conservative estimate).
-_INIT_
-All 1 instances equal to 0
 END_DESCRIPTION
 
 Variable_Government_Total_Taxes
@@ -3502,9 +3388,7 @@ Variable_Government_Total_Taxes
 END_DESCRIPTION
 
 Variable_Government_Surplus_Rate_Target
-Adjusts government surplus target based on debt to gdp evolution
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Government_Surplus_GDP_Ratio
@@ -3516,13 +3400,11 @@ Variable_Government_Primary_Result
 END_DESCRIPTION
 
 Variable_Government_Potential_Wealth_Tax_Revenue
-Stage 9: Wealth tax revenue if no evasion occurred.
-= Actual collected + Tax gap (lost to evasion)
+
 END_DESCRIPTION
 
 Variable_Government_Penalty_Revenue
-Stage 9: Penalties collected from tax evaders caught by audits.
-Only applies to undeclared financial assets (not offshore deposits, which are invisible).
+
 END_DESCRIPTION
 
 Variable_Government_Nominal_Result
@@ -3582,9 +3464,7 @@ Variable_Government_Effective_Inputs
 END_DESCRIPTION
 
 Variable_Government_Effective_Expenses
-Priority expenses.If there are no maximum expenses, it is adjusted by average productivity growth and inflation.switch_government_composition: Determines the composition and priority of government expenses0--> Government Wages1--> Government Wages + Unemployment Benefits2--> Government Wages + Unemployment Benefits + Government Consumption3--> Government Wages + Unemployment Benefits + Government Consumption + Government InvestmentPriority expenses.If there are no maximum expenses, it is adjusted by average productivity growth and inflation.switch_government_composition: Determines the composition and priority of government expenses0--> Government Wages1--> Government Wages + Unemployment Benefits2--> Government Wages + Unemployment Benefits + Government Consumption3--> Government Wages + Unemployment Benefits + Government Consumption + Government Investment
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Government_Effective_Consumption
@@ -3592,363 +3472,271 @@ Variable_Government_Effective_Consumption
 END_DESCRIPTION
 
 Variable_Government_Dynamic_Audit_Probability
-Stage 9: Dynamic audit enforcement based on observed evasion.
 
-Formula: audit_prob = base × (1 + sensitivity × evasion_rate)
-Where:
-  - base = audit_probability parameter
-  - sensitivity = enforcement_sensitivity parameter (0 = fixed)
-  - evasion_rate = 4-period average of Tax_Gap / Potential_Revenue
-
-When sensitivity = 0, returns base rate (fixed enforcement).
-When sensitivity > 0, scales with observed evasion trend.
-
-Uses 4-period moving average to smooth stochastic noise.
-Capped at 1.0 (can't audit more than 100%).
-_INIT_
-All 1 instances equal to 0
 END_DESCRIPTION
 
 Variable_Government_Desired_Wealth_Transfer
-Stage 7.5: Desired wealth transfer = close-the-gap total from Country level.
-Brings households below Xth percentile up to threshold income.
-Only active when switch_class_tax_structure >= 5.
+
 END_DESCRIPTION
 
 Variable_Government_Desired_Wages
-Priority expenses.If there are no maximum expenses, it is adjusted by average productivity growth and inflation.Priority expenses.If there are no maximum expenses, it is adjusted by average productivity growth and inflation.
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Government_Desired_Unemployment_Benefits
-Counter-cyclical ExpensesBenefit is a share of average wage. The amount depends on current unemployment.Counter-cyclical ExpensesBenefit is a share of average wage. The amount depends on current unemployment.
+
 END_DESCRIPTION
 
 Variable_Government_Desired_Investment
-Desired Investment ExpensesAdjusted by a desired real growth rate and inflationDesired Investment ExpensesAdjusted by a desired real growth rate and inflation
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Government_Desired_Inputs
-Desired Intermediate ExpensesAdjusted by a desired real growth rate and inflation
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Government_Desired_Expenses
-****GOVERNMENT RESULT VARIABLES********GOVERNMENT RESULT VARIABLES****
+
 END_DESCRIPTION
 
 Variable_Government_Desired_Consumption
-Desired Consumption ExpensesAdjusted by a desired real growth rate and inflationDesired Consumption ExpensesAdjusted by a desired real growth rate and inflation
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Government_Debt_GDP_Ratio
 
-_INIT_
-All 1 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Government_Debt
-Public Debt
+
 END_DESCRIPTION
 
 Object_SECTORS
-(no description available )
+
 END_DESCRIPTION
 
 Parameter_id_capital_goods_sector
-dummy parameter that defines if the sector is a captal good sector
+
 END_DESCRIPTION
 
 Parameter_id_consumption_goods_sector
-dummy parameter that defines if the sector is a consumption good sector
+
 END_DESCRIPTION
 
 Parameter_id_intermediate_goods_sector
-dummy parameter that defines if the sector is an intermediate good sector
+
 END_DESCRIPTION
 
 Parameter_sector_antecipation
-determines the sector (and firms) antecipation on productivity growth due to learning when calculating replacement investment
+
 END_DESCRIPTION
 
 Parameter_sector_capital_duration
-determines the life spawn of the capital goods in the sector
+
 END_DESCRIPTION
 
 Parameter_sector_capital_output_ratio
-determines the relation between productive capacity and capitalsused in calibration
+
 END_DESCRIPTION
 
 Parameter_sector_competitiveness_adjustment
-determines how market shares adjust to competitiveness gains
+
 END_DESCRIPTION
 
 Parameter_sector_debt_rate_adjustment
-determines how maximum debt rate is adjusted based on net profits growth
-_INIT_
-All 3 instances equal to 0.001
+
 END_DESCRIPTION
 
 Parameter_sector_desired_degree_capacity_utilization
-determines the desired capacity utilization.IMPORTANT: the initial value is overwritten during calibration to accomodate for an integer number of capital goods
-_INIT_
-All 3 instances equal to 0.95.
+
 END_DESCRIPTION
 
 Parameter_sector_desired_inventories_proportion
-determines the propostion of sales to be kept as inventories
-_INIT_
-All 3 instances equal to 0.1.
+
 END_DESCRIPTION
 
 Parameter_sector_desired_market_share
-determines the firms desired market share while setting markups. if current market share is lower than desired markups are not adjusted
-_INIT_
-All 3 instances equal to 1.
+
 END_DESCRIPTION
 
 Parameter_sector_elascitity_delay
-determines the sector competitiveness sensitivity to delivery delay
+
 END_DESCRIPTION
 
 Parameter_sector_elasticity_price
-determines the sector competitiveness elasticity to price
+
 END_DESCRIPTION
 
 Parameter_sector_elasticity_quality
-determines the sector competitiveness selasticity to quality
+
 END_DESCRIPTION
 
 Parameter_sector_expectations
-determines the sector expectation parameter to be used in expected demand calculation
-_INIT_
-All 3 instances equal to 0.2
+
 END_DESCRIPTION
 
 Parameter_sector_exports_coefficient
-determines the share of external nominal income to be allocated in sector's exports. written dureing calibration
+
 END_DESCRIPTION
 
 Parameter_sector_exports_elasticity_income
-determines the sector's exports elasticity to external income
+
 END_DESCRIPTION
 
 Parameter_sector_exports_elasticity_price
-determines the sector's exports elasticity to price differentials
-_INIT_
-All 3 instances equal to 1
+
 END_DESCRIPTION
 
 Parameter_sector_external_price_competitiveness
-determines how domestic price growth affects external price growth
-_INIT_
-All 3 instances equal to 0.
+
 END_DESCRIPTION
 
 Parameter_sector_external_price_growth
-determines an exogenous fixed quarterly growth rate to sector external price
-_INIT_
-All 3 instances equal to 0.005.
+
 END_DESCRIPTION
 
 Parameter_sector_external_price_sd
-determines the standard deviation on sector external price growth
-_INIT_
-All 3 instances equal to 0.01.
+
 END_DESCRIPTION
 
 Parameter_sector_external_price_shock_begin
-determines when sector external price shock begins
+
 END_DESCRIPTION
 
 Parameter_sector_external_price_shock_duration
-determines how long the sector external price shock will take
-_INIT_
-All 3 instances equal to 0.
+
 END_DESCRIPTION
 
 Parameter_sector_external_price_shock_size
-determines the intensity of the sector external price shock
-_INIT_
-All 3 instances equal to 0.02.
+
 END_DESCRIPTION
 
 Parameter_sector_external_price_weight
 
-_INIT_
-All 3 instances equal to 1
 END_DESCRIPTION
 
 Parameter_sector_financial_cost_passtrough
-determines how firms pass financial costs to price setting
-_INIT_
-All 3 instances equal to 1.
+
 END_DESCRIPTION
 
 Parameter_sector_indirect_tax_rate
-determines the indirect tax rateused in calibration
-_INIT_
-All 3 instances equal to 0.05.
+
 END_DESCRIPTION
 
 Parameter_sector_initial_debt_rate
-determines the initial sector (and firms) debt rateused in calibration to define the initial stock of loans
-_INIT_
-All 3 instances equal to 0.4.
+
 END_DESCRIPTION
 
 Parameter_sector_initial_demand
-determines the sector initial real demandwritten and used only in calibration
+
 END_DESCRIPTION
 
 Parameter_sector_initial_depreciation_scale
-IMPORTANT: essential parameter in calibrationdetermines the number of capital goods to physically depreciate in each invetment period
+
 END_DESCRIPTION
 
 Parameter_sector_initial_exports_share
-determines the sector's share of country total nominal exportsused in calibration
-_INIT_
-A
+
 END_DESCRIPTION
 
 Parameter_sector_initial_external_price
-determines the sector's initial external price
+
 END_DESCRIPTION
 
 Parameter_sector_initial_liquidity_preference
-determines the sector (and firms) initial stock of deposits based on capitalused in calibration
-_INIT_
-All 3 instances equal to 0.05.
+
 END_DESCRIPTION
 
 Parameter_sector_initial_price
-determines the sector initial priceessential parameter in calibration
+
 END_DESCRIPTION
 
 Parameter_sector_initial_productivity
-determine the sector initial productivity
+
 END_DESCRIPTION
 
 Parameter_sector_initial_profit_rate
-determines the sector (and firm's) initial nominal profit rate on production
+
 END_DESCRIPTION
 
 Parameter_sector_initial_propensity_import_inputs
-determines the initial sahre of imputs that must be imported
-_INIT_
-All 3 instances equal to 0.05.
+
 END_DESCRIPTION
 
 Parameter_sector_initial_quality
-determines sector's initial quality
+
 END_DESCRIPTION
 
 Parameter_sector_innovation_proportion
-determines the share of RND expenses allocated to innovation
-_INIT_
-A
+
 END_DESCRIPTION
 
 Parameter_sector_input_import_elasticity_price
 
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Parameter_sector_input_tech_coefficient
-determines the input tech relationshipused in calibration very important parameter
-_INIT_
-All 3 instances equal to 0.4
+
 END_DESCRIPTION
 
 Parameter_sector_investment_frequency
-determines how many time periods consist the investment period of the sector
+
 END_DESCRIPTION
 
 Parameter_sector_learning_adjustment
-determines how productivity increase based on accumulated production
-_INIT_
-All 3 instances equal to 0
+
 END_DESCRIPTION
 
 Parameter_sector_liquidity_preference_adjustment
-determines how liquidty preference is adjusted each period based on debt rate
-_INIT_
-All 3 instances equal to 0.
+
 END_DESCRIPTION
 
 Parameter_sector_markup_adjustment
-determines how markups increase based on market share growth if current market share is above desired
-_INIT_
-All 3 instances equal to 0.001.
+
 END_DESCRIPTION
 
 Parameter_sector_number_object_firms
-detemmines the initial number of firmsvery important parameter in calibration
+
 END_DESCRIPTION
 
 Parameter_sector_passthrough_inflation
-detemines how nominal wages increased based on past inflation gaps
-_INIT_
-All 3 instances equal to 1.
+
 END_DESCRIPTION
 
 Parameter_sector_passthrough_productivity
-determines how nominal wages increase based on past productivity growth
-_INIT_
-All 3 instances equal to 0.8.
+
 END_DESCRIPTION
 
 Parameter_sector_payback_period
-determines how many periods the firm will calculate the payback in replacement investment
-_INIT_
-All 3 instances equal to 8
+
 END_DESCRIPTION
 
 Parameter_sector_price_frequency
-determines how many time periods consists the price frequency, in how many periods the firm will adjust prices
-_INIT_
-All 3 instances equal to 4
+
 END_DESCRIPTION
 
 Parameter_sector_profits_distribution_rate
-determines the sector (and firms) profits distribution rateis actually calculated during calibration
+
 END_DESCRIPTION
 
 Parameter_sector_rnd_revenue_proportion
-determines the share of revenue to be allocated in RND expenses
-_INIT_
-All 3 instances equal to 0.01.
+
 END_DESCRIPTION
 
 Parameter_sector_std_dev_innovation
-determines the standard deviation of innovation distribution
-_INIT_
-All 3 instances equal to 0.01.
+
 END_DESCRIPTION
 
 Parameter_sector_strategic_price_weight
-determines the sector (and firms) price strategy weight
-_INIT_
-All 3 instances equal to 0.5
+
 END_DESCRIPTION
 
 Parameter_sector_tech_opportunity_productivity
-determines the exogenous quarterly average grwoth of technological opportunities in process rnd
-_INIT_
-All 3 instances equal to 0.001.
+
 END_DESCRIPTION
 
 Parameter_sector_tech_opportunity_quality
-determines the exogenous quarterly average grwoth of technological opportunities in product rnd
-_INIT_
-A
+
 END_DESCRIPTION
 
 Variable_Sector_Avg_Competitiveness
@@ -3964,15 +3752,15 @@ Variable_Sector_Avg_External_Finance_Rate
 END_DESCRIPTION
 
 Variable_Sector_Avg_Financial_Position
-Average of the firm's quality weighted by their market shareAverage of the firm's quality weighted by their market share
+
 END_DESCRIPTION
 
 Variable_Sector_Avg_Interest_Rate_Long_Term
-Sector average interest rate on long term loans weighted by stock of long term loansSector average interest rate on long term loans weighted by stock of long term loans
+
 END_DESCRIPTION
 
 Variable_Sector_Avg_Interest_Rate_Short_Term
-Sector average interest rate on short term loans weighted by stock of short term loansSector average interest rate on short term loans weighted by stock of short term loans
+
 END_DESCRIPTION
 
 Variable_Sector_Avg_Internal_Finance_Rate
@@ -3988,7 +3776,7 @@ Variable_Sector_Avg_Investment_Rate
 END_DESCRIPTION
 
 Variable_Sector_Avg_Liquidity_Rate
-Sector average liquidity rate will be the average of firms productivity weighted by their market sharesSector average liquidity rate will be the average of firms productivity weighted by their market shares
+
 END_DESCRIPTION
 
 Variable_Sector_Avg_Markup
@@ -3996,23 +3784,19 @@ Variable_Sector_Avg_Markup
 END_DESCRIPTION
 
 Variable_Sector_Avg_Max_Debt_Rate
-Sector average debt rate will be the average of firms productivity weighted by their market sharesSector average debt rate will be the average of firms productivity weighted by their market shares
+
 END_DESCRIPTION
 
 Variable_Sector_Avg_Modernization_Rate
-Sector average debt rate will be the average of firms productivity weighted by their market sharesSector average debt rate will be the average of firms productivity weighted by their market shares
+
 END_DESCRIPTION
 
 Variable_Sector_Avg_Price
 
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Sector_Avg_Productivity
 
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Sector_Avg_Quality
@@ -4028,7 +3812,7 @@ Variable_Sector_Bargain_Power
 END_DESCRIPTION
 
 Variable_Sector_Capacity_Utilization
-****SECTOR AVERAGES, SD AND MAX********SECTOR AVERAGES, SD AND MAX****
+
 END_DESCRIPTION
 
 Variable_Sector_Demand_Met
@@ -4040,13 +3824,11 @@ Variable_Sector_Demand_Met_By_Imports
 END_DESCRIPTION
 
 Variable_Sector_Effective_Loans
-Sector Variable for AnalysisSector Variable for Analysis
+
 END_DESCRIPTION
 
 Variable_Sector_Effective_Orders
 
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Sector_Effective_Production
@@ -4078,17 +3860,15 @@ Variable_Sector_Extra_Imports
 END_DESCRIPTION
 
 Variable_Sector_Hedge_Normalized_Share
-Sector Variable for AnalysisSector Variable for Analysis
+
 END_DESCRIPTION
 
 Variable_Sector_Hedge_Share
-Sector Variable for AnalysisSector Variable for Analysis
+
 END_DESCRIPTION
 
 Variable_Sector_Idle_Capacity
 
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Sector_Inventories
@@ -4101,18 +3881,14 @@ END_DESCRIPTION
 
 Variable_Sector_Max_Quality
 
-_INIT_
-All 3 instances equal to 1.
 END_DESCRIPTION
 
 Variable_Sector_Normalized_HHI
-Sector Variable for Analysis
+
 END_DESCRIPTION
 
 Variable_Sector_Number_Firms
 
-_INIT_
-All 3 instances equal to 20.
 END_DESCRIPTION
 
 Variable_Sector_Participation
@@ -4120,11 +3896,11 @@ Variable_Sector_Participation
 END_DESCRIPTION
 
 Variable_Sector_Ponzi_Normalized_Share
-Sector Variable for AnalysisSector Variable for Analysis
+
 END_DESCRIPTION
 
 Variable_Sector_Ponzi_Share
-Sector Variable for AnalysisSector Variable for Analysis
+
 END_DESCRIPTION
 
 Variable_Sector_Productive_Capacity
@@ -4133,12 +3909,10 @@ END_DESCRIPTION
 
 Variable_Sector_Productive_Capacity_Available
 
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Sector_Productive_Capacity_Entry
-Sector VariableIn this variable a new firm enters if there is market space available and the entry condiion is met
+
 END_DESCRIPTION
 
 Variable_Sector_Productive_Capacity_Exit
@@ -4146,7 +3920,7 @@ Variable_Sector_Productive_Capacity_Exit
 END_DESCRIPTION
 
 Variable_Sector_Profit_Rate
-Sector Variable for AnalysisSector Variable for Analysis
+
 END_DESCRIPTION
 
 Variable_Sector_Profits
@@ -4170,27 +3944,27 @@ Variable_Sector_Sales
 END_DESCRIPTION
 
 Variable_Sector_Short_Term_Rate
-Sector Variable for AnalysisShare of  credit grating that is short term
+
 END_DESCRIPTION
 
 Variable_Sector_Speculative_Normalized_Share
-Sector Variable for AnalysisSector Variable for Analysis
+
 END_DESCRIPTION
 
 Variable_Sector_Speculative_Share
-Sector Variable for AnalysisSector Variable for Analysis
+
 END_DESCRIPTION
 
 Variable_Sector_Stock_Deposits
-Sum of the stock of deposits of each firm in the sectorSum of the stock of deposits of each firm in the sector
+
 END_DESCRIPTION
 
 Variable_Sector_Stock_Loans
-Sum of the stock of laons of each firm in the sectorSum of the stock of laons of each firm in the sector
+
 END_DESCRIPTION
 
 Variable_Sector_Taxation
-Sum of the indirect taxes paid by firms in the sector
+
 END_DESCRIPTION
 
 Variable_Sector_Turbulence
@@ -4199,27 +3973,14 @@ END_DESCRIPTION
 
 Parameter_sector_bargain_power_inflaton_adjustment
 
-_INIT_
-All 3 instances equal to 0
 END_DESCRIPTION
 
 Parameter_sector_bargain_power_productivity_adjustment
 
-_INIT_
-All 3 instances equal to 0.01
 END_DESCRIPTION
 
 Variable_Sector_Labor_Demand
-Stage 5.2: Sectoral labor demand based on production requirements.
-Labor Demand = Effective Production / Average Productivity
 
-This is the SIGNAL for MARKOV employment transitions:
-- Total Labor Demand > Actual Employment → Positive gap → Hiring
-- Total Labor Demand < Actual Employment → Negative gap → Firing
-
-Init safeguard (t<=2): Use lagged value to prevent mass firings during startup.
-_INIT_
-All 3 instances equal to 0
 END_DESCRIPTION
 
 Object_FIRMS
@@ -4227,31 +3988,31 @@ Object_FIRMS
 END_DESCRIPTION
 
 Parameter_firm_bank
-Defines the firm's bank.Written in calibration and entry-exit
+
 END_DESCRIPTION
 
 Parameter_firm_date_birth
-Defines the time period the firm was created
+
 END_DESCRIPTION
 
 Parameter_firm_effective_loans
-temporary parameter that defines firm's effective loanswritten during loans distribution
+
 END_DESCRIPTION
 
 Parameter_firm_hedge
-Dummy parameter that defines if the firm is hedge or not.Written during simulation
+
 END_DESCRIPTION
 
 Parameter_firm_id
-Defines the firm number.Written in calibration and entry-exit
+
 END_DESCRIPTION
 
 Parameter_firm_ponzi
-Dummy parameter that defines if the firm is ponzi or not.Written during simulation
+
 END_DESCRIPTION
 
 Parameter_firm_speculative
-Dummy parameter that defines if the firm is speculative or not.Written during simulation
+
 END_DESCRIPTION
 
 Variable_Firm_Available_Funds_After_Replacement
@@ -4263,29 +4024,23 @@ Variable_Firm_Available_Funds_Replacement
 END_DESCRIPTION
 
 Variable_Firm_Available_Inputs_Ratio
-Measures the possibilities of using the stock of intermidiate goods.
+
 END_DESCRIPTION
 
 Variable_Firm_Available_Loans
-Firm available debt depends on the difference between desired stock of debt and current stock of debt. If current stock of debt is greater than desired, the firm must repay some debt reducing the amount of external funds for investment. If the current amount is smaller than desired, that difference is available to the firm as external finance, but that does not mean that the class will increase effective debt by this amount.
+
 END_DESCRIPTION
 
 Variable_Firm_Avg_Debt_Rate
 
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Firm_Avg_Productivity
 
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Firm_Capacity_Utilization
-Firm effective production over firm productive capacityFirm effective production over firm productive capacity
-_INIT_
-All 3 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Firm_Capital
@@ -4297,11 +4052,11 @@ Variable_Firm_Competitiveness
 END_DESCRIPTION
 
 Variable_Firm_Credit_Rationing
-Ex post variable for analysis.Ratio between effective and demanded loans.
+
 END_DESCRIPTION
 
 Variable_Firm_Debt_Payment
-Sum up total debt payment on all firm's loans. Amortizations are fixed for each loan. This variable also adjusts the total amount of each loan and delete loan objects if all debt is paid.
+
 END_DESCRIPTION
 
 Variable_Firm_Debt_Rate
@@ -4314,24 +4069,18 @@ END_DESCRIPTION
 
 Variable_Firm_Demand_Capital_Goods
 
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Firm_Demand_Capital_Goods_Expansion
-Number of capital goods demanded to expand productive capacity
-_INIT_
-All 3 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Firm_Demand_Capital_Goods_Replacement
-Number of capital goods demanded to modernie productive capacity
-_INIT_
-All 3 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Firm_Demand_Loans
-Firm demand for loans is the amount that internal funds can not pay
+
 END_DESCRIPTION
 
 Variable_Firm_Demand_Productive_Capacity_Expansion
@@ -4343,7 +4092,7 @@ Variable_Firm_Demand_Productive_Capacity_Replacement
 END_DESCRIPTION
 
 Variable_Firm_Deposits_Return
-Firm interest receivment on depositsFirm interest receivment on deposits
+
 END_DESCRIPTION
 
 Variable_Firm_Depreciated_Productive_Capacity
@@ -4351,9 +4100,7 @@ Variable_Firm_Depreciated_Productive_Capacity
 END_DESCRIPTION
 
 Variable_Firm_Max_Debt_Rate
-Firm's desired debt rate as a proportion to total capital. Formulation proposed by Moreira (2010) Evolves based on capacity utilization and profit growth.
-_INIT_
-All 3 instances equal to 0.5.
+
 END_DESCRIPTION
 
 Variable_Firm_Desired_Expansion_Investment_Expenses
@@ -4361,7 +4108,7 @@ Variable_Firm_Desired_Expansion_Investment_Expenses
 END_DESCRIPTION
 
 Variable_Firm_Desired_Investment_Expenses
-Nominal value of total desired investment expenses, including replacement and expansion.
+
 END_DESCRIPTION
 
 Variable_Firm_Desired_Markup
@@ -4373,7 +4120,7 @@ Variable_Firm_Desired_Price
 END_DESCRIPTION
 
 Variable_Firm_Desired_Replacement_Investment_Expenses
-Nominal value of derired new capital goods for modernization replacement
+
 END_DESCRIPTION
 
 Variable_Firm_Distributed_Profits
@@ -4393,11 +4140,11 @@ Variable_Firm_Effective_Expansion_Investment_Expenses
 END_DESCRIPTION
 
 Variable_Firm_Effective_Investment_Expenses
-Nominal value of total effective investment expenses, including replacement and expansion.
+
 END_DESCRIPTION
 
 Variable_Firm_Effective_Loans
-Firm effective loans is the amount demanded.This variable also creates the object LOAN.It is assumed that the firm has 2 investment period to repay. This can be changed
+
 END_DESCRIPTION
 
 Variable_Firm_Effective_Market_Share
@@ -4414,8 +4161,6 @@ END_DESCRIPTION
 
 Variable_Firm_Effective_Orders_Capital_Goods
 
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Firm_Effective_Production
@@ -4439,13 +4184,11 @@ Variable_Firm_External_Finance_Rate
 END_DESCRIPTION
 
 Variable_Firm_Financial_Obligations
-Firm Financial Obligations in the current period is the sum of interest payment and debt payment
-_INIT_
-All 3 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Firm_Financial_Position
-This variable writes parameters for the current financial position of the firm.
+
 END_DESCRIPTION
 
 Variable_Firm_Frontier_Productivity
@@ -4457,7 +4200,7 @@ Variable_Firm_Imitation_Productivity
 END_DESCRIPTION
 
 Variable_Firm_Imitation_Quality
-Imitation process. The sucess depends on the amount of recources alocated to imitation. Firms search for best quality of the sector, trying to copy if succeded.Imitation process. The sucess depends on the amount of recources alocated to imitation. Firms search for best quality of the sector, trying to copy if succeded.
+
 END_DESCRIPTION
 
 Variable_Firm_Indirect_Tax
@@ -4469,7 +4212,7 @@ Variable_Firm_Innovation_Productivity
 END_DESCRIPTION
 
 Variable_Firm_Innovation_Quality
-Innovation process. The sucess depends on the amount ou recources alocated to innovation. Firms search for new quality and the result depends on a random distribution with exonegous parameters.Innovation process. The sucess depends on the amount ou recources alocated to innovation. Firms search for new quality and the result depends on a random distribution with exonegous parameters.
+
 END_DESCRIPTION
 
 Variable_Firm_Input_Cost
@@ -4481,17 +4224,15 @@ Variable_Firm_Input_Demand_Next_Period
 END_DESCRIPTION
 
 Variable_Firm_Interest_Payment
-Sum up total interest payment on all firm's loans. Interest rates are fixed for each loan.
-_INIT_
-All 3 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Firm_Interest_Rate_Long_Term
-Interest rate paid by the firm depends on a individual spread over basic interest rate. The firm's spread is based on the average debt rate of the firm.
+
 END_DESCRIPTION
 
 Variable_Firm_Interest_Rate_Short_Term
-Interest rate paid by the firm depends on a individual spread over basic interest rate. The firm's spread is based on the average debt rate of the firm.
+
 END_DESCRIPTION
 
 Variable_Firm_Internal_Finance_Rate
@@ -4499,7 +4240,7 @@ Variable_Firm_Internal_Finance_Rate
 END_DESCRIPTION
 
 Variable_Firm_Internal_Funds
-Firm internal available funds for investment in the current period
+
 END_DESCRIPTION
 
 Variable_Firm_Inventories_Variation
@@ -4507,7 +4248,7 @@ Variable_Firm_Inventories_Variation
 END_DESCRIPTION
 
 Variable_Firm_Investment_Constraint_Rate
-Percentage of productive capacity that is replaced for modernization at each time period.
+
 END_DESCRIPTION
 
 Variable_Firm_Investment_Period
@@ -4515,13 +4256,11 @@ Variable_Firm_Investment_Period
 END_DESCRIPTION
 
 Variable_Firm_Investment_Rate
-Percentage of productive capacity that is replaced for modernization at each time period.Percentage of productive capacity that is replaced for modernization at each time period.
+
 END_DESCRIPTION
 
 Variable_Firm_Liquidity_Preference
-Firm's desired deposits to be kept as liquid assets. Formulation proposed by Moreira (2010)Proportion of physical capital. Evolves based on average debt rate and profit growth.Firm's desired deposits to be kept as liquid assets. Formulation proposed by Moreira (2010)Proportion of physical capital. Evolves based on average debt rate and profit growth.
-_INIT_
-All 3 instances equal to 0.05.
+
 END_DESCRIPTION
 
 Variable_Firm_Liquidity_Rate
@@ -4542,8 +4281,6 @@ END_DESCRIPTION
 
 Variable_Firm_Net_Profits
 
-_INIT_
-All 3 instances equal to 0.
 END_DESCRIPTION
 
 Variable_Firm_Net_Revenue
@@ -4551,7 +4288,7 @@ Variable_Firm_Net_Revenue
 END_DESCRIPTION
 
 Variable_Firm_Planned_Production
-Planed Production, calculated based on expected sales subject to the productive capacity restriction, expect for capital goods, wich define their planed production based on current orders.
+
 END_DESCRIPTION
 
 Variable_Firm_Price
@@ -4559,13 +4296,11 @@ Variable_Firm_Price
 END_DESCRIPTION
 
 Variable_Firm_Price_Period
-This variable writes for each firm, if it is price adjustment period or not, assuming 1 or 0.This variable writes for each firm, if it is price adjustment period or not, assuming 1 or 0.
+
 END_DESCRIPTION
 
 Variable_Firm_Productive_Capacity
-Capacity of production
-_INIT_
-All 3 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Firm_Productive_Capacity_Depreciation
@@ -4573,7 +4308,7 @@ Variable_Firm_Productive_Capacity_Depreciation
 END_DESCRIPTION
 
 Variable_Firm_Profit_Rate
-Net profits over total capital (last period)Net profits over total capital (last period)
+
 END_DESCRIPTION
 
 Variable_Firm_Profits
@@ -4582,8 +4317,6 @@ END_DESCRIPTION
 
 Variable_Firm_Quality
 
-_INIT_
-All 3 instances equal to 1.
 END_DESCRIPTION
 
 Variable_Firm_RND_Expenses
@@ -4595,7 +4328,7 @@ Variable_Firm_Replacement_Expenses
 END_DESCRIPTION
 
 Variable_Firm_Retained_Deposits
-Firm retained profits at current period. To be summed in the stock of deposits at the end of periodBased on the liquidity preference. If liquidity preference is zero, retained deposits is zero.Can not be negative, meaning that firm will not incur in new debt to finance retained liquidity.
+
 END_DESCRIPTION
 
 Variable_Firm_Retained_Profits
@@ -4611,31 +4344,27 @@ Variable_Firm_Sales
 END_DESCRIPTION
 
 Variable_Firm_Stock_Deposits
-Firm Stock of Deposits
-_INIT_
-All 3 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Firm_Stock_Inputs
-The stock of intermidiate goods available for next period.
+
 END_DESCRIPTION
 
 Variable_Firm_Stock_Inventories
-The current stock of final goods
+
 END_DESCRIPTION
 
 Variable_Firm_Stock_Loans
-Firm Stock of Debt
-_INIT_
-All 3 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_Firm_Stock_Loans_Long_Term
-Firm Stock of Long Term LoansFirm Stock of Long Term Loans
+
 END_DESCRIPTION
 
 Variable_Firm_Stock_Loans_Short_Term
-Firm Stock of Short Term LoansFirm Stock of Short Term Loans
+
 END_DESCRIPTION
 
 Variable_Firm_Total_Funds
@@ -4643,7 +4372,7 @@ Variable_Firm_Total_Funds
 END_DESCRIPTION
 
 Variable_Firm_Unit_Financial_Cost
-Financial costs include interest payment and debt payment. Unit financial cost is total financial costs divided by effective production.Financial costs include interest payment and debt payment. Unit financial cost is total financial costs divided by effective production.
+
 END_DESCRIPTION
 
 Variable_Firm_Variable_Cost
@@ -4663,31 +4392,31 @@ Object_CAPITALS
 END_DESCRIPTION
 
 Parameter_capital_good_date_birth
-defines the time period the capital good was created
+
 END_DESCRIPTION
 
 Parameter_capital_good_depreciation_period
-determines the time period the capital good will physically depreciate
+
 END_DESCRIPTION
 
 Parameter_capital_good_productive_capacity
-determines the productive capacity of the capital goods, inverse of the capital-output ratio
+
 END_DESCRIPTION
 
 Parameter_capital_good_productivity_initial
-determines the capital good initial productivity.If there is no learning, it will be the same for the capital good's life
+
 END_DESCRIPTION
 
 Parameter_capital_good_to_depreciate
-dummy parameter that defines if the capital good must be deleted by depreciation or not
+
 END_DESCRIPTION
 
 Parameter_capital_good_to_replace
-dummy parameter that determines if the capital goods must be deleted due to replacement or not
+
 END_DESCRIPTION
 
 Parameter_id_capital_good_number
-defines the capital good number
+
 END_DESCRIPTION
 
 Variable_Capital_Good_Acumulated_Production
@@ -4707,27 +4436,27 @@ Object_FIRM_LOANS
 END_DESCRIPTION
 
 Parameter_firm_loan_fixed_amortization
-determines the loan amortization to be paid in each time period
+
 END_DESCRIPTION
 
 Parameter_firm_loan_fixed_object
-dummy parameter that defines if the object if the fixed fake one or not
+
 END_DESCRIPTION
 
 Parameter_firm_loan_interest_rate
-determines the interest rate to be pain of the loan (could be pre-fixed or flexible)
+
 END_DESCRIPTION
 
 Parameter_firm_loan_total_amount
-determines the loan initial toal amount and is reduced by amortiatization each period
+
 END_DESCRIPTION
 
 Parameter_id_firm_loan_long_term
-dummy parameter that defines if the loan is long term or not
+
 END_DESCRIPTION
 
 Parameter_id_firm_loan_short_term
-dummy parameter that defines if the loan is short term or not
+
 END_DESCRIPTION
 
 Object_ANALYSIS
@@ -4827,51 +4556,47 @@ Variable_WAGE_G
 END_DESCRIPTION
 
 Variable_EMP
-Employment
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_INVE_G
-Real Aggregate Inventories Growth
+
 END_DESCRIPTION
 
 Variable_INVE_r
-Real Aggregate Inventories
+
 END_DESCRIPTION
 
 Variable_K_G
-Real Stock of Capital Growth
+
 END_DESCRIPTION
 
 Variable_K_r
-Real Stock of Capital
+
 END_DESCRIPTION
 
 Variable_NX_G
-Quarterly Real Net Exports Growth rate
+
 END_DESCRIPTION
 
 Variable_NX_r
-Quarterly Real Net Exports
+
 END_DESCRIPTION
 
 Variable_X_G
-Quarterly Real Exports Growth rate
+
 END_DESCRIPTION
 
 Variable_X_r
-Quarterly Real Exports
+
 END_DESCRIPTION
 
 Variable_M_G
-Quarterly Real Imports Growth rate
+
 END_DESCRIPTION
 
 Variable_MK
-Average Markup
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_MK_G
@@ -4879,227 +4604,219 @@ Variable_MK_G
 END_DESCRIPTION
 
 Variable_HHI_C
-Inverse HHI of Consumption good sector
+
 END_DESCRIPTION
 
 Variable_HHI_I
-Inverse HHI of Intermediate good sector
+
 END_DESCRIPTION
 
 Variable_HHI_K
-Inverse HHI of Capital good sector
+
 END_DESCRIPTION
 
 Variable_MK_C
-Average Markup of Consumption good sector
+
 END_DESCRIPTION
 
 Variable_MK_I
-Average Markup of Intermediate good sector
+
 END_DESCRIPTION
 
 Variable_MK_K
-Average Markup of Capital good sector
+
 END_DESCRIPTION
 
 Variable_P_C
-Average Price of Consumption good sector
+
 END_DESCRIPTION
 
 Variable_P_I
-Average Price of Intermediate good sector
+
 END_DESCRIPTION
 
 Variable_P_K
-Average Price of Capital good sector
+
 END_DESCRIPTION
 
 Variable_PROD_C
-Average Productivity of Consumption good sector
+
 END_DESCRIPTION
 
 Variable_PROD_I
-Average Productivity of Intermediate good sector
+
 END_DESCRIPTION
 
 Variable_PROD_K
-Average Productivity of Capital good sector
+
 END_DESCRIPTION
 
 Variable_U_C
-Unemployment Rate of Consumption good sector
+
 END_DESCRIPTION
 
 Variable_U_I
-Unemployment Rate of Intermediate good sector
+
 END_DESCRIPTION
 
 Variable_U_K
-Unemployment Rate of Capital good sector
+
 END_DESCRIPTION
 
 Variable_W_C
-Average Wage of Consumption good sector
+
 END_DESCRIPTION
 
 Variable_W_I
-Average Price of Intermediate good sector
+
 END_DESCRIPTION
 
 Variable_W_K
-Average Price of Capital good sector
+
 END_DESCRIPTION
 
 Variable_DEBT_FS
-Stock of total debt in the financial sector
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_DEBT_FS_G
-Stock of total debt growth in the financial sectorStock of total debt growth in the financial sector
+
 END_DESCRIPTION
 
 Variable_DEBT_FS_LT
-Stock of long term debt in the financial sector
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_DEBT_FS_LT_G
-Stock of long term debt growth in the financial sectorStock of long term debt growth in the financial sector
+
 END_DESCRIPTION
 
 Variable_DEBT_FS_ST
-Stock of short term debt in the financial sector
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_DEBT_FS_ST_G
-Stock of short term debt growth in the financial sectorStock of short term debt growth in the financial sector
+
 END_DESCRIPTION
 
 Variable_DEBT_RT_FI
-Average Debt Rate of all firmsAverage Debt Rate of all firms
+
 END_DESCRIPTION
 
 Variable_DEBT_RT_I
-Average Debt Rate of Intermediate good sectorAverage Debt Rate of Intermediate good sector
+
 END_DESCRIPTION
 
 Variable_DEBT_RT_K
-Average Debt Rate of Capital good sectorAverage Debt Rate of Capital good sector
+
 END_DESCRIPTION
 
 Variable_DEP_FS
-Stock of total deposits in the financial sector
-_INIT_
-All 1 instances equal to 0.
+
 END_DESCRIPTION
 
 Variable_DEP_FS_G
-Stock of total deposits growth in the financial sectorStock of total deposits growth in the financial sector
+
 END_DESCRIPTION
 
 Variable_FS_HHI
-Financial sector HHIFinancial sector HHI
+
 END_DESCRIPTION
 
 Variable_FS_LEV
-Financial sector leverageFinancial sector leverage
+
 END_DESCRIPTION
 
 Variable_FS_STR
-Financial sector short term rateFinancial sector short term rate
+
 END_DESCRIPTION
 
 Variable_FS_DEF
-Financial sector DefaultFinancial sector Default
+
 END_DESCRIPTION
 
 Variable_FS_DR
-Financial sector Default rateFinancial sector Default rate
+
 END_DESCRIPTION
 
 Variable_FS_PR
-Financial sector profitsFinancial sector profits
+
 END_DESCRIPTION
 
 Variable_HEDGE
-Share of Firms in Hedge positionShare of Firms in Hedge position
+
 END_DESCRIPTION
 
 Variable_IR
-Basic Interest RateBasic Interest Rate
+
 END_DESCRIPTION
 
 Variable_IR_DEP
-Interest Rate on DepositsInterest Rate on Deposits
+
 END_DESCRIPTION
 
 Variable_IR_LT
-Interest Rate on Long Term LoansInterest Rate on Long Term Loans
+
 END_DESCRIPTION
 
 Variable_IR_ST
-Interest Rate on Short Term LoansInterest Rate on Short Term Loans
+
 END_DESCRIPTION
 
 Variable_PONZI
-Share of Firms in Ponzi positionShare of Firms in Ponzi position
+
 END_DESCRIPTION
 
 Variable_SPEC
-Share of Firms in Speculative positionShare of Firms in Speculative position
+
 END_DESCRIPTION
 
 Variable_GGDP
-Real Government Expenses share of GDPReal Government Expenses share of GDP
+
 END_DESCRIPTION
 
 Variable_IGDP
-Real Investment share of GDPReal Investment share of GDP
+
 END_DESCRIPTION
 
 Variable_INVGDP
-Real inventories share of GDPReal inventories share of GDP
+
 END_DESCRIPTION
 
 Variable_KGDP
-Real stock of capital share of GDPReal stock of capital share of GDP
+
 END_DESCRIPTION
 
 Variable_NXGDP
-Real net exports share of GDPReal net exports share of GDP
+
 END_DESCRIPTION
 
 Variable_CGDP
-Real Consumption share of GDPReal Consumption share of GDP
+
 END_DESCRIPTION
 
 Variable_KL
-Capital labour ratioCapital labour ratio
+
 END_DESCRIPTION
 
 Variable_PCU
-Productive Capacity Utilization RateProductive Capacity Utilization Rate
+
 END_DESCRIPTION
 
 Variable_PR
-Profit RateProfit Rate
+
 END_DESCRIPTION
 
 Variable_EMP_G
-Quarterly Employment Growth rateQuarterly Employment Growth rate
+
 END_DESCRIPTION
 
 Variable_BKR
-Number of Bankrupt EventsNumber of Bankrupt Events
+
 END_DESCRIPTION
 
 Variable_BKR_RT
-Bankrupt RateBankrupt Rate
+
 END_DESCRIPTION
 
 Variable_CPI
@@ -5247,19 +4964,19 @@ Variable_DX_GDP
 END_DESCRIPTION
 
 Variable_YSH_w
-Worker income share = SUM(Worker_Income) / Total_Income
+
 END_DESCRIPTION
 
 Variable_YSH_c
-Capitalist income share = SUM(Capitalist_Income) / Total_IncomeCapitalist income share = SUM(Capitalist_Income) / Total_Income
+
 END_DESCRIPTION
 
 Variable_WSH_w
-Worker wealth share = SUM(Worker_Deposits) / Total_DepositsWorker wealth share = SUM(Worker_Deposits) / Total_Deposits
+
 END_DESCRIPTION
 
 Variable_WSH_c
-Capitalist wealth share = SUM(Capitalist_Deposits) / Total_DepositsCapitalist wealth share = SUM(Capitalist_Deposits) / Total_Deposits
+
 END_DESCRIPTION
 
 Variable_DEBT_RT_HH
@@ -5291,23 +5008,19 @@ Variable_WTAX_COUNT
 END_DESCRIPTION
 
 Variable_NW_c
-Total capitalist net wealth (absolute value)
-_INIT_
-All 1 instances equal to 0
+
 END_DESCRIPTION
 
 Variable_NW_w
-Total worker net wealth (absolute value)Total worker net wealth (absolute value)
-_INIT_
-All 1 instances equal to 0
+
 END_DESCRIPTION
 
 Variable_NW_c_G
-Growth rate of capitalist net wealthGrowth rate of capitalist net wealth
+
 END_DESCRIPTION
 
 Variable_NW_w_G
-Growth rate of worker net wealthGrowth rate of worker net wealth
+
 END_DESCRIPTION
 
 Object_CLASSES
@@ -5319,147 +5032,139 @@ Parameter_class_id
 END_DESCRIPTION
 
 Variable_Class_Avg_Debt_Rate
-Average debt rate across households in this class.Average debt rate across households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Avg_Disposable_Income
-Average disposable income per household in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Avg_Net_Wealth
-Average net wealth per household in this class.Average net wealth per household in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Avg_Propensity_to_Spend
-Average propensity to spend across households in this class.Average propensity to spend across households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Avg_Savings_Rate
-Average savings rate across households in this class.Average savings rate across households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Consumption_Share
-This class's share of total household consumption.This class's share of total household consumption.
+
 END_DESCRIPTION
 
 Variable_Class_Debt_Payment
-Total debt payments by all households in this class.Total debt payments by all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Demand_Loans
-Total loan demand by all households in this class.Total loan demand by all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Deposits_Return
-Total interest income on deposits for all households in this class.Total interest income on deposits for all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Effective_Expenses
-Total effective expenses for all households in this class.Total effective expenses for all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Effective_Loans
-Total effective (granted) loans to all households in this class.Total effective (granted) loans to all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Employed_Count
-Number of employed households in this class.
-For workers: count those with Employment_Status > 0
-For capitalists: always 0 (capitalists don't have employment status)Number of employed households in this class.
-For workers: count those with Employment_Status > 0
-For capitalists: always 0 (capitalists don't have employment status)
+
 END_DESCRIPTION
 
 Variable_Class_Financial_Assets
-Total financial assets held by all households in this class.Total financial assets held by all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Household_Count
-Total number of households in this class.Total number of households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Income_Share
-This class's share of total household disposable income.This class's share of total household disposable income.
+
 END_DESCRIPTION
 
 Variable_Class_Income_Taxation
-Total income tax paid by all households in this class.Total income tax paid by all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Interest_Payment
-Total interest payments by all households in this class.Total interest payments by all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Net_Wealth
-Total net wealth for all households in this class.Total net wealth for all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Nominal_Disposable_Income
-Total disposable income for all households in this class.Total disposable income for all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Nominal_Gross_Income
-Total gross income for all households in this class.Total gross income for all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Profit_Income
-Total profit income for all households in this class.Total profit income for all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Real_Autonomous_Consumption
-Total real autonomous consumption for all households in this class.Total real autonomous consumption for all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Real_Desired_Imported_Consumption
-Total real desired imported consumption for all households in this class.Total real desired imported consumption for all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Real_Domestic_Consumption_Demand
-Total real domestic consumption demand for all households in this class.Total real domestic consumption demand for all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Savings
-Total savings for all households in this class.Total savings for all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Stock_Deposits
-Total deposits held by all households in this class.Total deposits held by all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Stock_Loans
-Total loans owed by all households in this class.Total loans owed by all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Transfer_Received
-Total transfers received by all households in this class.Total transfers received by all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Unemployed_Count
-Number of unemployed households in this class.
-For workers: count those with Employment_Status == 0
-For capitalists: always 0Number of unemployed households in this class.
-For workers: count those with Employment_Status == 0
-For capitalists: always 0
+
 END_DESCRIPTION
 
 Variable_Class_Unemployment_Benefits
-Total unemployment benefits for all households in this class.Total unemployment benefits for all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Wage_Income
-Total wage income for all households in this class.Total wage income for all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Wealth_Share
-This class's share of total household net wealth.This class's share of total household net wealth.
+
 END_DESCRIPTION
 
 Variable_Class_Wealth_Tax_Owed
-Total wealth tax owed by all households in this class.Total wealth tax owed by all households in this class.
+
 END_DESCRIPTION
 
 Variable_Class_Wealth_Tax_Payment
-Total wealth tax paid by all households in this class.Total wealth tax paid by all households in this class.
+
 END_DESCRIPTION
 
 Object_HOUSEHOLD
@@ -5468,194 +5173,82 @@ END_DESCRIPTION
 
 Parameter_household_id
 
-_INIT_
-All 30 instances increasing from 1 with step 1
 END_DESCRIPTION
 
 Parameter_household_class_id
 
-_INIT_
-All 30 instances equal to 1
-3 instances increasing from 1 with step 1 (every 10 instances)
-Instances from 1 to 10 equal to 1
-Instances from 11 to 20 equal to 2
-Instances from 21 to 30 equal to 3
 END_DESCRIPTION
 
 Variable_Household_Id
-Returns this household's unique identifier.
-Simple pass-through to make household_id parameter visible in LSD Browser.
+
 END_DESCRIPTION
 
 Parameter_household_type
 
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Employment_Status
-Share of industrial profits over the sum of profits and wagesStage 3 SIMPLIFIED: Employment status based on household type.
 
-Employment Status Codes:
-- -1 = Capitalist (not in labor force)
--  0 = Unemployed worker
--  1 = Employed (simplified: all workers employed)
-
-Stage 4+ will add:
-- Sector assignment (1=consumption, 2=capital, 3=input)
-- Unemployment dynamics with Markov transitions
-_INIT_
-All 30 instances equal to 1
 END_DESCRIPTION
 
 Variable_Household_Wage_Income
-Stage 3: Wage income for worker households.
 
-HOMOGENEOUS VERSION:
-- Capitalists: 0 (no wage income)
-- Workers: Equal share of Country_Total_Wages
-
-INVARIANT: SUM(Household_Wage_Income) = Country_Total_Wages
 END_DESCRIPTION
 
 Variable_Household_Profit_Income
-Stage 3: Profit income for capitalist households.
 
-HOMOGENEOUS VERSION:
-- Workers: 0 (no profit income)
-- Capitalists: Equal share of Country_Total_Profits
-
-Note: Using Country_Total_Profits (not Country_Distributed_Profits)
-as the reference for this stage. In the original model, some profits
-are retained by firms, but for Stage 3 we use total profits.
-
-INVARIANT: SUM(Household_Profit_Income) = Country_Total_Profits
 END_DESCRIPTION
 
 Parameter_household_skill
 
-_INIT_
-All 30 instances equal to 1
 END_DESCRIPTION
 
 Parameter_household_autonomous_consumption_adjustment
 
-_INIT_
-All 30 instances equal to 0.5
 END_DESCRIPTION
 
 Parameter_household_import_propensity
 
-_INIT_
-All 30 instances equal to 0.5
 END_DESCRIPTION
 
 Variable_Household_Nominal_Disposable_Income
-Stage 4.2 SIMPLIFIED: Nominal disposable income = Wage + Profit income.
 
-Full version (Stage 5+) will add:
-- Deposits return (interest on savings)
-- Unemployment benefits
-- Taxation based on switch_household_tax_structure
-
-For now, this is a READ-ONLY equation that doesn't affect macro behavior.
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Real_Disposable_Income
-Stage 4.2: Real disposable income = Nominal / CPI.
 
-Reference: ref_current_model/fun_households.h (lines 976-984)
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Avg_Nominal_Income
-Stage 4.2: Average nominal disposable income over annual_frequency periods.
 
-Reference: ref_current_model/fun_households.h (lines 18-31)
-Reference: original UFRJ fun_classes.h (lines 7-8)
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Avg_Real_Income
-Stage 4.2: Average real disposable income over annual_frequency periods.
 
-Used for Duesenberry consumption (relative income effect).
-Special handling at t=0,1 to avoid circular dependency with lagged values.
-
-Reference: ref_current_model/fun_households.h (lines 3-16)
-Reference: original UFRJ fun_classes.h (lines 4-5)
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Parameter_household_habit_persistence
 
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Parameter_household_habit_inflation
 
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Parameter_household_habit_deflation
 
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Reference_Income
-Stage 4.3: Reference income (habit stock) for consumption ratchet.
 
-R represents the lifestyle the household is "used to":
-- When Y > R: reference rises via λ⁺ (habits inflate)
-- When Y ≤ R: reference falls via λ⁻ (habits deflate slowly)
-
-Modes (switch_household_propensity_hysteresis):
-- Mode 0: R = Y (no habit memory)
-- Mode 1: Asymmetric adjustment (R evolves with λ⁺, λ⁻)
-- Mode 2: True hysteresis (λ⁻ = 0, R never decreases)
-
-Initialize: R_0 = Y_0 (set in fun_init_2.h via WRITELLS)
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Income_Percentile
-Stage 4.3: Household position in income distribution [0, 1].
 
-Uses median-based proxy for efficiency:
-  income_ratio = Y / median_income
-  percentile = income_ratio / (1 + income_ratio)
-
-Properties:
-- Maps [0, ∞) to [0, 1)
-- At median income: percentile = 0.5
-- Poor (Y << median): percentile → 0
-- Rich (Y >> median): percentile → 1
 END_DESCRIPTION
 
 Variable_Household_Real_Autonomous_Consumption
-Stage 4.4a: Autonomous consumption evolves with quality growth.
 
-This represents a minimum consumption floor that grows with product quality
-improvements in the consumption sector. Heterogeneity is introduced through
-the household-specific adjustment parameter assigned at initialization.
-
-Key features:
-- Adjusts annually (when t mod annual_frequency == 0)
-- Grows proportionally with consumption sector quality growth
-- Heterogeneous via household_autonomous_consumption_adjustment
-
-Reference: ref_current_model/fun_households.h (lines 35-60)
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Imports_Share
@@ -5663,51 +5256,15 @@ Variable_Household_Imports_Share
 END_DESCRIPTION
 
 Variable_Household_Propensity_to_Spend
-Stage 4.3: Propensity to spend (MPC) with Consumption Ratchet effect.
 
-Final MPC = Base_MPC + Ratchet_Boost
-
-Base MPC (Generalized Logistic based on income percentile):
-  c̄ = 1 / (1 + e^(k(ax-b)))^(1/ν)
-
-Where:
-  x = income_percentile [0, 1]
-  k = steepness, a = slope, b = shift, ν = asymmetry
-
-Ratchet Boost (Duesenberry effect):
-  boost = β × max(0, 1 - Y/R)
-
-Where:
-  β = household_habit_persistence (how stubborn about lifestyle)
-  Y = current income, R = reference income
-
-When Y < R (income below habits): boost > 0 (fight to maintain lifestyle)
-When Y ≥ R (income at/above habits): boost = 0 (no ratchet needed)
-
-Reference: Plan file distributed-jumping-sedgewick.md
 END_DESCRIPTION
 
 Variable_Household_Real_Desired_Domestic_Consumption
-Stage 4.5: Real desired domestic consumption.
 
-Formula: Avg_Income × Propensity × (1 - Import_Share) + Autonomous_Consumption
-
-This is the household's desired consumption of domestically-produced goods,
-based on their average income, propensity to spend, import preferences,
-and autonomous consumption floor.
-
-Reference: Original UFRJ fun_classes.h (lines 45-54)
 END_DESCRIPTION
 
 Variable_Household_Real_Desired_Imported_Consumption
-Stage 4.5: Real desired imported consumption.
 
-Formula: Avg_Income × Propensity × Import_Share
-
-This is the household's desired consumption of imported goods.
-Note: No autonomous component for imports (subsistence needs met domestically).
-
-Reference: Original UFRJ fun_classes.h (lines 57-63)
 END_DESCRIPTION
 
 Variable_Household_Desired_Expenses
@@ -5727,390 +5284,199 @@ Variable_Household_Real_Domestic_Consumption_Demand
 END_DESCRIPTION
 
 Variable_Household_Real_Imported_Consumption_Demand
-=============================================================================
+
 END_DESCRIPTION
 
 Variable_Household_Retained_Deposits
-Stage 4.6: Desired liquidity buffer based on average income.
-Households want to keep some deposits as precautionary savings.
+
 END_DESCRIPTION
 
 Variable_Household_Stock_Deposits
 
-_INIT_
-All 100 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Stock_Loans
-Stage 4.6: Household loan stock.
-OBSERVER MODE: Mirror class loans via bridge
-FUTURE: Track actual household borrowing
-_INIT_
-All 30 instances equal to 0
+
 END_DESCRIPTION
 
 Variable_Household_Savings
-Stage 4.6: Savings flow = Income - Consumption
-OBSERVER MODE: Uses bridges for both
-_INIT_
-All 30 instances equal to 0
+
 END_DESCRIPTION
 
 Variable_Household_Savings_Rate
-Stage 4.6: Savings as fraction of income.
+
 END_DESCRIPTION
 
 Variable_Household_Effective_Expenses
-Stage 4.7: Actual nominal consumption expenses.
-Uses the CONSTRAINED demand values (from budget constraint), not desired.
 
-This is the nominal value of what the household actually spends on consumption,
-combining domestic and imported goods at their respective prices.
 END_DESCRIPTION
 
 Variable_Household_Effective_Real_Domestic_Consumption
-Stage 4.7: What household actually consumed domestically.
-May differ from demand if sector was capacity-constrained (rationing).
 
-For now, equals demand. Future enhancement: multiply by Sector_Demand_Met
-ratio to account for supply-side rationing when sectors cannot meet demand.
 END_DESCRIPTION
 
 Parameter_household_profit_share
 
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Unemployment_Benefits
-Stage 5.2: Unemployment benefits for unemployed workers.
-Funded by government, distributed individually.
 
-- Capitalists: 0 (not eligible)
-- Employed workers: 0 (no benefits while employed)
-- Unemployed workers: benefit_rate × average_wage
-
-Uses EXISTING government_benefit_rate parameter (no new parameter needed).
-Benefits provide income floor for unemployed, affecting consumption dynamics.
 END_DESCRIPTION
 
 Variable_Household_Nominal_Gross_Income
-Stage 5.2: Nominal GROSS income - sum of all income sources (CURRENT period).
 
-Income sources (all current period - no lag):
-1. Wage income (employed workers only)
-2. Profit income (capitalists only, q-exponential shares)
-3. Unemployment benefits (unemployed workers only)
-
-This is what the household earns TODAY.
-
-ACCOUNTING IDENTITY:
-  SUM(Household_Nominal_Gross_Income) =
-  Country_Total_Wages + Country_Total_Profits + Total_Benefits
 END_DESCRIPTION
 
 Variable_Household_Avg_Debt_Rate
-Stage 5.3: Average debt rate over annual_frequency periods.
-Used for risk assessment in interest rate calculation.
+
 END_DESCRIPTION
 
 Variable_Household_Interest_Rate
-Stage 5.3: Household-specific interest rate based on debt risk.
-Higher debt rate = higher risk premium = higher interest rate.
 
-Formula: Rate = (1 + debt_rate × risk_premium) × base_rate
-This creates procyclical dynamics (Minsky-style):
-- Good times: low debt → low rate → more borrowing
-- Bad times: high debt → high rate → debt spiral risk
 END_DESCRIPTION
 
 Variable_Household_Interest_Payment
-Stage 5.3: Total interest payment on all HOUSEHOLD_LOANS.
-Iterates through loan objects and sums interest based on payment type.
+
 END_DESCRIPTION
 
 Variable_Household_Debt_Payment
-Stage 5.3: Current debt rate = Loans / (Deposits + Avg_Income).
-Key risk metric for interest rate calculation.Stage 5.3: Total amortization on all HOUSEHOLD_LOANS.
-Updates loan balances and DELETEs fully paid loans.
-Uses CYCLE_SAFE for safe deletion during iteration.
+
 END_DESCRIPTION
 
 Variable_Household_Financial_Obligations
-Stage 5.3: Total financial obligations = Interest + Amortization.
-This is deducted from internal funds before consumption.
+
 END_DESCRIPTION
 
 Variable_Household_Max_Debt_Rate
-Stage 5.3: Evolving maximum debt rate based on income growth.
-Adjusted annually - grows when income grows, shrinks when income falls.
-Creates adaptive borrowing capacity tied to economic conditions.
-_INIT_
-All 30 instances equal to 0.3
+
 END_DESCRIPTION
 
 Variable_Household_Debt_Rate
-Stage 5.3: Current debt rate = Loans / (Deposits + Avg_Income).
-Key risk metric for interest rate calculation.
-_INIT_
-All 30 instances equal to 0
+
 END_DESCRIPTION
 
 Variable_Household_Max_Loans
-Stage 5.3: Maximum new loans household can take this period.
-Based on evolving max debt rate and current financial position.
+
 END_DESCRIPTION
 
 Variable_Household_Demand_Loans
-Stage 5.3: Loan demand = gap between desired expenses and internal funds.
-Households borrow when they want to consume more than they can afford.
-Bounded by maximum borrowing capacity.
+
 END_DESCRIPTION
 
 Variable_Household_Effective_Loans
-Stage 5.3: Creates HOUSEHOLD_LOANS object for new borrowing.
-Loans have fixed amortization over annual_frequency periods (1-year payback).
-Interest rate locked at origination (or flexible based on switch).
+
 END_DESCRIPTION
 
 Variable_Household_Funds
-Stage 5.3: Total funds available = Internal_Funds + Effective_Loans.
-This is what the household can actually spend on consumption.
+
 END_DESCRIPTION
 
 Variable_Household_Financial_Assets
-Stage 5.4: Financial asset stock held by capitalist households.
-Workers hold deposits only (financial assets = 0).
 
-PORTFOLIO ALLOCATION:
-- Savings split by liquidity preference
-- Asset_Purchases = Savings × (1 - Liquidity_Preference)
-- Remaining savings stay in deposits (liquid)
-
-ACCUMULATION CHANNELS:
-1. Capital Gains (price appreciation from asset shortage)
-2. Net Savings Flow (portion of positive savings based on portfolio allocation)
-
-KEY: NO wealth effect on consumption. Wealth is TRAPPED.
-This demonstrates how financialization causes demand stagnation.
-
-BUY-BORROW-DIE: When savings negative, DON'T sell assets - borrow instead.
-_INIT_
-All 100 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Net_Wealth
-Stage 5.4: Net wealth = Assets - Liabilities.
-SFC-correct wealth measure for all households.
 
-Net_Wealth = Stock_Deposits + Financial_Assets - Stock_Loans
-           = Liquid Wealth + Financial Wealth - Debt
-
-Can be negative (underwater household).
-_INIT_
-All 100 instances equal to 0
 END_DESCRIPTION
 
 Variable_Country_Total_Household_Deposits_Return
-Aggregate interest earned on household deposits.
-Used by banking sector for interest payments.
+
 END_DESCRIPTION
 
 Variable_Household_Deposits_Return
-Household available deposits after expenses and financial obligations.
-Mirrors Class_Available_Deposits.Net return on household deposits.
-Interest earned on available + retained deposits.
-Mirrors Class_Deposits_Return.
-_INIT_
-All 100 instances equal to 0
+
 END_DESCRIPTION
 
 Variable_Household_Available_Deposits
-Household available deposits after expenses and financial obligations.
-Mirrors Class_Available_Deposits.
+
 END_DESCRIPTION
 
 Variable_Household_Income_Taxation
-Aggregate income taxation collected from all households.
-Used by government for income tax collection.Household taxation based on tax structure switch.
-Mirrors Class_Taxation logic but uses household-specific income sources.
 
-switch_class_tax_structure (reusing class switch for consistency):
-0 --> No Tax
-1 --> Only Wages
-2 --> Only Profits
-3 --> Wages and Profits
-4 --> Wages, Profits and Interest
 END_DESCRIPTION
 
 Variable_Household_Effective_Real_Imported_Consumption
-Stage 5.5: Effective imported consumption after rationing.
-Mirrors Class_Effective_Real_Imported_Consumption logic.
 
-If domestic demand is not fully met and extra imports are allowed,
-household can import additional goods to cover the shortfall.
-Otherwise, imported consumption equals desired imported consumption.
 END_DESCRIPTION
 
 Variable_Household_Wealth_Tax_Owed
-Stage 7: Calculate wealth tax liability based on NET WEALTH.
-Uses LAGGED net wealth to avoid circular dependency.
 
-Tax = max(0, Net_Wealth[t-1] - threshold) × rate
-
-Only active when switch_class_tax_structure >= 5.
 END_DESCRIPTION
 
 Variable_Household_Wealth_Tax_Payment
-Stage 7: Two-stage behavioral tax payment.
 
-STAGE 1 - LIQUIDITY DECISION:
-  Household uses liquidity preference to determine how much to pay from deposits.
-  High liquidity preference → preserve deposits → pay LESS from deposits.
-  Low liquidity preference → willing to use deposits → pay MORE from deposits.
-
-STAGE 2 - DEBT vs ASSETS DECISION:
-  For remaining tax (after deposits), use debt capacity to split between:
-  - Asset liquidation (if near debt limit)
-  - Borrowing (if debt headroom available)
-
-Uses EXISTING parameters:
-- household_liquidity_preference (effective value, heterogeneous)
-- Household_Max_Debt_Rate / Household_Debt_Rate
-
-Stores payment sources in separate variables for SFC tracking.
 END_DESCRIPTION
 
 Variable_Household_Wealth_Tax_From_Deposits
-Stage 7: Portion of wealth tax paid from deposits.
-Computed in Household_Wealth_Tax_Payment.
+
 END_DESCRIPTION
 
 Variable_Household_Wealth_Tax_From_Assets
-Stage 7: Portion of wealth tax paid by liquidating financial assets.
-Only capitalists have financial assets; workers always = 0.
-Computed in Household_Wealth_Tax_Payment.
+
 END_DESCRIPTION
 
 Variable_Household_Wealth_Tax_From_Borrowing
-Stage 7: Portion of wealth tax paid via new borrowing.
-Increases Household_Stock_Loans.
-Computed in Household_Wealth_Tax_Payment.
+
 END_DESCRIPTION
 
 Variable_Household_Asset_Purchases
-Stage 5.4: Capitalist portfolio allocation - portion of savings to financial assets.
-Computed once and used by both Stock_Deposits (outflow) and Financial_Assets (inflow).
 
-Workers: 0 (hold deposits only)
-Capitalists with positive savings: Savings × (1 - liquidity_preference)
-Capitalists with negative savings: 0 (don't sell assets, borrow instead - BBD)
-
-household_liquidity_preference: effective value (0 to 1), determines how much
-of savings stays liquid (deposits) vs goes to financial assets.
 END_DESCRIPTION
 
 Parameter_household_liquidity_preference
 
-_INIT_
-All 100 instances equal to 0.3
 END_DESCRIPTION
 
 Variable_Household_Transfer_Received
-Stage 7.5: Wealth transfer received from government.
-Transfer = household's gap × scale_factor
 
-Where:
-- gap = threshold - lagged_income (for eligible households)
-- scale_factor = Effective_Transfer / Desired_Transfer (budget constraint)
-
-Only active when switch_class_tax_structure >= 5.
-Uses LAGGED income to match eligibility calculation in Country_Transfer_Desired.
 END_DESCRIPTION
 
 Variable_Household_Transfer_Eligible
-Stage 7.5: Eligibility flag for wealth transfer (0 or 1).
-Set by Country_Transfer_Desired during its single-pass household loop.
-Read by Household_Transfer_Received to determine if this household gets transfer.
+
 END_DESCRIPTION
 
 Parameter_household_propensity_evade
 
-_INIT_
-All 100 instances equal to 0.5
 END_DESCRIPTION
 
 Variable_Household_Deposits_Offshore
-Stage 9: Stock of deposits in tax havens (invisible to government).
-CONSOLIDATED: Inlines flight decision logic.
 
-Inflows: capital flight (if propensity × θ > interest_spread), offshore interest
-Outflows: repatriation
-
-Writes: Household_Decision_Flight, Household_Offshore_Interest
-_INIT_
-All 100 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Decision_Flight
-Stage 9: Binary flight decision (0 or 1).
-Written by Household_Deposits_Offshore.
+
 END_DESCRIPTION
 
 Variable_Household_Offshore_Interest
-Stage 9: Interest earned on offshore deposits.
-Written by Household_Deposits_Offshore.
+
 END_DESCRIPTION
 
 Variable_Household_Deposits_Domestic
-Stage 9: Deposits visible to tax authority.
-= Total deposits - Offshore deposits
-_INIT_
-All 100 instances equal to 0
+
 END_DESCRIPTION
 
 Variable_Household_Assets_Undeclared
-Stage 9: Financial assets hidden from tax authority.
-CORE equation that computes undeclared amount and writes hide fraction.
 
-Decision rule: hide_fraction = propensity × (1 - p × π)
-Where p × π is deterrence factor (audit_prob × penalty_rate).
-
-Writes: Household_Decision_Evasion, Household_Assets_Declared
-_INIT_
-All 100 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Decision_Evasion
-Stage 9: Hide fraction (0 to 1) - fraction of assets not declared.
-Written by Household_Assets_Undeclared.
+
 END_DESCRIPTION
 
 Variable_Household_Assets_Declared
-Stage 9: Financial assets declared to tax authority.
-= Total_Assets - Undeclared_Assets
-Written by Household_Assets_Undeclared.
+
 END_DESCRIPTION
 
 Variable_Household_Repatriated_Deposits
-Stage 9: Total repatriation = max(Liquidity, Discretionary).
 
-Liquidity: MUST bring back (covers obligations shortfall)
-Discretionary: CHOOSES to bring back (pure economics - inverse of flight decision)
-
-Flight decision:     propensity × θ > (r_dom - r_off)  → fly
-Repatriation:        (r_dom - r_off) > propensity × θ  → repatriate
-
-No arbitrary base_rate needed - just the interest gap.
 END_DESCRIPTION
 
 Variable_Household_Is_Audited
-Stage 9: Stochastic audit outcome (ONLY for assets, not offshore deposits).
+
 END_DESCRIPTION
 
 Variable_Household_Asset_Penalty
-Stage 9: Penalty for undeclared ASSETS if caught by audit.
-Penalty = π × θ × Undeclared_Assets
+
 END_DESCRIPTION
 
 Object_HOUSEHOLD_LOANS
@@ -6119,32 +5485,23 @@ END_DESCRIPTION
 
 Parameter_household_loan_total_amount
 
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Parameter_household_loan_interest_rate
 
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 Parameter_household_loan_fixed_amortization
 
-_INIT_
-All 30 instances equal to 0
 END_DESCRIPTION
 
 
 DOCUOBSERVE
-Root
-CENTRAL_BANK
 
 END_DOCUOBSERVE
 
 
 DOCUINITIAL
-Root
 
 END_DOCUINITIAL
 
