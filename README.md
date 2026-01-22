@@ -2,11 +2,11 @@
 
 ## Executive Summary
 
-This document details the **MMM-WEALTH** household-disaggregated agent-based model, transformed from the UFRJ Micro-Macro Multisectoral Model (MMM v3.6). The transformation preserves stock-flow consistency while enabling endogenous wealth inequality dynamics within a heterodox macroeconomic framework.
+This document details the **MMM-WEALTH** household-disaggregated agent-based model, transformed from the UFRJ Micro-Macro Multisectoral Model (MMM v3.6) from Vianna (2021). The transformation preserves stock-flow consistency while enabling endogenous wealth inequality dynamics within a heterodox macroeconomic framework.
 
 ### Core Transformation
 
-| Dimension | UFRJ Reference (Class-Based) | MMM-WEALTH (Household-Based) |
+| Dimension | Vianna, 2021 (Class-Based) | MMM-WEALTH (Household-Based) |
 |-----------|------------------------------|------------------------------|
 | **Agent granularity** | 3 income classes (A, B, C) | N individual households (100-10,000+) |
 | **Behavioral heterogeneity** | Class-average parameters | Individual parameters via distributions |
@@ -270,18 +270,6 @@ The model generates **emergent macro phenomena** from micro interactions:
 - Wealth concentration compounds over time (r > g)
 
 ## 9. Technical Implementation
-
-### 9.1 Code Metrics
-
-| Component | Lines of Code | Change vs UFRJ |
-|-----------|---------------|----------------|
-| Household equations | ~1,200+ | +140% |
-| Macro aggregation | ~1,200+ | +20% |
-| Initialization | ~700+ | +75% |
-| Diagnostics | ~500+ | +150% |
-| **Total** | ~9,500+ | +30% |
-
-### 9.2 New Parameters
 
 | Category | Parameters | Purpose |
 |----------|------------|---------|
