@@ -303,7 +303,9 @@ if(households != NULL)
         v[334] = v[332] * v[333];         // α = μ × κ
         v[335] = (1.0 - v[332]) * v[333]; // β = (1-μ) × κ
 
-        if(v[777] == 1)  // Heterogeneous
+        if(v[332] == 0 || v[332] == 1)  // Edge case: μ=0 or μ=1 makes Beta degenerate
+            v[331] = v[332];  // Everyone gets exactly 0 or 1
+        else if(v[777] == 1)  // Heterogeneous
             v[331] = beta(v[334], v[335]);  // Draw from Beta(α, β)
         else
             v[331] = v[332];  // Homogeneous: everyone at country average

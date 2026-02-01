@@ -343,6 +343,21 @@ RESULT(WHTAVE("Firm_Investment_Constraint_Rate", "Firm_Market_Share"))
 EQUATION("Sector_SD_Investment_Rate")
 RESULT(SD("Firm_Investment_Rate"))
 
+EQUATION("Sector_Desired_Expansion_Investment_Expenses")
+/*
+Sector aggregate: Do firms WANT to expand capacity?
+Sum of firm-level desired expansion investment within this sector.
+*/
+RESULT(SUM("Firm_Desired_Expansion_Investment_Expenses"))
+
+EQUATION("Sector_Effective_Expansion_Investment_Expenses")
+/*
+Sector aggregate: Are firms actually investing in expansion?
+Sum of firm-level effective expansion investment within this sector.
+Gap between desired and effective indicates credit constraints.
+*/
+RESULT(SUM("Firm_Effective_Expansion_Investment_Expenses"))
+
 EQUATION("Sector_Avg_Internal_Finance_Rate")
 RESULT(WHTAVE("Firm_Internal_Finance_Rate", "Firm_Market_Share"))
 
@@ -354,4 +369,36 @@ RESULT(WHTAVE("Firm_Capacity_Utilization", "Firm_Market_Share"))
 
 EQUATION("Sector_Idle_Capacity")
 RESULT(1-V("Sector_Capacity_Utilization"))
+
+EQUATION("Sector_Demand_Loans")
+/*
+Sum of firm loan demand in the sector.
+Diagnostic: compare with Sector_Effective_Loans to detect credit rationing.
+*/
+RESULT(SUM("Firm_Demand_Loans"))
+
+
+EQUATION("Sector_Internal_Funds")
+/*
+Sum of firm internal funds (retained profits available for investment).
+Diagnostic: if negative, firms are cash-constrained.
+*/
+RESULT(SUM("Firm_Internal_Funds"))
+
+
+EQUATION("Sector_Desired_Replacement_Investment_Expenses")
+/*
+Sum of firm desired replacement investment in the sector.
+Diagnostic: if high, depreciation is absorbing investment capacity.
+*/
+RESULT(SUM("Firm_Desired_Replacement_Investment_Expenses"))
+
+
+EQUATION("Sector_Effective_Replacement_Investment_Expenses")
+/*
+Sum of firm effective replacement investment in the sector.
+Diagnostic: compare with expansion to see fund allocation.
+Note: Firm-level variable is Firm_Replacement_Expenses.
+*/
+RESULT(SUM("Firm_Replacement_Expenses"))
 

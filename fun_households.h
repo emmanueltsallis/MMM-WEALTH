@@ -1381,7 +1381,7 @@ if(v[3] >= 5 && v[2] > VS(country, "wealth_tax_threshold") && v[1] > 0)
     v[8] = v[7] * v[4];       // Perceived benefit = propensity × θ
     v[9] = v[5] - v[6];       // Interest cost = r_domestic - r_offshore
 
-    if(v[8] > v[9])
+    if(v[7] > 0 && v[8] > v[9])  // Only fly if propensity > 0 AND benefit > cost
     {
         v[10] = 1;            // Flight decision = yes
         v[11] = v[1];         // Move ALL domestic deposits offshore

@@ -2690,3 +2690,174 @@ set it [ .da.vars.pl.f.v get $iti ]
 Message:
 bad listbox index "": must be active, anchor, end, @x,y, or a number
 -----
+
+
+====================> NEW TCL SESSION
+
+(01/27/26 12:41:15)
+Command:
+invalid command name ".da.lab.ok"
+    while executing
+".da.lab.ok invoke"
+    (command bound to event)
+Message:
+invalid command name ".da.lab.ok"
+-----
+
+(01/27/26 12:41:16)
+Command:
+invalid command name ".da.lab.ok"
+    while executing
+".da.lab.ok invoke"
+    (command bound to event)
+Message:
+invalid command name ".da.lab.ok"
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/27/26 22:22:25)
+Command:
+can't use empty string as operand of "+"
+    while executing
+"expr { [ $ll curselection ] + 1 } "
+    invoked from within
+"if { [ string equal $kk underscore ] || ( [ string length $kk ] == 1 && [ string is alpha -strict $kk ] ) } { 						if [ string equal $kk underscore ]..."
+    (command bound to event)
+Message:
+can't use empty string as operand of "+"
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/27/26 23:40:43)
+Command:
+invalid command name ".da.lab.ok"
+    while executing
+".da.lab.ok invoke"
+    (command bound to event)
+Message:
+invalid command name ".da.lab.ok"
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/28/26 13:11:44)
+Command:
+set it [ .da.vars.pl.f.v get $iti ]
+Message:
+bad listbox index "": must be active, anchor, end, @x,y, or a number
+-----
+
+(01/28/26 13:11:44)
+Command:
+ttk::messageBox -parent .da -type ok -title Error -icon error -message "Cannot save plot" -detail "The plot was produced in Gnuplot. Please reopen/create the plot and use the Gnuplot tools (toolbar buttons) to save it."
+Message:
+bad window path name ".da.msgBox_38"
+-----
+
+(01/28/26 13:12:31)
+Command:
+wm geometry $wid +$LX+$LY
+Message:
+can't read "LX": no such variable
+-----
+
+(01/28/26 13:12:31)
+Command:
+unknown color name ""
+Message:
+unknown color name ""
+-----
+
+(01/28/26 13:12:31)
+Command:
+unknown color name ""
+Message:
+unknown color name ""
+-----
+
+(01/28/26 13:14:42)
+Command:
+invalid command name ".da.lab.esc"
+    while executing
+".da.lab.esc invoke"
+    (command bound to event)
+Message:
+invalid command name ".da.lab.esc"
+-----
+
+(01/28/26 13:52:44)
+Command:
+if { [ .da.vars.pl.f.v size ] != 0 } { set answer [ ttk::messageBox -parent .da -type okcancel -title Confirmation -icon question -default ok -message "Exit Analysis of Results?" -detail "All the plots and series created and not saved will be lost."] } { set answer ok }
+Message:
+bad window path name ".da.msgBox_2593"
+-----
+
+(01/28/26 13:56:53)
+Command:
+ttk::messageBox -parent .da -type ok -title Error -icon error -message "No plot available" -detail "Place one or more series in the Series Selected listbox and select 'Plot' to produce a plot."
+Message:
+bad window path name ".da.msgBox_8600"
+-----
+
+(01/28/26 13:57:41)
+Command:
+ttk::messageBox -parent .da -type ok -title Error -icon error -message "No plot available" -detail "Place one or more series in the Series Selected listbox and select 'Plot' to produce a plot."
+Message:
+bad window path name ".da.msgBox_3377"
+-----
+
+(01/28/26 14:12:08)
+Command:
+command returned bad code: 2
+    (command bound to event)
+Message:
+command returned bad code: 2
+-----
+
+(01/28/26 14:12:08)
+Command:
+command returned bad code: 2
+    (command bound to event)
+Message:
+command returned bad code: 2
+-----
+
+(01/28/26 14:12:08)
+Command:
+command returned bad code: 2
+    (command bound to event)
+Message:
+command returned bad code: 2
+-----
+
+
+====================> NEW TCL SESSION
+
+(01/28/26 21:37:48)
+Command:
+invalid command name ".da.lab.ok"
+    while executing
+".da.lab.ok invoke"
+    (command bound to event)
+Message:
+invalid command name ".da.lab.ok"
+-----
+
+(01/29/26 10:44:05)
+Command:
+ttk::messageBox -parent .da -type ok -title Error -icon error -message "No plot available" -detail "Place one or more series in the Series Selected listbox and select 'Plot' to produce a plot."
+Message:
+bad window path name ".da.msgBox_5718"
+-----
+
+(01/29/26 10:48:04)
+Command:
+set it [ .da.vars.pl.f.v get $iti ]
+Message:
+bad listbox index "": must be active, anchor, end, @x,y, or a number
+-----

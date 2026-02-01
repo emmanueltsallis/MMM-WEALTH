@@ -814,7 +814,7 @@ RESULT(v[1])
 
 EQUATION("Country_Wealth_Capital_Ratio")
 /*
-Stage 5.4: THE KEY METRIC - v = Total Wealth / Productive Capital.
+Stage 5.4: VALUATION RATIO (Kaldor's v / Tobin's q) = Total Wealth / Productive Capital.
 v > 1 indicates financialization (paper wealth exceeds real capital).
 
 Watch this grow as secular stagnation progresses!

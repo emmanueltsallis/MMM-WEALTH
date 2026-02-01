@@ -371,10 +371,10 @@ as financialization progresses, demonstrating wealth decoupling from production.
 // 1. SUPPLY: Nominal Investment (new assets entering system)
 v[0] = VS(country, "Country_Total_Investment_Expenses");
 
-// 2. DEMAND: Capitalist savings (use SUMLS with lag to avoid circular dep)
-// Note: Workers have ~0 savings, so sum effectively = capitalist savings
-// FIX: Use two-pointer pattern for CLASSES/HOUSEHOLDS hierarchy
-v[1] = SUMLS(working_class, "Household_Savings", 1) + SUMLS(capitalist_class, "Household_Savings", 1);
+// 2. DEMAND: Capitalist savings only (workers hold deposits, not financial assets)
+// Workers save to deposits which don't create asset demand pressure
+// Only capitalist savings flow into financial asset purchases
+v[1] = SUMLS(capitalist_class, "Household_Savings", 1);
 v[1] = max(0, v[1]);  // Only positive savings create demand
 
 // 3. VALUATION RATIO (for tracking financialization)
@@ -388,6 +388,7 @@ WRITE("Financial_Sector_Valuation_Ratio", v[4]);
 // Using Capital Stock as denominator prevents self-limiting behavior:
 // - Financial Assets can grow faster than Capital Stock via capital gains
 // - This maintains positive inflation rates, enabling wealth divergence (r > g)
+// NOTE: Model abstracts from Minsky-type crises that would bound v in practice
 v[5] = V("financial_asset_price_sensitivity");
 v[6] = (v[3] > 0) ? v[5] * (v[1] - v[0]) / v[3] : 0;
 

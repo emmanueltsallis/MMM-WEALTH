@@ -95,17 +95,17 @@ EQUATION("Firm_Desired_Markup")
 /*
 Firm Variable.
 New formulation.
-Adjusted when is price adjustment period for the firm. 
-If firm's market share increased and it is over the desired market share, the firm can adjust the desired markup 
+Adjusted when is price adjustment period for the firm.
+If firm's market share increased and it is over the desired market share, the firm can adjust the desired markup
 If firm's market share increased but effective avg market share is lower than desired, the firm do not adjust markup to do not increase prices and try to gain cfurther competitiveness.
 */
-	v[0]=CURRENT;          										//current desired markup                                   						
-	v[1]=V("Firm_Price_Period");  								//defines if it is price adjustment period fot that firm                                       			
+	v[0]=CURRENT;          										//current desired markup
+	v[1]=V("Firm_Price_Period");  								//defines if it is price adjustment period fot that firm
 	v[2]=V("sector_price_frequency");							//defines the frequency in which firms adjust prices
-	if(v[1]==1)                       							//if it is price adjustment period                                       		
+	if(v[1]==1)                       							//if it is price adjustment period
 		{
 		v[3]=LAG_AVE(p, "Firm_Market_Share", v[2]);				//average market share for the last price frequency periods
-		v[4]=LAG_GROWTH(p, "Firm_Market_Share", v[2]);  		//market share growth for the last price frequency periods  
+		v[4]=LAG_GROWTH(p, "Firm_Market_Share", v[2]);  		//market share growth for the last price frequency periods
 		v[5]=V("sector_desired_market_share");					//desired market share
 		v[6]=V("sector_markup_adjustment");						//defines the markup adjustment intensity
 		if(v[4]>0&&v[3]>v[5])									//if market share growth is positive and above desired
@@ -113,8 +113,8 @@ If firm's market share increased but effective avg market share is lower than de
 		else													//otherwise
 			v[7]=v[0];											//use current desired markup
 		}
-	else          												//if it is not price adjustment period                                                           		
-		v[7]=v[0];      										//use current desired markup                                                      					
+	else          												//if it is not price adjustment period
+		v[7]=v[0];      										//use current desired markup
 RESULT(v[7]) 
 
 
