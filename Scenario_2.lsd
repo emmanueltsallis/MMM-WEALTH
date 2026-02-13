@@ -191,6 +191,7 @@ Label Root
 			Param: government_cut_weight_benefits
 			Param: government_benefit_rate
 			Param: enforcement_sensitivity
+			Param: enforcement_decay
 			Param: audit_probability
 			Var: Government_Wealth_Tax_Revenue
 			Var: Government_Wealth_Tax_Gap
@@ -730,6 +731,8 @@ Label Root
 				Var: Household_Repatriated_Deposits
 				Var: Household_Is_Audited
 				Var: Household_Asset_Penalty
+				Var: Household_Wealth_Tax_From_Buffer
+				Var: Household_Offshore_Penalty
 
 			}
 
@@ -941,6 +944,7 @@ Label Root
 		Var: Country_Top10_Share_Income
 		Var: Country_Top10_Share_Wealth
 		Var: Country_Top10_Share_Wealth_Pretax
+		Var: Country_Wealth_Tax_From_Buffer
 
 	}
 
@@ -1106,7 +1110,7 @@ Param: country_avg_propensity_evade 0 n + n n	0.5
 Var: Country_Total_Deposits_Offshore 0 s + n n
 Var: Country_Total_Assets_Undeclared 0 s + n n
 Var: Country_Capital_Flight_Rate 0 s + n n
-Var: Country_Asset_Evasion_Rate 0 s + n n
+Var: Country_Asset_Evasion_Rate 1 s + n n	0
 Var: Country_Evader_Count 0 s + n n
 Var: Country_Audit_Count 0 s + n n
 Var: Country_Penalty_Revenue 0 s + n n
@@ -1127,6 +1131,7 @@ Var: Country_Top1_Share_Wealth_Pretax 0 s + n n
 Var: Country_Top10_Share_Income 0 s + n n
 Var: Country_Top10_Share_Wealth 0 s + n n
 Var: Country_Top10_Share_Wealth_Pretax 0 s + n n
+Var: Country_Wealth_Tax_From_Buffer 0 s + n n
 
 Object: EXTERNAL_SECTOR C	1
 Param: exchange_rate_adjustment 0 n + n n	1
@@ -1274,7 +1279,7 @@ Param: interest_shock_size 0 n + n n	0.01
 Param: interest_shock_duration 0 n + n n	0
 
 Object: GOVERNMENT C	1
-Param: penalty_rate 0 n + n n	2
+Param: penalty_rate 0 n + n n	0.015
 Param: government_surplus_target_adjustment 0 n + n n	0.001
 Param: government_real_wage_growth 0 n + n n	0.0025
 Param: government_real_investment_growth 0 n + n n	0.001
@@ -1296,7 +1301,8 @@ Param: government_cut_weight_inputs 0 n + n n	1
 Param: government_cut_weight_consumption 0 n + n n	1
 Param: government_cut_weight_benefits 0 n + n n	0.5
 Param: government_benefit_rate 0 n + n n	0.4
-Param: enforcement_sensitivity 0 n + n n	1
+Param: enforcement_sensitivity 0 n + n n	0.07
+Param: enforcement_decay 0 n + n n	0.1
 Param: audit_probability 0 n + n n	0
 Var: Government_Wealth_Tax_Revenue 0 s + n n
 Var: Government_Wealth_Tax_Gap 4 s + n n	0	0	0	0
@@ -1837,6 +1843,8 @@ Var: Household_Assets_Declared 0 s + n n
 Var: Household_Repatriated_Deposits 0 s + n n
 Var: Household_Is_Audited 0 s + n n
 Var: Household_Asset_Penalty 0 s + n n
+Var: Household_Wealth_Tax_From_Buffer 0 s + n n
+Var: Household_Offshore_Penalty 0 s + n n
 
 Object: HOUSEHOLD_LOANS C	1	1
 Param: household_loan_total_amount 0 n + n n	0	0
@@ -2721,6 +2729,11 @@ Variable_Country_Top10_Share_Wealth_Pretax
 
 END_DESCRIPTION
 
+Variable_Country_Wealth_Tax_From_Buffer
+Stage 7: Aggregate wealth tax paid by invading liquidity buffer (Stage 4).
+Nonzero indicates widespread household financial distress.
+END_DESCRIPTION
+
 Object_EXTERNAL_SECTOR
 
 END_DESCRIPTION
@@ -3293,6 +3306,8 @@ END_DESCRIPTION
 
 Parameter_penalty_rate
 
+_INIT_
+All 1 instances equal to 0.015
 END_DESCRIPTION
 
 Parameter_government_surplus_target_adjustment
@@ -3380,6 +3395,10 @@ Parameter_government_benefit_rate
 END_DESCRIPTION
 
 Parameter_enforcement_sensitivity
+
+END_DESCRIPTION
+
+Parameter_enforcement_decay
 
 END_DESCRIPTION
 
@@ -5526,6 +5545,23 @@ END_DESCRIPTION
 
 Variable_Household_Asset_Penalty
 
+END_DESCRIPTION
+
+Variable_Household_Wealth_Tax_From_Buffer
+Stage 7: Portion of wealth tax paid by invading precautionary liquidity buffer (Stage 4).
+Analysis variable — this amount is ALSO included in From_Deposits for SFC.
+Nonzero values indicate household financial distress.
+Computed in Household_Wealth_Tax_Payment.
+END_DESCRIPTION
+
+Variable_Household_Offshore_Penalty
+Stage 9: Penalty for offshore deposits if detected by audit.
+
+Same enforcement structure as asset evasion (Option A):
+Penalty = ρ × Offshore_Deposits (absolute confiscation rate).
+
+Under international information exchange (FATCA, CRS), governments can
+detect offshore holdings. Same audit draw as domestic assets.
 END_DESCRIPTION
 
 Object_HOUSEHOLD_LOANS

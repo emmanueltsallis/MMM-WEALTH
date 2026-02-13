@@ -366,123 +366,129 @@ Label Root
 
 			}
 
-			Param: id_capital_goods_sector
-			Param: id_consumption_goods_sector
-			Param: id_intermediate_goods_sector
-			Param: sector_antecipation
-			Param: sector_capital_duration
-			Param: sector_capital_output_ratio
-			Param: sector_competitiveness_adjustment
-			Param: sector_debt_rate_adjustment
-			Param: sector_desired_degree_capacity_utilization
-			Param: sector_desired_inventories_proportion
-			Param: sector_desired_market_share
-			Param: sector_elascitity_delay
-			Param: sector_elasticity_price
-			Param: sector_elasticity_quality
-			Param: sector_expectations
-			Param: sector_exports_coefficient
-			Param: sector_exports_elasticity_income
-			Param: sector_exports_elasticity_price
-			Param: sector_external_price_competitiveness
-			Param: sector_external_price_growth
-			Param: sector_external_price_sd
-			Param: sector_external_price_shock_begin
-			Param: sector_external_price_shock_duration
-			Param: sector_external_price_shock_size
-			Param: sector_external_price_weight
-			Param: sector_financial_cost_passtrough
-			Param: sector_indirect_tax_rate
-			Param: sector_initial_debt_rate
-			Param: sector_initial_demand
-			Param: sector_initial_depreciation_scale
-			Param: sector_initial_exports_share
-			Param: sector_initial_external_price
-			Param: sector_initial_liquidity_preference
-			Param: sector_initial_price
-			Param: sector_initial_productivity
-			Param: sector_initial_profit_rate
-			Param: sector_initial_propensity_import_inputs
-			Param: sector_initial_quality
-			Param: sector_innovation_proportion
-			Param: sector_input_import_elasticity_price
-			Param: sector_input_tech_coefficient
-			Param: sector_investment_frequency
-			Param: sector_learning_adjustment
-			Param: sector_liquidity_preference_adjustment
-			Param: sector_markup_adjustment
-			Param: sector_number_object_firms
-			Param: sector_passthrough_inflation
-			Param: sector_passthrough_productivity
-			Param: sector_payback_period
-			Param: sector_price_frequency
-			Param: sector_profits_distribution_rate
-			Param: sector_rnd_revenue_proportion
-			Param: sector_std_dev_innovation
-			Param: sector_strategic_price_weight
-			Param: sector_tech_opportunity_productivity
 			Param: sector_tech_opportunity_quality
-			Var: Sector_Avg_Competitiveness
-			Var: Sector_Avg_Debt_Rate
-			Var: Sector_Avg_External_Finance_Rate
-			Var: Sector_Avg_Financial_Position
-			Var: Sector_Avg_Interest_Rate_Long_Term
-			Var: Sector_Avg_Interest_Rate_Short_Term
-			Var: Sector_Avg_Internal_Finance_Rate
-			Var: Sector_Avg_Investment_Constraint_Rate
-			Var: Sector_Avg_Investment_Rate
-			Var: Sector_Avg_Liquidity_Rate
-			Var: Sector_Avg_Markup
-			Var: Sector_Avg_Max_Debt_Rate
-			Var: Sector_Avg_Modernization_Rate
-			Var: Sector_Avg_Price
-			Var: Sector_Avg_Productivity
-			Var: Sector_Avg_Quality
-			Var: Sector_Avg_Wage
-			Var: Sector_Bargain_Power
-			Var: Sector_Capacity_Utilization
-			Var: Sector_Demand_Met
-			Var: Sector_Demand_Met_By_Imports
-			Var: Sector_Effective_Loans
-			Var: Sector_Effective_Orders
-			Var: Sector_Effective_Production
-			Var: Sector_Employment
-			Var: Sector_Entry_Condition
-			Var: Sector_Entry_Deposits_Needed
-			Var: Sector_Exports_Share
-			Var: Sector_External_Price
-			Var: Sector_Extra_Imports
-			Var: Sector_Hedge_Normalized_Share
-			Var: Sector_Hedge_Share
-			Var: Sector_Idle_Capacity
-			Var: Sector_Inventories
-			Var: Sector_Max_Productivity
-			Var: Sector_Max_Quality
-			Var: Sector_Normalized_HHI
-			Var: Sector_Number_Firms
-			Var: Sector_Participation
-			Var: Sector_Ponzi_Normalized_Share
-			Var: Sector_Ponzi_Share
-			Var: Sector_Productive_Capacity
-			Var: Sector_Productive_Capacity_Available
-			Var: Sector_Productive_Capacity_Entry
-			Var: Sector_Productive_Capacity_Exit
-			Var: Sector_Profit_Rate
-			Var: Sector_Profits
-			Var: Sector_Propensity_Import_Inputs
-			Var: Sector_Real_Exports
-			Var: Sector_SD_Investment_Rate
-			Var: Sector_Sales
-			Var: Sector_Short_Term_Rate
-			Var: Sector_Speculative_Normalized_Share
-			Var: Sector_Speculative_Share
-			Var: Sector_Stock_Deposits
-			Var: Sector_Stock_Loans
-			Var: Sector_Taxation
-			Var: Sector_Turbulence
-			Param: sector_bargain_power_inflaton_adjustment
+			Param: sector_tech_opportunity_productivity
+			Param: sector_strategic_price_weight
+			Param: sector_std_dev_innovation
+			Param: sector_rnd_revenue_proportion
+			Param: sector_profits_distribution_rate
+			Param: sector_price_frequency
+			Param: sector_payback_period
+			Param: sector_passthrough_productivity
+			Param: sector_passthrough_inflation
+			Param: sector_number_object_firms
+			Param: sector_markup_adjustment
+			Param: sector_liquidity_preference_adjustment
+			Param: sector_learning_adjustment
+			Param: sector_investment_frequency
+			Param: sector_input_tech_coefficient
+			Param: sector_input_import_elasticity_price
+			Param: sector_innovation_proportion
+			Param: sector_initial_quality
+			Param: sector_initial_propensity_import_inputs
+			Param: sector_initial_profit_rate
+			Param: sector_initial_productivity
+			Param: sector_initial_price
+			Param: sector_initial_liquidity_preference
+			Param: sector_initial_external_price
+			Param: sector_initial_exports_share
+			Param: sector_initial_depreciation_scale
+			Param: sector_initial_demand
+			Param: sector_initial_debt_rate
+			Param: sector_indirect_tax_rate
+			Param: sector_financial_cost_passtrough
+			Param: sector_external_price_weight
+			Param: sector_external_price_shock_size
+			Param: sector_external_price_shock_duration
+			Param: sector_external_price_shock_begin
+			Param: sector_external_price_sd
+			Param: sector_external_price_growth
+			Param: sector_external_price_competitiveness
+			Param: sector_exports_elasticity_price
+			Param: sector_exports_elasticity_income
+			Param: sector_exports_coefficient
+			Param: sector_expectations
+			Param: sector_elasticity_quality
+			Param: sector_elasticity_price
+			Param: sector_elascitity_delay
+			Param: sector_desired_market_share
+			Param: sector_desired_inventories_proportion
+			Param: sector_desired_degree_capacity_utilization
+			Param: sector_debt_rate_adjustment
+			Param: sector_competitiveness_adjustment
+			Param: sector_capital_output_ratio
+			Param: sector_capital_duration
 			Param: sector_bargain_power_productivity_adjustment
+			Param: sector_bargain_power_inflaton_adjustment
+			Param: sector_antecipation
+			Param: id_intermediate_goods_sector
+			Param: id_consumption_goods_sector
+			Param: id_capital_goods_sector
+			Var: Sector_Turbulence
+			Var: Sector_Taxation
+			Var: Sector_Stock_Loans
+			Var: Sector_Stock_Deposits
+			Var: Sector_Speculative_Share
+			Var: Sector_Speculative_Normalized_Share
+			Var: Sector_Short_Term_Rate
+			Var: Sector_Sales
+			Var: Sector_SD_Investment_Rate
+			Var: Sector_Real_Exports
+			Var: Sector_Propensity_Import_Inputs
+			Var: Sector_Profits
+			Var: Sector_Profit_Rate
+			Var: Sector_Productive_Capacity_Exit
+			Var: Sector_Productive_Capacity_Entry
+			Var: Sector_Productive_Capacity_Available
+			Var: Sector_Productive_Capacity
+			Var: Sector_Ponzi_Share
+			Var: Sector_Ponzi_Normalized_Share
+			Var: Sector_Participation
+			Var: Sector_Number_Firms
+			Var: Sector_Normalized_HHI
+			Var: Sector_Max_Quality
+			Var: Sector_Max_Productivity
 			Var: Sector_Labor_Demand
+			Var: Sector_Inventories
+			Var: Sector_Internal_Funds
+			Var: Sector_Idle_Capacity
+			Var: Sector_Hedge_Share
+			Var: Sector_Hedge_Normalized_Share
+			Var: Sector_Extra_Imports
+			Var: Sector_External_Price
+			Var: Sector_Exports_Share
+			Var: Sector_Entry_Deposits_Needed
+			Var: Sector_Entry_Condition
+			Var: Sector_Employment
+			Var: Sector_Effective_Replacement_Investment_Expenses
+			Var: Sector_Effective_Production
+			Var: Sector_Effective_Orders
+			Var: Sector_Effective_Loans
+			Var: Sector_Effective_Expansion_Investment_Expenses
+			Var: Sector_Desired_Replacement_Investment_Expenses
+			Var: Sector_Desired_Expansion_Investment_Expenses
+			Var: Sector_Demand_Met_By_Imports
+			Var: Sector_Demand_Met
+			Var: Sector_Demand_Loans
+			Var: Sector_Capacity_Utilization
+			Var: Sector_Bargain_Power
+			Var: Sector_Avg_Wage
+			Var: Sector_Avg_Quality
+			Var: Sector_Avg_Productivity
+			Var: Sector_Avg_Price
+			Var: Sector_Avg_Modernization_Rate
+			Var: Sector_Avg_Max_Debt_Rate
+			Var: Sector_Avg_Markup
+			Var: Sector_Avg_Liquidity_Rate
+			Var: Sector_Avg_Investment_Rate
+			Var: Sector_Avg_Investment_Constraint_Rate
+			Var: Sector_Avg_Internal_Finance_Rate
+			Var: Sector_Avg_Interest_Rate_Short_Term
+			Var: Sector_Avg_Interest_Rate_Long_Term
+			Var: Sector_Avg_Financial_Position
+			Var: Sector_Avg_External_Finance_Rate
+			Var: Sector_Avg_Debt_Rate
+			Var: Sector_Avg_Competitiveness
 
 		}
 
@@ -724,6 +730,8 @@ Label Root
 				Var: Household_Repatriated_Deposits
 				Var: Household_Is_Audited
 				Var: Household_Asset_Penalty
+				Var: Household_Wealth_Tax_From_Buffer
+				Var: Household_Offshore_Penalty
 
 			}
 
@@ -935,6 +943,7 @@ Label Root
 		Var: Country_Top10_Share_Income
 		Var: Country_Top10_Share_Wealth
 		Var: Country_Top10_Share_Wealth_Pretax
+		Var: Country_Wealth_Tax_From_Buffer
 
 	}
 
@@ -963,7 +972,7 @@ Param: country_initial_exports_share_GDP 0 n + n n	0.1
 Param: country_initial_government_share_GDP 0 n + n n	0.2
 Param: entry_debt_share 0 n + n n	0
 Param: survival_period 0 n + n n	0
-Param: switch_class_tax_structure 0 n + n n	4
+Param: switch_class_tax_structure 0 n + n n	5
 Param: switch_creditworthness 0 n + n n	0
 Param: switch_entry 0 n + n n	1
 Param: switch_extra_gov_expenses 0 n + n n	0
@@ -1085,8 +1094,8 @@ Param: exit_debt_rate_threshold 0 n + n n	1.5
 Param: exit_market_share_threshold 0 n + n n	0.001
 Var: Diagnostic_Trigger 0 s + n n
 Param: household_income_tax_rate 0 n + n n	0.16
-Param: wealth_tax_rate 0 n + n n	0.03
-Param: wealth_tax_threshold 0 s + n n	7650
+Param: wealth_tax_rate 0 n + n n	0.0076
+Param: wealth_tax_threshold 0 s + n n	8613
 Var: Country_Wealth_Tax_Revenue 0 s + n n
 Var: Country_Wealth_Tax_Taxpayer_Count 0 s + n n
 Var: Country_Wealth_Tax_From_Deposits 0 s + n n
@@ -1121,6 +1130,7 @@ Var: Country_Top1_Share_Wealth_Pretax 0 s + n n
 Var: Country_Top10_Share_Income 0 s + n n
 Var: Country_Top10_Share_Wealth 0 s + n n
 Var: Country_Top10_Share_Wealth_Pretax 0 s + n n
+Var: Country_Wealth_Tax_From_Buffer 0 s + n n
 
 Object: EXTERNAL_SECTOR C	1
 Param: exchange_rate_adjustment 0 n + n n	1
@@ -1268,7 +1278,7 @@ Param: interest_shock_size 0 n + n n	0.01
 Param: interest_shock_duration 0 n + n n	0
 
 Object: GOVERNMENT C	1
-Param: penalty_rate 0 n + n n	2
+Param: penalty_rate 0 n + n n	0.015
 Param: government_surplus_target_adjustment 0 n + n n	0.001
 Param: government_real_wage_growth 0 n + n n	0.0025
 Param: government_real_investment_growth 0 n + n n	0.001
@@ -1291,7 +1301,7 @@ Param: government_cut_weight_consumption 0 n + n n	1
 Param: government_cut_weight_benefits 0 n + n n	0.5
 Param: government_benefit_rate 0 n + n n	0.4
 Param: enforcement_sensitivity 0 n + n n	1
-Param: audit_probability 0 n + n n	0.05
+Param: audit_probability 0 n + n n	0
 Var: Government_Wealth_Tax_Revenue 0 s + n n
 Var: Government_Wealth_Tax_Gap 4 s + n n	0	0	0	0
 Var: Government_Total_Taxes 1 s + n n	0
@@ -1328,123 +1338,129 @@ Var: Government_Debt_GDP_Ratio 5 s + n n	0	0	0	0	0
 Var: Government_Debt 5 s + n n	0	0	0	0	0
 
 Object: SECTORS C	3
-Param: id_capital_goods_sector 0 n + n n	0	1	0
-Param: id_consumption_goods_sector 0 n + n n	1	0	0
-Param: id_intermediate_goods_sector 0 n + n n	0	0	1
-Param: sector_antecipation 0 n + n n	0	0	0
-Param: sector_capital_duration 0 n + n n	40	40	40
-Param: sector_capital_output_ratio 0 n + n n	1	1	1
-Param: sector_competitiveness_adjustment 0 n + n n	1	1	1
-Param: sector_debt_rate_adjustment 0 n + n n	0.001	0.001	0.001
-Param: sector_desired_degree_capacity_utilization 0 n + n n	0.95	0.95	0.95
-Param: sector_desired_inventories_proportion 0 n + n n	0.1	0.1	0.1
-Param: sector_desired_market_share 0 n + n n	0.1	0.25	0.15
-Param: sector_elascitity_delay 0 n + n n	0.25	0.25	0.25
-Param: sector_elasticity_price 0 n + n n	1	1	1
-Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0.5
-Param: sector_expectations 0 n + n n	0.2	0.2	0.2
-Param: sector_exports_coefficient 0 s + n n	0	0	0
-Param: sector_exports_elasticity_income 0 n + n n	1	1	1
-Param: sector_exports_elasticity_price 0 n + n n	1	1	1
-Param: sector_external_price_competitiveness 0 n + n n	0	0	0
-Param: sector_external_price_growth 0 n + n n	0.005	0.005	0.005
-Param: sector_external_price_sd 0 n + n n	0.01	0.01	0.01
-Param: sector_external_price_shock_begin 0 n + n n	400	400	400
-Param: sector_external_price_shock_duration 0 n + n n	0	0	0
-Param: sector_external_price_shock_size 0 n + n n	0.02	0.02	0.02
-Param: sector_external_price_weight 0 n + n n	1	1	1
-Param: sector_financial_cost_passtrough 0 n + n n	1	1	1
-Param: sector_indirect_tax_rate 0 n + n n	0.05	0.05	0.05
-Param: sector_initial_debt_rate 0 n + n n	0.4	0.4	0.4
-Param: sector_initial_demand 0 n + n n	0	0	0
-Param: sector_initial_depreciation_scale 0 n + n n	1	1	1
-Param: sector_initial_exports_share 0 n + n n	0.3	0.4	0.3
-Param: sector_initial_external_price 0 n + n n	1	2	1
-Param: sector_initial_liquidity_preference 0 n + n n	0.05	0.05	0.05
-Param: sector_initial_price 0 n + n n	1	2	1
-Param: sector_initial_productivity 0 n + n n	1	1	1
-Param: sector_initial_profit_rate 0 n + n n	0.3	0.6	0.3
-Param: sector_initial_propensity_import_inputs 0 n + n n	0.05	0.05	0.05
-Param: sector_initial_quality 0 n + n n	1	1	1
-Param: sector_innovation_proportion 0 n + n n	0.5	0.5	0.5
-Param: sector_input_import_elasticity_price 0 n + n n	0	0	0
-Param: sector_input_tech_coefficient 0 n + n n	0.4	0.4	0.4
-Param: sector_investment_frequency 0 n + n n	4	4	4
-Param: sector_learning_adjustment 0 n + n n	0	0	0
-Param: sector_liquidity_preference_adjustment 0 n + n n	0	0	0
-Param: sector_markup_adjustment 0 n + n n	0.001	0.001	0.001
-Param: sector_number_object_firms 0 n + n n	100	40	60
-Param: sector_passthrough_inflation 0 s + n n	1	1	1
-Param: sector_passthrough_productivity 0 s + n n	0.8	0.8	0.8
-Param: sector_payback_period 0 n + n n	8	8	8
-Param: sector_price_frequency 0 n + n n	4	4	4
-Param: sector_profits_distribution_rate 0 n + n n	0.8	0.8	0.8
-Param: sector_rnd_revenue_proportion 0 n + n n	0.01	0.01	0.01
-Param: sector_std_dev_innovation 0 n + n n	0.01	0.01	0.01
-Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5
-Param: sector_tech_opportunity_productivity 0 n + n n	0.0025	0.0025	0.0025
 Param: sector_tech_opportunity_quality 0 n + n n	0.0025	0.0025	0.0025
-Var: Sector_Avg_Competitiveness 1 n + n n	1	1	1
-Var: Sector_Avg_Debt_Rate 0 s + n n
-Var: Sector_Avg_External_Finance_Rate 0 s + n n
-Var: Sector_Avg_Financial_Position 0 s + n n
-Var: Sector_Avg_Interest_Rate_Long_Term 0 s + n n
-Var: Sector_Avg_Interest_Rate_Short_Term 0 s + n n
-Var: Sector_Avg_Internal_Finance_Rate 0 s + n n
-Var: Sector_Avg_Investment_Constraint_Rate 0 s + n n
-Var: Sector_Avg_Investment_Rate 0 s + n n
-Var: Sector_Avg_Liquidity_Rate 0 s + n n
-Var: Sector_Avg_Markup 0 s + n n
-Var: Sector_Avg_Max_Debt_Rate 0 s + n n
-Var: Sector_Avg_Modernization_Rate 0 s + n n
-Var: Sector_Avg_Price 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Sector_Avg_Productivity 1 s + n n	0	0	0
-Var: Sector_Avg_Quality 5 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
-Var: Sector_Avg_Wage 1 s + n n	0	0	0
-Var: Sector_Bargain_Power 1 s + n n	0	0	0
-Var: Sector_Capacity_Utilization 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Sector_Demand_Met 6 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
-Var: Sector_Demand_Met_By_Imports 6 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
-Var: Sector_Effective_Loans 0 s + n n
-Var: Sector_Effective_Orders 8 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Sector_Effective_Production 0 s + n n
-Var: Sector_Employment 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Sector_Entry_Condition 0 n + n n
-Var: Sector_Entry_Deposits_Needed 0 s + n n
-Var: Sector_Exports_Share 1 s + n n	0	0	0
-Var: Sector_External_Price 1 s + n n	1	1	1
-Var: Sector_Extra_Imports 0 n + n n
-Var: Sector_Hedge_Normalized_Share 0 s + n n
-Var: Sector_Hedge_Share 0 s + n n
-Var: Sector_Idle_Capacity 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
-Var: Sector_Inventories 1 n + n n	0	0	0
-Var: Sector_Max_Productivity 1 n + n n	1	1	1
-Var: Sector_Max_Quality 1 n + n n	1	1	1
-Var: Sector_Normalized_HHI 0 n + n n
-Var: Sector_Number_Firms 1 s + n n	20	20	20
-Var: Sector_Participation 0 s + n n
-Var: Sector_Ponzi_Normalized_Share 0 s + n n
-Var: Sector_Ponzi_Share 0 s + n n
-Var: Sector_Productive_Capacity 1 s + n n	0	0	0
-Var: Sector_Productive_Capacity_Available 1 n + n n	0	0	0
-Var: Sector_Productive_Capacity_Entry 0 n + n n
-Var: Sector_Productive_Capacity_Exit 0 n + n n
-Var: Sector_Profit_Rate 0 s + n n
-Var: Sector_Profits 0 s + n n
-Var: Sector_Propensity_Import_Inputs 1 s + n n	0	0	0
-Var: Sector_Real_Exports 0 s + n n
-Var: Sector_SD_Investment_Rate 0 s + n n
-Var: Sector_Sales 0 n + n n
-Var: Sector_Short_Term_Rate 0 s + n n
-Var: Sector_Speculative_Normalized_Share 0 s + n n
-Var: Sector_Speculative_Share 0 s + n n
-Var: Sector_Stock_Deposits 0 s + n n
-Var: Sector_Stock_Loans 1 s + n n	0	0	0
-Var: Sector_Taxation 0 n + n n
-Var: Sector_Turbulence 0 s + n n
-Param: sector_bargain_power_inflaton_adjustment 0 n + n n	0	0	0
+Param: sector_tech_opportunity_productivity 0 n + n n	0.0025	0.0025	0.0025
+Param: sector_strategic_price_weight 0 n + n n	0.5	0.5	0.5
+Param: sector_std_dev_innovation 0 n + n n	0.01	0.01	0.01
+Param: sector_rnd_revenue_proportion 0 n + n n	0.01	0.01	0.01
+Param: sector_profits_distribution_rate 0 n + n n	0.65	0.65	0.65
+Param: sector_price_frequency 0 n + n n	4	4	4
+Param: sector_payback_period 0 n + n n	8	8	8
+Param: sector_passthrough_productivity 0 s + n n	0.8	0.8	0.8
+Param: sector_passthrough_inflation 0 s + n n	1	1	1
+Param: sector_number_object_firms 0 n + n n	100	40	60
+Param: sector_markup_adjustment 0 n + n n	0.001	0.001	0.001
+Param: sector_liquidity_preference_adjustment 0 n + n n	0	0	0
+Param: sector_learning_adjustment 0 n + n n	0	0	0
+Param: sector_investment_frequency 0 n + n n	4	4	4
+Param: sector_input_tech_coefficient 0 n + n n	0.4	0.4	0.4
+Param: sector_input_import_elasticity_price 0 n + n n	0	0	0
+Param: sector_innovation_proportion 0 n + n n	0.5	0.5	0.5
+Param: sector_initial_quality 0 n + n n	1	1	1
+Param: sector_initial_propensity_import_inputs 0 n + n n	0.05	0.05	0.05
+Param: sector_initial_profit_rate 0 n + n n	0.3	0.6	0.3
+Param: sector_initial_productivity 0 n + n n	1	1	1
+Param: sector_initial_price 0 n + n n	1	2	1
+Param: sector_initial_liquidity_preference 0 n + n n	0.05	0.05	0.05
+Param: sector_initial_external_price 0 n + n n	1	2	1
+Param: sector_initial_exports_share 0 n + n n	0.3	0.4	0.3
+Param: sector_initial_depreciation_scale 0 n + n n	1	1	1
+Param: sector_initial_demand 0 n + n n	0	0	0
+Param: sector_initial_debt_rate 0 n + n n	0.4	0.4	0.4
+Param: sector_indirect_tax_rate 0 n + n n	0.05	0.05	0.05
+Param: sector_financial_cost_passtrough 0 n + n n	1	1	1
+Param: sector_external_price_weight 0 n + n n	1	1	1
+Param: sector_external_price_shock_size 0 n + n n	0.02	0.02	0.02
+Param: sector_external_price_shock_duration 0 n + n n	0	0	0
+Param: sector_external_price_shock_begin 0 n + n n	400	400	400
+Param: sector_external_price_sd 0 n + n n	0.01	0.01	0.01
+Param: sector_external_price_growth 0 n + n n	0.005	0.005	0.005
+Param: sector_external_price_competitiveness 0 n + n n	0	0	0
+Param: sector_exports_elasticity_price 0 n + n n	1	1	1
+Param: sector_exports_elasticity_income 0 n + n n	1	1	1
+Param: sector_exports_coefficient 0 s + n n	0	0	0
+Param: sector_expectations 0 n + n n	0.2	0.2	0.2
+Param: sector_elasticity_quality 0 n + n n	0.5	0.5	0.5
+Param: sector_elasticity_price 0 n + n n	1	1	1
+Param: sector_elascitity_delay 0 n + n n	0.25	0.25	0.25
+Param: sector_desired_market_share 0 n + n n	0.1	0.25	0.15
+Param: sector_desired_inventories_proportion 0 n + n n	0.1	0.1	0.1
+Param: sector_desired_degree_capacity_utilization 0 n + n n	0.8	0.8	0.8
+Param: sector_debt_rate_adjustment 0 n + n n	0.001	0.001	0.001
+Param: sector_competitiveness_adjustment 0 n + n n	1	1	1
+Param: sector_capital_output_ratio 0 n + n n	1	1	1
+Param: sector_capital_duration 0 n + n n	40	40	40
 Param: sector_bargain_power_productivity_adjustment 0 n + n n	0.01	0.01	0.01
+Param: sector_bargain_power_inflaton_adjustment 0 n + n n	0	0	0
+Param: sector_antecipation 0 n + n n	0	0	0
+Param: id_intermediate_goods_sector 0 n + n n	0	0	1
+Param: id_consumption_goods_sector 0 n + n n	1	0	0
+Param: id_capital_goods_sector 0 n + n n	0	1	0
+Var: Sector_Turbulence 0 s + n n
+Var: Sector_Taxation 0 n + n n
+Var: Sector_Stock_Loans 1 s + n n	0	0	0
+Var: Sector_Stock_Deposits 0 s + n n
+Var: Sector_Speculative_Share 0 s + n n
+Var: Sector_Speculative_Normalized_Share 0 s + n n
+Var: Sector_Short_Term_Rate 0 s + n n
+Var: Sector_Sales 0 n + n n
+Var: Sector_SD_Investment_Rate 0 s + n n
+Var: Sector_Real_Exports 0 s + n n
+Var: Sector_Propensity_Import_Inputs 1 s + n n	0	0	0
+Var: Sector_Profits 0 s + n n
+Var: Sector_Profit_Rate 0 s + n n
+Var: Sector_Productive_Capacity_Exit 0 n + n n
+Var: Sector_Productive_Capacity_Entry 0 n + n n
+Var: Sector_Productive_Capacity_Available 1 n + n n	0	0	0
+Var: Sector_Productive_Capacity 1 s + n n	0	0	0
+Var: Sector_Ponzi_Share 0 s + n n
+Var: Sector_Ponzi_Normalized_Share 0 s + n n
+Var: Sector_Participation 0 s + n n
+Var: Sector_Number_Firms 1 s + n n	20	20	20
+Var: Sector_Normalized_HHI 0 n + n n
+Var: Sector_Max_Quality 1 n + n n	1	1	1
+Var: Sector_Max_Productivity 1 n + n n	1	1	1
 Var: Sector_Labor_Demand 1 s + n n	0	0	0
+Var: Sector_Inventories 1 n + n n	0	0	0
+Var: Sector_Internal_Funds 0 s + n n
+Var: Sector_Idle_Capacity 4 s + n n	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Hedge_Share 0 s + n n
+Var: Sector_Hedge_Normalized_Share 0 s + n n
+Var: Sector_Extra_Imports 0 n + n n
+Var: Sector_External_Price 1 s + n n	1	1	1
+Var: Sector_Exports_Share 1 s + n n	0	0	0
+Var: Sector_Entry_Deposits_Needed 0 s + n n
+Var: Sector_Entry_Condition 0 n + n n
+Var: Sector_Employment 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Effective_Replacement_Investment_Expenses 0 s + n n
+Var: Sector_Effective_Production 0 s + n n
+Var: Sector_Effective_Orders 8 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Effective_Loans 0 s + n n
+Var: Sector_Effective_Expansion_Investment_Expenses 0 s + n n
+Var: Sector_Desired_Replacement_Investment_Expenses 0 s + n n
+Var: Sector_Desired_Expansion_Investment_Expenses 0 s + n n
+Var: Sector_Demand_Met_By_Imports 6 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Var: Sector_Demand_Met 6 s + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Var: Sector_Demand_Loans 0 s + n n
+Var: Sector_Capacity_Utilization 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Bargain_Power 1 s + n n	0	0	0
+Var: Sector_Avg_Wage 1 s + n n	0	0	0
+Var: Sector_Avg_Quality 5 n + n n	1	1	1	1	1	1	1	1	1	1	1	1	1	1	1
+Var: Sector_Avg_Productivity 1 s + n n	0	0	0
+Var: Sector_Avg_Price 5 s + n n	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0
+Var: Sector_Avg_Modernization_Rate 0 s + n n
+Var: Sector_Avg_Max_Debt_Rate 0 s + n n
+Var: Sector_Avg_Markup 0 s + n n
+Var: Sector_Avg_Liquidity_Rate 0 s + n n
+Var: Sector_Avg_Investment_Rate 0 s + n n
+Var: Sector_Avg_Investment_Constraint_Rate 0 s + n n
+Var: Sector_Avg_Internal_Finance_Rate 0 s + n n
+Var: Sector_Avg_Interest_Rate_Short_Term 0 s + n n
+Var: Sector_Avg_Interest_Rate_Long_Term 0 s + n n
+Var: Sector_Avg_Financial_Position 0 s + n n
+Var: Sector_Avg_External_Finance_Rate 0 s + n n
+Var: Sector_Avg_Debt_Rate 0 s + n n
+Var: Sector_Avg_Competitiveness 1 n + n n	1	1	1
 
 Object: FIRMS C	1	1	1
 Param: firm_bank 0 n + n n	0	0	0
@@ -1814,7 +1830,7 @@ Var: Household_Asset_Purchases 0 s + n n
 Param: household_liquidity_preference 0 s + n n	0.3	0.3
 Var: Household_Transfer_Received 0 s + n n
 Var: Household_Transfer_Eligible 0 n + n n
-Param: household_propensity_evade 0 s + n n	0.5	0.5
+Param: household_propensity_evade 0 s + n n	0	0
 Var: Household_Deposits_Offshore 1 s + n n	0	0
 Var: Household_Decision_Flight 0 s + n n
 Var: Household_Offshore_Interest 0 s + n n
@@ -1825,6 +1841,8 @@ Var: Household_Assets_Declared 0 s + n n
 Var: Household_Repatriated_Deposits 0 s + n n
 Var: Household_Is_Audited 0 s + n n
 Var: Household_Asset_Penalty 0 s + n n
+Var: Household_Wealth_Tax_From_Buffer 0 s + n n
+Var: Household_Offshore_Penalty 0 s + n n
 
 Object: HOUSEHOLD_LOANS C	1	1
 Param: household_loan_total_amount 0 n + n n	0	0
@@ -1832,7 +1850,7 @@ Param: household_loan_interest_rate 0 n + n n	0	0
 Param: household_loan_fixed_amortization 0 n + n n	0	0
 
 SIM_NUM 1
-SEED 1
+SEED 43
 MAX_STEP 600
 EQUATION fun_micro_macro_v.3.6.cpp
 MODELREPORT report_Sim1.html
@@ -1920,7 +1938,7 @@ END_DESCRIPTION
 Parameter_switch_class_tax_structure
 
 _INIT_
-All 1 instances equal to 4
+All 1 instances equal to 5
 END_DESCRIPTION
 
 Parameter_switch_creditworthness
@@ -2541,13 +2559,13 @@ END_DESCRIPTION
 Parameter_wealth_tax_rate
 
 _INIT_
-All 1 instances equal to 0.03
+All 1 instances equal to 0.0076
 END_DESCRIPTION
 
 Parameter_wealth_tax_threshold
 
 _INIT_
-All 1 instances equal to 7650
+All 1 instances equal to 8613
 END_DESCRIPTION
 
 Variable_Country_Wealth_Tax_Revenue
@@ -2707,6 +2725,11 @@ END_DESCRIPTION
 
 Variable_Country_Top10_Share_Wealth_Pretax
 
+END_DESCRIPTION
+
+Variable_Country_Wealth_Tax_From_Buffer
+Stage 7: Aggregate wealth tax paid by invading liquidity buffer (Stage 4).
+Nonzero indicates widespread household financial distress.
 END_DESCRIPTION
 
 Object_EXTERNAL_SECTOR
@@ -3281,6 +3304,8 @@ END_DESCRIPTION
 
 Parameter_penalty_rate
 
+_INIT_
+All 1 instances equal to 0.015
 END_DESCRIPTION
 
 Parameter_government_surplus_target_adjustment
@@ -3515,219 +3540,7 @@ Object_SECTORS
 
 END_DESCRIPTION
 
-Parameter_id_capital_goods_sector
-
-END_DESCRIPTION
-
-Parameter_id_consumption_goods_sector
-
-END_DESCRIPTION
-
-Parameter_id_intermediate_goods_sector
-
-END_DESCRIPTION
-
-Parameter_sector_antecipation
-
-END_DESCRIPTION
-
-Parameter_sector_capital_duration
-
-END_DESCRIPTION
-
-Parameter_sector_capital_output_ratio
-
-END_DESCRIPTION
-
-Parameter_sector_competitiveness_adjustment
-
-END_DESCRIPTION
-
-Parameter_sector_debt_rate_adjustment
-
-END_DESCRIPTION
-
-Parameter_sector_desired_degree_capacity_utilization
-
-END_DESCRIPTION
-
-Parameter_sector_desired_inventories_proportion
-
-END_DESCRIPTION
-
-Parameter_sector_desired_market_share
-
-END_DESCRIPTION
-
-Parameter_sector_elascitity_delay
-
-END_DESCRIPTION
-
-Parameter_sector_elasticity_price
-
-END_DESCRIPTION
-
-Parameter_sector_elasticity_quality
-
-END_DESCRIPTION
-
-Parameter_sector_expectations
-
-END_DESCRIPTION
-
-Parameter_sector_exports_coefficient
-
-END_DESCRIPTION
-
-Parameter_sector_exports_elasticity_income
-
-END_DESCRIPTION
-
-Parameter_sector_exports_elasticity_price
-
-END_DESCRIPTION
-
-Parameter_sector_external_price_competitiveness
-
-END_DESCRIPTION
-
-Parameter_sector_external_price_growth
-
-END_DESCRIPTION
-
-Parameter_sector_external_price_sd
-
-END_DESCRIPTION
-
-Parameter_sector_external_price_shock_begin
-
-END_DESCRIPTION
-
-Parameter_sector_external_price_shock_duration
-
-END_DESCRIPTION
-
-Parameter_sector_external_price_shock_size
-
-END_DESCRIPTION
-
-Parameter_sector_external_price_weight
-
-END_DESCRIPTION
-
-Parameter_sector_financial_cost_passtrough
-
-END_DESCRIPTION
-
-Parameter_sector_indirect_tax_rate
-
-END_DESCRIPTION
-
-Parameter_sector_initial_debt_rate
-
-END_DESCRIPTION
-
-Parameter_sector_initial_demand
-
-END_DESCRIPTION
-
-Parameter_sector_initial_depreciation_scale
-
-END_DESCRIPTION
-
-Parameter_sector_initial_exports_share
-
-END_DESCRIPTION
-
-Parameter_sector_initial_external_price
-
-END_DESCRIPTION
-
-Parameter_sector_initial_liquidity_preference
-
-END_DESCRIPTION
-
-Parameter_sector_initial_price
-
-END_DESCRIPTION
-
-Parameter_sector_initial_productivity
-
-END_DESCRIPTION
-
-Parameter_sector_initial_profit_rate
-
-END_DESCRIPTION
-
-Parameter_sector_initial_propensity_import_inputs
-
-END_DESCRIPTION
-
-Parameter_sector_initial_quality
-
-END_DESCRIPTION
-
-Parameter_sector_innovation_proportion
-
-END_DESCRIPTION
-
-Parameter_sector_input_import_elasticity_price
-
-END_DESCRIPTION
-
-Parameter_sector_input_tech_coefficient
-
-END_DESCRIPTION
-
-Parameter_sector_investment_frequency
-
-END_DESCRIPTION
-
-Parameter_sector_learning_adjustment
-
-END_DESCRIPTION
-
-Parameter_sector_liquidity_preference_adjustment
-
-END_DESCRIPTION
-
-Parameter_sector_markup_adjustment
-
-END_DESCRIPTION
-
-Parameter_sector_number_object_firms
-
-END_DESCRIPTION
-
-Parameter_sector_passthrough_inflation
-
-END_DESCRIPTION
-
-Parameter_sector_passthrough_productivity
-
-END_DESCRIPTION
-
-Parameter_sector_payback_period
-
-END_DESCRIPTION
-
-Parameter_sector_price_frequency
-
-END_DESCRIPTION
-
-Parameter_sector_profits_distribution_rate
-
-END_DESCRIPTION
-
-Parameter_sector_rnd_revenue_proportion
-
-END_DESCRIPTION
-
-Parameter_sector_std_dev_innovation
-
-END_DESCRIPTION
-
-Parameter_sector_strategic_price_weight
+Parameter_sector_tech_opportunity_quality
 
 END_DESCRIPTION
 
@@ -3735,243 +3548,207 @@ Parameter_sector_tech_opportunity_productivity
 
 END_DESCRIPTION
 
-Parameter_sector_tech_opportunity_quality
+Parameter_sector_strategic_price_weight
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Competitiveness
+Parameter_sector_std_dev_innovation
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Debt_Rate
+Parameter_sector_rnd_revenue_proportion
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_External_Finance_Rate
+Parameter_sector_profits_distribution_rate
+
+_INIT_
+All 3 instances equal to 0.65
+END_DESCRIPTION
+
+Parameter_sector_price_frequency
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Financial_Position
+Parameter_sector_payback_period
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Interest_Rate_Long_Term
+Parameter_sector_passthrough_productivity
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Interest_Rate_Short_Term
+Parameter_sector_passthrough_inflation
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Internal_Finance_Rate
+Parameter_sector_number_object_firms
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Investment_Constraint_Rate
+Parameter_sector_markup_adjustment
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Investment_Rate
+Parameter_sector_liquidity_preference_adjustment
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Liquidity_Rate
+Parameter_sector_learning_adjustment
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Markup
+Parameter_sector_investment_frequency
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Max_Debt_Rate
+Parameter_sector_input_tech_coefficient
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Modernization_Rate
+Parameter_sector_input_import_elasticity_price
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Price
+Parameter_sector_innovation_proportion
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Productivity
+Parameter_sector_initial_quality
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Quality
+Parameter_sector_initial_propensity_import_inputs
 
 END_DESCRIPTION
 
-Variable_Sector_Avg_Wage
+Parameter_sector_initial_profit_rate
 
 END_DESCRIPTION
 
-Variable_Sector_Bargain_Power
+Parameter_sector_initial_productivity
 
 END_DESCRIPTION
 
-Variable_Sector_Capacity_Utilization
+Parameter_sector_initial_price
 
 END_DESCRIPTION
 
-Variable_Sector_Demand_Met
+Parameter_sector_initial_liquidity_preference
 
 END_DESCRIPTION
 
-Variable_Sector_Demand_Met_By_Imports
+Parameter_sector_initial_external_price
 
 END_DESCRIPTION
 
-Variable_Sector_Effective_Loans
+Parameter_sector_initial_exports_share
 
 END_DESCRIPTION
 
-Variable_Sector_Effective_Orders
+Parameter_sector_initial_depreciation_scale
 
 END_DESCRIPTION
 
-Variable_Sector_Effective_Production
+Parameter_sector_initial_demand
 
 END_DESCRIPTION
 
-Variable_Sector_Employment
+Parameter_sector_initial_debt_rate
 
 END_DESCRIPTION
 
-Variable_Sector_Entry_Condition
+Parameter_sector_indirect_tax_rate
 
 END_DESCRIPTION
 
-Variable_Sector_Entry_Deposits_Needed
+Parameter_sector_financial_cost_passtrough
 
 END_DESCRIPTION
 
-Variable_Sector_Exports_Share
+Parameter_sector_external_price_weight
 
 END_DESCRIPTION
 
-Variable_Sector_External_Price
+Parameter_sector_external_price_shock_size
 
 END_DESCRIPTION
 
-Variable_Sector_Extra_Imports
+Parameter_sector_external_price_shock_duration
 
 END_DESCRIPTION
 
-Variable_Sector_Hedge_Normalized_Share
+Parameter_sector_external_price_shock_begin
 
 END_DESCRIPTION
 
-Variable_Sector_Hedge_Share
+Parameter_sector_external_price_sd
 
 END_DESCRIPTION
 
-Variable_Sector_Idle_Capacity
+Parameter_sector_external_price_growth
 
 END_DESCRIPTION
 
-Variable_Sector_Inventories
+Parameter_sector_external_price_competitiveness
 
 END_DESCRIPTION
 
-Variable_Sector_Max_Productivity
+Parameter_sector_exports_elasticity_price
 
 END_DESCRIPTION
 
-Variable_Sector_Max_Quality
+Parameter_sector_exports_elasticity_income
 
 END_DESCRIPTION
 
-Variable_Sector_Normalized_HHI
+Parameter_sector_exports_coefficient
 
 END_DESCRIPTION
 
-Variable_Sector_Number_Firms
+Parameter_sector_expectations
 
 END_DESCRIPTION
 
-Variable_Sector_Participation
+Parameter_sector_elasticity_quality
 
 END_DESCRIPTION
 
-Variable_Sector_Ponzi_Normalized_Share
+Parameter_sector_elasticity_price
 
 END_DESCRIPTION
 
-Variable_Sector_Ponzi_Share
+Parameter_sector_elascitity_delay
 
 END_DESCRIPTION
 
-Variable_Sector_Productive_Capacity
+Parameter_sector_desired_market_share
 
 END_DESCRIPTION
 
-Variable_Sector_Productive_Capacity_Available
+Parameter_sector_desired_inventories_proportion
 
 END_DESCRIPTION
 
-Variable_Sector_Productive_Capacity_Entry
+Parameter_sector_desired_degree_capacity_utilization
+
+_INIT_
+All 3 instances equal to 0.8
+END_DESCRIPTION
+
+Parameter_sector_debt_rate_adjustment
 
 END_DESCRIPTION
 
-Variable_Sector_Productive_Capacity_Exit
+Parameter_sector_competitiveness_adjustment
 
 END_DESCRIPTION
 
-Variable_Sector_Profit_Rate
+Parameter_sector_capital_output_ratio
 
 END_DESCRIPTION
 
-Variable_Sector_Profits
-
-END_DESCRIPTION
-
-Variable_Sector_Propensity_Import_Inputs
-
-END_DESCRIPTION
-
-Variable_Sector_Real_Exports
-
-END_DESCRIPTION
-
-Variable_Sector_SD_Investment_Rate
-
-END_DESCRIPTION
-
-Variable_Sector_Sales
-
-END_DESCRIPTION
-
-Variable_Sector_Short_Term_Rate
-
-END_DESCRIPTION
-
-Variable_Sector_Speculative_Normalized_Share
-
-END_DESCRIPTION
-
-Variable_Sector_Speculative_Share
-
-END_DESCRIPTION
-
-Variable_Sector_Stock_Deposits
-
-END_DESCRIPTION
-
-Variable_Sector_Stock_Loans
-
-END_DESCRIPTION
-
-Variable_Sector_Taxation
-
-END_DESCRIPTION
-
-Variable_Sector_Turbulence
-
-END_DESCRIPTION
-
-Parameter_sector_bargain_power_inflaton_adjustment
+Parameter_sector_capital_duration
 
 END_DESCRIPTION
 
@@ -3979,7 +3756,290 @@ Parameter_sector_bargain_power_productivity_adjustment
 
 END_DESCRIPTION
 
+Parameter_sector_bargain_power_inflaton_adjustment
+
+END_DESCRIPTION
+
+Parameter_sector_antecipation
+
+END_DESCRIPTION
+
+Parameter_id_intermediate_goods_sector
+
+END_DESCRIPTION
+
+Parameter_id_consumption_goods_sector
+
+END_DESCRIPTION
+
+Parameter_id_capital_goods_sector
+
+END_DESCRIPTION
+
+Variable_Sector_Turbulence
+
+END_DESCRIPTION
+
+Variable_Sector_Taxation
+
+END_DESCRIPTION
+
+Variable_Sector_Stock_Loans
+
+END_DESCRIPTION
+
+Variable_Sector_Stock_Deposits
+
+END_DESCRIPTION
+
+Variable_Sector_Speculative_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Speculative_Normalized_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Short_Term_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Sales
+
+END_DESCRIPTION
+
+Variable_Sector_SD_Investment_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Real_Exports
+
+END_DESCRIPTION
+
+Variable_Sector_Propensity_Import_Inputs
+
+END_DESCRIPTION
+
+Variable_Sector_Profits
+
+END_DESCRIPTION
+
+Variable_Sector_Profit_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Productive_Capacity_Exit
+
+END_DESCRIPTION
+
+Variable_Sector_Productive_Capacity_Entry
+
+END_DESCRIPTION
+
+Variable_Sector_Productive_Capacity_Available
+
+END_DESCRIPTION
+
+Variable_Sector_Productive_Capacity
+
+END_DESCRIPTION
+
+Variable_Sector_Ponzi_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Ponzi_Normalized_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Participation
+
+END_DESCRIPTION
+
+Variable_Sector_Number_Firms
+
+END_DESCRIPTION
+
+Variable_Sector_Normalized_HHI
+
+END_DESCRIPTION
+
+Variable_Sector_Max_Quality
+
+END_DESCRIPTION
+
+Variable_Sector_Max_Productivity
+
+END_DESCRIPTION
+
 Variable_Sector_Labor_Demand
+
+END_DESCRIPTION
+
+Variable_Sector_Inventories
+
+END_DESCRIPTION
+
+Variable_Sector_Internal_Funds
+Sum of firm internal funds (retained profits available for investment).
+Diagnostic: if negative, firms are cash-constrained.
+END_DESCRIPTION
+
+Variable_Sector_Idle_Capacity
+
+END_DESCRIPTION
+
+Variable_Sector_Hedge_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Hedge_Normalized_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Extra_Imports
+
+END_DESCRIPTION
+
+Variable_Sector_External_Price
+
+END_DESCRIPTION
+
+Variable_Sector_Exports_Share
+
+END_DESCRIPTION
+
+Variable_Sector_Entry_Deposits_Needed
+
+END_DESCRIPTION
+
+Variable_Sector_Entry_Condition
+
+END_DESCRIPTION
+
+Variable_Sector_Employment
+
+END_DESCRIPTION
+
+Variable_Sector_Effective_Replacement_Investment_Expenses
+Sum of firm effective replacement investment in the sector.
+Diagnostic: compare with expansion to see fund allocation.
+END_DESCRIPTION
+
+Variable_Sector_Effective_Production
+
+END_DESCRIPTION
+
+Variable_Sector_Effective_Orders
+
+END_DESCRIPTION
+
+Variable_Sector_Effective_Loans
+
+END_DESCRIPTION
+
+Variable_Sector_Effective_Expansion_Investment_Expenses
+Sector aggregate: Are firms actually investing in expansion?
+Sum of firm-level effective expansion investment within this sector.
+Gap between desired and effective indicates credit constraints.
+END_DESCRIPTION
+
+Variable_Sector_Desired_Replacement_Investment_Expenses
+Sum of firm desired replacement investment in the sector.
+Diagnostic: if high, depreciation is absorbing investment capacity.
+END_DESCRIPTION
+
+Variable_Sector_Desired_Expansion_Investment_Expenses
+Sector aggregate: Do firms WANT to expand capacity?
+Sum of firm-level desired expansion investment within this sector.
+END_DESCRIPTION
+
+Variable_Sector_Demand_Met_By_Imports
+
+END_DESCRIPTION
+
+Variable_Sector_Demand_Met
+
+END_DESCRIPTION
+
+Variable_Sector_Demand_Loans
+Sum of firm loan demand in the sector.
+Diagnostic: compare with Sector_Effective_Loans to detect credit rationing.
+END_DESCRIPTION
+
+Variable_Sector_Capacity_Utilization
+
+END_DESCRIPTION
+
+Variable_Sector_Bargain_Power
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Wage
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Quality
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Productivity
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Price
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Modernization_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Max_Debt_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Markup
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Liquidity_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Investment_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Investment_Constraint_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Internal_Finance_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Interest_Rate_Short_Term
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Interest_Rate_Long_Term
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Financial_Position
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_External_Finance_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Debt_Rate
+
+END_DESCRIPTION
+
+Variable_Sector_Avg_Competitiveness
 
 END_DESCRIPTION
 
@@ -5437,6 +5497,8 @@ END_DESCRIPTION
 
 Parameter_household_propensity_evade
 
+_INIT_
+All 2 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Deposits_Offshore
@@ -5477,6 +5539,23 @@ END_DESCRIPTION
 
 Variable_Household_Asset_Penalty
 
+END_DESCRIPTION
+
+Variable_Household_Wealth_Tax_From_Buffer
+Stage 7: Portion of wealth tax paid by invading precautionary liquidity buffer (Stage 4).
+Analysis variable — this amount is ALSO included in From_Deposits for SFC.
+Nonzero values indicate household financial distress.
+Computed in Household_Wealth_Tax_Payment.
+END_DESCRIPTION
+
+Variable_Household_Offshore_Penalty
+Stage 9: Penalty for offshore deposits if detected by audit.
+
+Same enforcement structure as asset evasion (Option A):
+Penalty = ρ × Offshore_Deposits (absolute confiscation rate).
+
+Under international information exchange (FATCA, CRS), governments can
+detect offshore holdings. Same audit draw as domestic assets.
 END_DESCRIPTION
 
 Object_HOUSEHOLD_LOANS

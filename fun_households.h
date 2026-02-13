@@ -1167,82 +1167,92 @@ RESULT(v[10])
 
 EQUATION("Household_Wealth_Tax_Payment")
 /*
-Stage 7: Two-stage behavioral tax payment.
+Stage 7: Four-stage sequential tax payment (Dissertation Eq. 5.50-5.54).
 
-STAGE 1 - LIQUIDITY DECISION:
-  Household uses liquidity preference to determine how much to pay from deposits.
-  High liquidity preference → preserve deposits → pay LESS from deposits.
-  Low liquidity preference → willing to use deposits → pay MORE from deposits.
+Implements the Buy-Borrow-Die (BBD) pecking order. Each stage is EXHAUSTED
+before proceeding to the next:
 
-STAGE 2 - DEBT vs ASSETS DECISION:
-  For remaining tax (after deposits), use debt capacity to split between:
-  - Asset liquidation (if near debt limit)
-  - Borrowing (if debt headroom available)
+  STAGE 1 - Excess Deposits (Eq. 5.50):
+    Use deposits above precautionary liquidity buffer.
 
-Uses EXISTING parameters:
-- household_liquidity_preference (effective value, heterogeneous)
-- Household_Max_Debt_Rate / Household_Debt_Rate
+  STAGE 2 - Borrowing (Eq. 5.51):
+    Borrow up to debt capacity. Preferred over asset sales
+    to avoid capital gains realization (BBD strategy).
 
-Stores payment sources in separate variables for SFC tracking.
+  STAGE 3 - Asset Liquidation (Eq. 5.52):
+    Sell financial assets only after borrowing exhausted.
+    Critical reconnection mechanism: forces financial circuit
+    back into productive economy.
+
+  STAGE 4 - Buffer Invasion (Eq. 5.53):
+    Invade precautionary liquidity buffer as last resort.
+
+Identity: T_V = T_M + T_L + T_A + T_B (Eq. 5.54)
 */
 v[0] = V("Household_Wealth_Tax_Owed");
-v[50] = 0;  // Final result
+v[50] = 0;
 
 if(v[0] <= 0)
 {
-    // No tax owed
     WRITE("Household_Wealth_Tax_From_Deposits", 0);
-    WRITE("Household_Wealth_Tax_From_Assets", 0);
     WRITE("Household_Wealth_Tax_From_Borrowing", 0);
-    v[50] = 0;
+    WRITE("Household_Wealth_Tax_From_Assets", 0);
+    WRITE("Household_Wealth_Tax_From_Buffer", 0);
 }
 else
 {
-    // ========== STAGE 1: LIQUIDITY DECISION ==========
-    v[10] = VL("Household_Stock_Deposits", 1);      // Available deposits
-    v[11] = V("household_liquidity_preference");    // Effective preference (direct use)
+    // ========== STAGE 1: EXCESS DEPOSITS (Eq. 5.50) ==========
+    v[10] = VL("Household_Stock_Deposits", 1);      // M_{t-1}
+    v[11] = V("household_liquidity_preference");     // t_i
+    v[12] = v[10] * v[11];                           // Buffer = t_i × M
+    v[13] = max(0, v[10] - v[12]);                   // Excess = (1 - t_i) × M
 
-    // Deposits household is willing to use for tax (respecting liquidity buffer)
-    // High liq pref → keep more → use less; Low liq pref → keep less → use more
-    v[12] = v[10] * v[11];                          // Desired liquidity buffer
-    v[13] = max(0, v[10] - v[12]);                  // Available for tax payment
+    v[16] = min(v[0], v[13]);                        // T_M: pay from excess
+    v[17] = v[0] - v[16];                            // Remainder after Stage 1
 
-    // Pay from deposits (up to available after liquidity buffer)
-    v[16] = min(v[0], v[13]);                       // From deposits
-    v[17] = v[0] - v[16];                           // Remainder to cover
-
-    if(v[17] <= 0.001)  // Tax fully covered by deposits
+    if(v[17] <= 0.001)
     {
+        // Tax fully covered by excess deposits
         WRITE("Household_Wealth_Tax_From_Deposits", v[16]);
-        WRITE("Household_Wealth_Tax_From_Assets", 0);
         WRITE("Household_Wealth_Tax_From_Borrowing", 0);
+        WRITE("Household_Wealth_Tax_From_Assets", 0);
+        WRITE("Household_Wealth_Tax_From_Buffer", 0);
     }
     else
     {
-        // ========== STAGE 2: DEBT CAPACITY DECISION ==========
-        v[20] = V("Household_Max_Debt_Rate");           // Max willing debt rate
-        v[21] = VL("Household_Debt_Rate", 1);           // LAGGED debt level (avoids circular dependency)
-        v[22] = VL("Household_Financial_Assets", 1);    // Available assets (capitalists)
+        // ========== STAGE 2: BORROWING (Eq. 5.51) ==========
+        // Monetary capacity mirrors Household_Max_Loans:
+        // L_available = Max_Debt_Rate × (Deposits + Income + Collateral) - Loans
+        v[20] = V("Household_Max_Debt_Rate");
+        v[21] = VL("Household_Stock_Loans", 1);
+        v[22] = VL("Household_Nominal_Disposable_Income", 1);
+        v[23] = VL("Household_Financial_Assets", 1);
+        v[24] = V("household_type");
+        v[25] = (v[24] == 1) ? v[23] : 0;               // Capitalists pledge assets
+        v[26] = max(0, v[20] * (v[10] + v[22] + v[25]) - v[21]);
 
-        // Debt headroom: how much room to borrow?
-        // 1.0 = at zero debt, plenty of room; 0.0 = at max debt, no room
-        v[23] = (v[20] > 0.001) ? max(0, min(1, (v[20] - v[21]) / v[20])) : 0;
+        v[27] = min(v[17], v[26]);                       // T_L: borrow up to capacity
+        v[28] = v[17] - v[27];                           // Remainder after Stage 2
 
-        // Split remainder by debt headroom
-        // High headroom → prefer borrowing; Low headroom → must liquidate assets
-        v[24] = v[17] * v[23];                          // Willing to borrow this much
-        v[25] = v[17] * (1 - v[23]);                    // Prefer asset liquidation
+        // ========== STAGE 3: ASSET LIQUIDATION (Eq. 5.52) ==========
+        v[30] = min(v[28], v[23]);                       // T_A: liquidate up to available
+        v[31] = v[28] - v[30];                           // Remainder after Stage 3
 
-        // Constrain asset liquidation by available assets
-        v[26] = min(v[25], v[22]);                      // Actual from assets
-        v[27] = v[17] - v[26];                          // Must borrow (remainder)
+        // ========== STAGE 4: BUFFER INVASION (Eq. 5.53) ==========
+        v[32] = min(v[31], v[12]);                       // T_B: invade buffer
+        v[33] = v[31] - v[32];                           // Residual (should be ~0)
 
-        // Store payment sources for use by stock equations
-        WRITE("Household_Wealth_Tax_From_Deposits", v[16]);
-        WRITE("Household_Wealth_Tax_From_Assets", v[26]);
+        // Any residual: emergency borrowing (tax payment is mandatory)
+        v[27] = v[27] + v[33];
+
+        // Store payment sources for stock equations
+        // From_Deposits includes buffer invasion (both are deposit withdrawals)
+        WRITE("Household_Wealth_Tax_From_Deposits", v[16] + v[32]);
         WRITE("Household_Wealth_Tax_From_Borrowing", v[27]);
+        WRITE("Household_Wealth_Tax_From_Assets", v[30]);
+        WRITE("Household_Wealth_Tax_From_Buffer", v[32]);
     }
-    v[50] = v[0];  // Return total tax owed (= total paid)
+    v[50] = v[0];
 }
 
 RESULT(v[50])
@@ -1265,8 +1275,17 @@ Computed in Household_Wealth_Tax_Payment.
 
 EQUATION_DUMMY("Household_Wealth_Tax_From_Borrowing", "Household_Wealth_Tax_Payment")
 /*
-Stage 7: Portion of wealth tax paid via new borrowing.
-Increases Household_Stock_Loans.
+Stage 7: Portion of wealth tax paid via new borrowing (Stage 2 + emergency).
+Includes any residual after all four stages are exhausted.
+Computed in Household_Wealth_Tax_Payment.
+*/
+
+
+EQUATION_DUMMY("Household_Wealth_Tax_From_Buffer", "Household_Wealth_Tax_Payment")
+/*
+Stage 7: Portion of wealth tax paid by invading precautionary liquidity buffer (Stage 4).
+Analysis variable — this amount is ALSO included in From_Deposits for SFC.
+Nonzero values indicate household financial distress.
 Computed in Household_Wealth_Tax_Payment.
 */
 
@@ -1355,7 +1374,18 @@ EQUATION("Household_Deposits_Offshore")
 Stage 9: Stock of deposits in tax havens (invisible to government).
 CONSOLIDATED: Inlines flight decision logic.
 
-Inflows: capital flight (if propensity × θ > interest_spread), offshore interest
+Proportional flight with symmetric deterrence (TODO #2):
+  flight_fraction = ψ × max(0, 1 - (p×ρ + Δr) / τ_V)
+
+Where:
+  p×ρ = expected penalty per unit (enforcement deterrence)
+  Δr  = r_domestic - r_offshore (interest cost)
+  τ_V = wealth tax rate (benefit of flying)
+
+Consistent with asset evasion formula: both channels use p×ρ/τ_V deterrence.
+Flight only occurs when τ_V > p×ρ + Δr (benefit exceeds total costs).
+
+Inflows: capital flight (proportional), offshore interest
 Outflows: repatriation
 
 Writes: Household_Decision_Flight, Household_Offshore_Interest
@@ -1366,25 +1396,31 @@ v[2] = VL("Household_Net_Wealth", 1);             // For liability check
 v[3] = VS(country, "switch_class_tax_structure");
 
 // Default: no flight
-v[10] = 0;  // flight_decision
+v[10] = 0;  // flight_fraction [0,1]
 v[11] = 0;  // new_flight_amount
 
 // Check if wealth tax active and household is liable
 if(v[3] >= 5 && v[2] > VS(country, "wealth_tax_threshold") && v[1] > 0)
 {
-    // Flight decision: propensity × θ > (r_domestic - r_offshore)
-    v[4] = VS(country, "wealth_tax_rate");                                    // θ
-    v[5] = VS(centralbank, "Central_Bank_Basic_Interest_Rate");               // r_domestic (CB rate directly)
-    v[6] = VS(external, "external_interest_rate");                            // r_offshore (world rate)
-    v[7] = V("household_propensity_evade");                                   // [0,1]
+    v[4] = VS(country, "wealth_tax_rate");                                    // τ_V
+    v[5] = VS(centralbank, "Central_Bank_Basic_Interest_Rate");               // r_domestic
+    v[6] = VS(external, "external_interest_rate");                            // r_offshore
+    v[7] = V("household_propensity_evade");                                   // ψ [0,1]
 
-    v[8] = v[7] * v[4];       // Perceived benefit = propensity × θ
-    v[9] = v[5] - v[6];       // Interest cost = r_domestic - r_offshore
+    // Enforcement deterrence (symmetric with asset evasion)
+    v[20] = VS(government, "Government_Dynamic_Audit_Probability");           // p
+    v[21] = VS(government, "penalty_rate");                                   // ρ (absolute)
+    v[22] = v[20] * v[21];                                                   // p×ρ
 
-    if(v[7] > 0 && v[8] > v[9])  // Only fly if propensity > 0 AND benefit > cost
+    // Total cost per unit = enforcement + interest differential
+    v[8] = v[22] + max(0.0, v[5] - v[6]);   // p×ρ + Δr
+
+    // Proportional flight fraction
+    if(v[7] > 0 && v[4] > v[8] && v[4] > 0.0001)
     {
-        v[10] = 1;            // Flight decision = yes
-        v[11] = v[1];         // Move ALL domestic deposits offshore
+        v[10] = v[7] * (1.0 - v[8] / v[4]);  // ψ × (1 - (p×ρ + Δr)/τ_V)
+        v[10] = max(0.0, min(1.0, v[10]));
+        v[11] = v[1] * v[10];                 // Flight = fraction × domestic deposits
     }
 }
 WRITE("Household_Decision_Flight", v[10]);
@@ -1405,8 +1441,8 @@ RESULT(max(0, v[15]))
 
 EQUATION_DUMMY("Household_Decision_Flight", "Household_Deposits_Offshore")
 /*
-Stage 9: Binary flight decision (0 or 1).
-Written by Household_Deposits_Offshore.
+Stage 9: Proportional flight fraction [0,1].
+= ψ × (1 - (p×ρ + Δr) / τ_V). Written by Household_Deposits_Offshore.
 */
 
 
@@ -1433,8 +1469,13 @@ EQUATION("Household_Assets_Undeclared")
 Stage 9: Financial assets hidden from tax authority.
 CORE equation that computes undeclared amount and writes hide fraction.
 
-Decision rule: hide_fraction = propensity × (1 - p × π)
-Where p × π is deterrence factor (audit_prob × penalty_rate).
+Dissertation formula (Section 5, Eq. 3629):
+  h_i = ψ_i × (1 - p×ρ / τ_V)   if τ_V > p×ρ
+  h_i = 0                         otherwise
+
+Deterrence is the ratio of expected penalty (p×ρ) to tax owed (τ_V).
+When expected penalty >= tax rate, full deterrence occurs (no evasion).
+Higher τ_V makes evasion MORE attractive (higher payoff to hiding).
 
 Writes: Household_Decision_Evasion, Household_Assets_Declared
 */
@@ -1453,18 +1494,19 @@ if(v[0] >= 5 && v[1] > v[2] && v[3] == 1 && v[4] > 0)
 {
     // Get enforcement parameters (use dynamic audit rate)
     v[5] = VS(government, "Government_Dynamic_Audit_Probability");  // p (dynamic)
-    v[6] = VS(government, "penalty_rate");           // π
-    v[7] = V("household_propensity_evade");          // [0,1]
+    v[6] = VS(government, "penalty_rate");           // ρ (penalty multiplier)
+    v[7] = V("household_propensity_evade");          // ψ [0,1]
+    v[8] = VS(country, "wealth_tax_rate");           // τ_V
 
-    // Deterrence factor
-    v[8] = v[5] * v[6];  // p × π
+    // Deterrence = expected penalty / tax rate = (p × ρ) / τ_V
+    v[9] = v[5] * v[6];  // p × ρ (expected penalty rate)
 
-    // Only hide if not fully deterred
-    if(v[8] < 1.0)
+    // Only hide if tax rate exceeds expected penalty (evasion is profitable)
+    if(v[8] > v[9] && v[8] > 0.0001)
     {
         // Hide fraction = propensity × (1 - deterrence)
-        v[9] = v[7] * (1.0 - v[8]);
-        v[10] = max(0.0, min(1.0, v[9]));
+        v[12] = v[7] * (1.0 - v[9] / v[8]);
+        v[10] = max(0.0, min(1.0, v[12]));
 
         // Undeclared assets = total × hide_fraction
         v[11] = v[4] * v[10];
@@ -1498,12 +1540,13 @@ EQUATION("Household_Repatriated_Deposits")
 Stage 9: Total repatriation = max(Liquidity, Discretionary).
 
 Liquidity: MUST bring back (covers obligations shortfall)
-Discretionary: CHOOSES to bring back (pure economics - inverse of flight decision)
+Discretionary: CHOOSES to bring back (inverse of proportional flight decision)
 
-Flight decision:     propensity × θ > (r_dom - r_off)  → fly
-Repatriation:        (r_dom - r_off) > propensity × θ  → repatriate
+Flight fraction:      ψ × (1 - (p×ρ + Δr) / τ_V)
+Desired domestic:     1 - flight_fraction
+Repatriation:         offshore × max(0, desired_domestic - actual_domestic_share)
 
-No arbitrary base_rate needed - just the interest gap.
+Also includes offshore penalty obligations.
 */
 v[0] = VL("Household_Deposits_Offshore", 1);
 v[16] = 0;  // Default: no repatriation
@@ -1511,30 +1554,43 @@ v[16] = 0;  // Default: no repatriation
 if(v[0] > 0)
 {
     // --- LIQUIDITY COMPONENT ---
-    // Obligations: consumption + debt + taxes + penalties
+    // Obligations: consumption + debt + taxes + penalties (including offshore)
     v[1] = V("Household_Desired_Expenses");
     v[2] = V("Household_Financial_Obligations");
     v[3] = V("Household_Wealth_Tax_Owed");
     v[4] = V("Household_Asset_Penalty");
+    v[30] = V("Household_Offshore_Penalty");
     v[5] = VL("Household_Deposits_Domestic", 1);  // Lagged to avoid circular dependency
 
-    v[6] = v[1] + v[2] + v[3] + v[4];     // Total obligations
-    v[7] = max(0.0, v[6] - v[5]);          // Liquidity shortfall
+    v[6] = v[1] + v[2] + v[3] + v[4] + v[30];  // Total obligations
+    v[7] = max(0.0, v[6] - v[5]);               // Liquidity shortfall
 
-    // --- DISCRETIONARY COMPONENT (pure economics) ---
-    // Repatriate when: (r_dom - r_off) > propensity × θ
-    // This is the INVERSE of the flight decision
-    v[8] = V("household_propensity_evade");
-    v[9] = VS(country, "wealth_tax_rate");                                    // θ
-    v[10] = VS(centralbank, "Central_Bank_Basic_Interest_Rate");               // r_dom (CB rate directly)
-    v[11] = VS(external, "external_interest_rate");                           // r_off (world rate)
+    // --- DISCRETIONARY COMPONENT (inverse of flight decision) ---
+    v[8] = V("household_propensity_evade");                                   // ψ
+    v[9] = VS(country, "wealth_tax_rate");                                    // τ_V
+    v[10] = VS(centralbank, "Central_Bank_Basic_Interest_Rate");              // r_dom
+    v[11] = VS(external, "external_interest_rate");                           // r_off
 
-    // Interest gap = (r_dom - r_off) - propensity × θ
-    v[12] = (v[10] - v[11]) - v[8] * v[9];
-    v[13] = max(0.0, v[12]);
+    // Enforcement deterrence (same as flight decision)
+    v[20] = VS(government, "Government_Dynamic_Audit_Probability");           // p
+    v[21] = VS(government, "penalty_rate");                                   // ρ
+    v[22] = v[20] * v[21];                                                   // p×ρ
 
-    // Discretionary = offshore × interest_gap (when positive)
-    v[14] = v[0] * v[13];
+    // Total cost per unit
+    v[23] = v[22] + max(0.0, v[10] - v[11]);   // p×ρ + Δr
+
+    // Desired flight fraction (same formula as flight decision)
+    v[24] = 0;
+    if(v[8] > 0 && v[9] > v[23] && v[9] > 0.0001)
+        v[24] = v[8] * (1.0 - v[23] / v[9]);   // ψ × (1 - (p×ρ + Δr)/τ_V)
+    v[24] = max(0.0, min(1.0, v[24]));
+
+    // Desired domestic share = 1 - flight_fraction
+    // If current offshore share exceeds desired, repatriate the excess
+    v[25] = v[0] + v[5];  // Total deposits (offshore + domestic)
+    v[26] = (v[25] > 0.01) ? v[0] / v[25] : 0;  // Current offshore share
+    v[27] = max(0.0, v[26] - v[24]);             // Excess offshore share
+    v[14] = v[0] * v[27];                        // Discretionary repatriation
 
     // Total = max(liquidity, discretionary), capped at offshore stock
     v[15] = max(v[7], v[14]);
@@ -1546,7 +1602,7 @@ RESULT(v[16])
 
 EQUATION("Household_Is_Audited")
 /*
-Stage 9: Stochastic audit outcome (ONLY for assets, not offshore deposits).
+Stage 9: Stochastic audit outcome. Applies to BOTH asset evasion and offshore deposits.
 Uses dynamic audit probability when enforcement_sensitivity > 0.
 */
 v[0] = VS(government, "Government_Dynamic_Audit_Probability");
@@ -1556,7 +1612,12 @@ RESULT(RND < v[0] ? 1 : 0)
 EQUATION("Household_Asset_Penalty")
 /*
 Stage 9: Penalty for undeclared ASSETS if caught by audit.
-Penalty = π × θ × Undeclared_Assets
+
+Option A (dissertation): ρ is an absolute confiscation rate on hidden wealth.
+Penalty = ρ × Undeclared_Assets
+
+Consistent with evasion formula: h = ψ × (1 - p×ρ/τ_V)
+Both use ρ as penalty per unit of hidden wealth, independent of tax rate.
 */
 v[0] = V("Household_Is_Audited");
 v[1] = V("Household_Assets_Undeclared");
@@ -1564,9 +1625,31 @@ v[4] = 0;  // Default: no penalty
 
 if(v[0] == 1 && v[1] >= 0.01)
 {
-    v[2] = VS(country, "wealth_tax_rate");
     v[3] = VS(government, "penalty_rate");
-    v[4] = v[3] * v[2] * v[1];
+    v[4] = v[3] * v[1];  // ρ × H (absolute confiscation)
+}
+
+RESULT(v[4])
+
+
+EQUATION("Household_Offshore_Penalty")
+/*
+Stage 9: Penalty for offshore deposits if detected by audit.
+
+Same enforcement structure as asset evasion (Option A):
+Penalty = ρ × Offshore_Deposits (absolute confiscation rate).
+
+Under international information exchange (FATCA, CRS), governments can
+detect offshore holdings. Same audit draw as domestic assets.
+*/
+v[0] = V("Household_Is_Audited");
+v[1] = VL("Household_Deposits_Offshore", 1);  // Lagged to avoid circular dep
+v[4] = 0;  // Default: no penalty
+
+if(v[0] == 1 && v[1] >= 0.01)
+{
+    v[3] = VS(government, "penalty_rate");
+    v[4] = v[3] * v[1];  // ρ × offshore_deposits (absolute confiscation)
 }
 
 RESULT(v[4])

@@ -1047,6 +1047,7 @@ if(households != NULL)
         WRITES(cur, "Household_Wealth_Tax_From_Deposits", 0);
         WRITES(cur, "Household_Wealth_Tax_From_Assets", 0);
         WRITES(cur, "Household_Wealth_Tax_From_Borrowing", 0);
+        WRITES(cur, "Household_Wealth_Tax_From_Buffer", 0);
     }
     }  // End CYCLE(cur2, "CLASSES")
 

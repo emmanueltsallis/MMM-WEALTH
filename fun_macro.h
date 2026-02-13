@@ -812,6 +812,19 @@ else
 RESULT(v[1])
 
 
+EQUATION("Country_Wealth_Tax_From_Buffer")
+/*
+Stage 7: Aggregate wealth tax paid by invading liquidity buffer (Stage 4).
+Nonzero indicates widespread household financial distress.
+*/
+v[0] = V("switch_class_tax_structure");
+if(v[0] < 5)
+    v[1] = 0;
+else
+    v[1] = SUMS(working_class, "Household_Wealth_Tax_From_Buffer") + SUMS(capitalist_class, "Household_Wealth_Tax_From_Buffer");
+RESULT(v[1])
+
+
 EQUATION("Country_Wealth_Capital_Ratio")
 /*
 Stage 5.4: VALUATION RATIO (Kaldor's v / Tobin's q) = Total Wealth / Productive Capital.
@@ -959,9 +972,12 @@ RESULT(SUMS(working_class, "Household_Is_Audited") + SUMS(capitalist_class, "Hou
 EQUATION("Country_Penalty_Revenue")
 /*
 Stage 9: Total penalties collected from caught evaders.
+Includes both asset evasion penalties and offshore deposit penalties.
 Goes to Government_Penalty_Revenue.
 */
-RESULT(SUMS(working_class, "Household_Asset_Penalty") + SUMS(capitalist_class, "Household_Asset_Penalty"))
+v[0] = SUMS(working_class, "Household_Asset_Penalty") + SUMS(capitalist_class, "Household_Asset_Penalty");
+v[1] = SUMS(working_class, "Household_Offshore_Penalty") + SUMS(capitalist_class, "Household_Offshore_Penalty");
+RESULT(v[0] + v[1])
 
 
 // Country_Tax_Gap moved to Government_Wealth_Tax_Gap in fun_government.h (Stage 9)

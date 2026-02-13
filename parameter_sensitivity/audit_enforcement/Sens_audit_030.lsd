@@ -191,6 +191,7 @@ Label Root
 			Param: government_cut_weight_benefits
 			Param: government_benefit_rate
 			Param: enforcement_sensitivity
+			Param: enforcement_decay
 			Param: audit_probability
 			Var: Government_Wealth_Tax_Revenue
 			Var: Government_Wealth_Tax_Gap
@@ -715,6 +716,8 @@ Label Root
 				Var: Household_Wealth_Tax_From_Deposits
 				Var: Household_Wealth_Tax_From_Assets
 				Var: Household_Wealth_Tax_From_Borrowing
+				Var: Household_Offshore_Penalty
+				Var: Household_Wealth_Tax_From_Buffer
 				Var: Household_Asset_Purchases
 				Param: household_liquidity_preference
 				Var: Household_Transfer_Received
@@ -912,6 +915,7 @@ Label Root
 		Var: Country_Wealth_Tax_From_Deposits
 		Var: Country_Wealth_Tax_From_Assets
 		Var: Country_Wealth_Tax_From_Borrowing
+		Var: Country_Wealth_Tax_From_Buffer
 		Var: Country_Employed_Households
 		Var: Country_Transfer_Desired
 		Param: wealth_transfer_target_percentile
@@ -1098,6 +1102,7 @@ Var: Country_Wealth_Tax_Taxpayer_Count 0 s + n n
 Var: Country_Wealth_Tax_From_Deposits 0 s + n n
 Var: Country_Wealth_Tax_From_Assets 0 s + n n
 Var: Country_Wealth_Tax_From_Borrowing 0 s + n n
+Var: Country_Wealth_Tax_From_Buffer 0 s + n n
 Var: Country_Employed_Households 1 s + n n	0
 Var: Country_Transfer_Desired 0 s + n n
 Param: wealth_transfer_target_percentile 0 n + n n	0.5
@@ -1106,7 +1111,7 @@ Param: country_avg_propensity_evade 0 n + n n	0.5
 Var: Country_Total_Deposits_Offshore 0 s + n n
 Var: Country_Total_Assets_Undeclared 0 s + n n
 Var: Country_Capital_Flight_Rate 0 s + n n
-Var: Country_Asset_Evasion_Rate 0 s + n n
+Var: Country_Asset_Evasion_Rate 1 s + n n	0
 Var: Country_Evader_Count 0 s + n n
 Var: Country_Audit_Count 0 s + n n
 Var: Country_Penalty_Revenue 0 s + n n
@@ -1274,7 +1279,7 @@ Param: interest_shock_size 0 n + n n	0.01
 Param: interest_shock_duration 0 n + n n	0
 
 Object: GOVERNMENT C	1
-Param: penalty_rate 0 n + n n	2
+Param: penalty_rate 0 n + n n	0.015
 Param: government_surplus_target_adjustment 0 n + n n	0.001
 Param: government_real_wage_growth 0 n + n n	0.0025
 Param: government_real_investment_growth 0 n + n n	0.001
@@ -1296,7 +1301,8 @@ Param: government_cut_weight_inputs 0 n + n n	1
 Param: government_cut_weight_consumption 0 n + n n	1
 Param: government_cut_weight_benefits 0 n + n n	0.5
 Param: government_benefit_rate 0 n + n n	0.4
-Param: enforcement_sensitivity 0 n + n n	1
+Param: enforcement_sensitivity 0 n + n n	0.07
+Param: enforcement_decay 0 n + n n	0.1
 Param: audit_probability 0 n + n n	0.30
 Var: Government_Wealth_Tax_Revenue 0 s + n n
 Var: Government_Wealth_Tax_Gap 4 s + n n	0	0	0	0
@@ -1822,6 +1828,8 @@ Var: Household_Wealth_Tax_Payment 0 s + n n
 Var: Household_Wealth_Tax_From_Deposits 0 s + n n
 Var: Household_Wealth_Tax_From_Assets 0 s + n n
 Var: Household_Wealth_Tax_From_Borrowing 0 s + n n
+Var: Household_Offshore_Penalty 1 s + n n	0	0
+Var: Household_Wealth_Tax_From_Buffer 0 s + n n
 Var: Household_Asset_Purchases 0 s + n n
 Param: household_liquidity_preference 0 s + n n	0.3	0.3
 Var: Household_Transfer_Received 0 s + n n
@@ -2582,6 +2590,10 @@ END_DESCRIPTION
 
 Variable_Country_Wealth_Tax_From_Borrowing
 Stage 7: Aggregate wealth tax paid via borrowing.
+END_DESCRIPTION
+
+Variable_Country_Wealth_Tax_From_Buffer
+
 END_DESCRIPTION
 
 Variable_Country_Employed_Households
@@ -3380,6 +3392,10 @@ Parameter_government_benefit_rate
 END_DESCRIPTION
 
 Parameter_enforcement_sensitivity
+
+END_DESCRIPTION
+
+Parameter_enforcement_decay
 
 END_DESCRIPTION
 
@@ -5463,6 +5479,14 @@ Variable_Household_Wealth_Tax_From_Assets
 END_DESCRIPTION
 
 Variable_Household_Wealth_Tax_From_Borrowing
+
+END_DESCRIPTION
+
+Variable_Household_Offshore_Penalty
+
+END_DESCRIPTION
+
+Variable_Household_Wealth_Tax_From_Buffer
 
 END_DESCRIPTION
 

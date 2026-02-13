@@ -359,22 +359,29 @@ RESULT(v[0] + v[1])
 
 EQUATION("Government_Dynamic_Audit_Probability")
 /*
-Stage 9: Dynamic audit enforcement based on observed evasion.
+Stage 9: Natural decay enforcement model (TODO #3).
 
-Formula: audit_prob = base × (1 + sensitivity × evasion_rate)
+Formula:
+  p_t = p_base + (1-δ) × (p_{t-1} - p_base) + η × e_{t-1}
+
 Where:
-  - base = audit_probability parameter
-  - sensitivity = enforcement_sensitivity parameter (0 = fixed)
-  - evasion_rate = 4-period average of Tax_Gap / Potential_Revenue
+  p_base = audit_probability (minimum enforcement floor)
+  δ      = enforcement_decay (capacity depreciation rate)
+  η      = enforcement_sensitivity (response to observed evasion)
+  e      = Country_Asset_Evasion_Rate (lagged)
 
-When sensitivity = 0, returns base rate (fixed enforcement).
-When sensitivity > 0, scales with observed evasion trend.
+Steady state: p* = p_base + (η/δ) × e*
 
-Uses 4-period moving average to smooth stochastic noise.
-Capped at 1.0 (can't audit more than 100%).
+Enforcement capacity builds when evasion is high and decays toward
+baseline when evasion subsides. No explicit evasion target needed;
+system finds its own equilibrium.
+
+When enforcement_sensitivity = 0, returns base rate (fixed enforcement).
+When enforcement_decay = 0, reduces to pure accumulation (no depreciation).
 */
-v[0] = V("audit_probability");              // Base rate
-v[1] = V("enforcement_sensitivity");        // Response intensity (0 = fixed)
+v[0] = V("audit_probability");              // p_base (floor)
+v[1] = V("enforcement_sensitivity");        // η (response to evasion)
+v[2] = V("enforcement_decay");             // δ (capacity depreciation)
 
 // If no dynamic enforcement, just return base
 if(v[1] <= 0)
@@ -383,32 +390,21 @@ if(v[1] <= 0)
 }
 else
 {
-    // For early periods (< 5), use base rate (not enough history)
-    if(t <= 4)
+    // For first period, use base rate (no history)
+    if(t <= 1)
     {
         v[10] = v[0];
     }
     else
     {
-        // Calculate 4-period moving average of Tax_Gap (lagged)
-        v[2] = (VL("Government_Wealth_Tax_Gap", 1) + VL("Government_Wealth_Tax_Gap", 2) +
-                VL("Government_Wealth_Tax_Gap", 3) + VL("Government_Wealth_Tax_Gap", 4)) / 4.0;
+        v[3] = VL("Government_Dynamic_Audit_Probability", 1);  // p_{t-1}
+        v[4] = VL("Country_Asset_Evasion_Rate", 1);            // e_{t-1}
 
-        // Calculate 4-period moving average of Potential_Revenue (lagged)
-        v[3] = (VL("Government_Potential_Wealth_Tax_Revenue", 1) + VL("Government_Potential_Wealth_Tax_Revenue", 2) +
-                VL("Government_Potential_Wealth_Tax_Revenue", 3) + VL("Government_Potential_Wealth_Tax_Revenue", 4)) / 4.0;
+        // Decay model: base + persistence + response
+        v[5] = v[0] + (1.0 - v[2]) * (v[3] - v[0]) + v[1] * v[4];
 
-        // Evasion rate = avg_gap / avg_potential (handle division by zero)
-        if(v[3] > 0.01)
-            v[4] = v[2] / v[3];
-        else
-            v[4] = 0;  // No potential revenue = no evasion rate
-
-        // Dynamic formula: base × (1 + sensitivity × evasion_rate)
-        v[5] = v[0] * (1.0 + v[1] * v[4]);
-
-        // Cap at 1.0 (can't audit more than 100%)
-        v[10] = min(1.0, v[5]);
+        // Bound to [0, 1]
+        v[10] = max(0.0, min(1.0, v[5]));
     }
 }
 RESULT(v[10])

@@ -226,6 +226,7 @@ Label Root
 			Var: Government_Desired_Consumption
 			Var: Government_Debt_GDP_Ratio
 			Var: Government_Debt
+			Param: enforcement_decay
 
 		}
 
@@ -730,6 +731,7 @@ Label Root
 				Var: Household_Repatriated_Deposits
 				Var: Household_Is_Audited
 				Var: Household_Asset_Penalty
+				Var: Household_Offshore_Penalty
 
 			}
 
@@ -1106,7 +1108,7 @@ Param: country_avg_propensity_evade 0 n + n n	0.5
 Var: Country_Total_Deposits_Offshore 0 s + n n
 Var: Country_Total_Assets_Undeclared 0 s + n n
 Var: Country_Capital_Flight_Rate 0 s + n n
-Var: Country_Asset_Evasion_Rate 0 s + n n
+Var: Country_Asset_Evasion_Rate 1 s + n n	0
 Var: Country_Evader_Count 0 s + n n
 Var: Country_Audit_Count 0 s + n n
 Var: Country_Penalty_Revenue 0 s + n n
@@ -1274,7 +1276,7 @@ Param: interest_shock_size 0 n + n n	0.01
 Param: interest_shock_duration 0 n + n n	0
 
 Object: GOVERNMENT C	1
-Param: penalty_rate 0 n + n n	2
+Param: penalty_rate 0 n + n n	0.015
 Param: government_surplus_target_adjustment 0 n + n n	0.001
 Param: government_real_wage_growth 0 n + n n	0.0025
 Param: government_real_investment_growth 0 n + n n	0.001
@@ -1296,7 +1298,7 @@ Param: government_cut_weight_inputs 0 n + n n	1
 Param: government_cut_weight_consumption 0 n + n n	1
 Param: government_cut_weight_benefits 0 n + n n	0.5
 Param: government_benefit_rate 0 n + n n	0.4
-Param: enforcement_sensitivity 0 n + n n	1
+Param: enforcement_sensitivity 0 n + n n	0.07
 Param: audit_probability 0 n + n n	0.05
 Var: Government_Wealth_Tax_Revenue 0 s + n n
 Var: Government_Wealth_Tax_Gap 4 s + n n	0	0	0	0
@@ -1332,6 +1334,7 @@ Var: Government_Desired_Expenses 0 n + n n
 Var: Government_Desired_Consumption 1 s + n n	0
 Var: Government_Debt_GDP_Ratio 5 s + n n	0	0	0	0	0
 Var: Government_Debt 5 s + n n	0	0	0	0	0
+Param: enforcement_decay 0 n + n n	0.1
 
 Object: SECTORS C	3
 Param: sector_tech_opportunity_quality 0 n + n n	0.0025	0.0025	0.0025
@@ -1837,6 +1840,7 @@ Var: Household_Assets_Declared 0 s + n n
 Var: Household_Repatriated_Deposits 0 s + n n
 Var: Household_Is_Audited 0 s + n n
 Var: Household_Asset_Penalty 0 s + n n
+Var: Household_Offshore_Penalty 1 s + n n	0	0
 
 Object: HOUSEHOLD_LOANS C	1	1
 Param: household_loan_total_amount 0 n + n n	0	0
@@ -2634,6 +2638,8 @@ END_DESCRIPTION
 Variable_Country_Asset_Evasion_Rate
 Stage 9: Fraction of financial assets undeclared.
 = Undeclared_Assets / Total_Financial_Assets
+_INIT_
+All 1 instances equal to 0
 END_DESCRIPTION
 
 Variable_Country_Evader_Count
@@ -3293,6 +3299,8 @@ END_DESCRIPTION
 
 Parameter_penalty_rate
 
+_INIT_
+All 1 instances equal to 0.015
 END_DESCRIPTION
 
 Parameter_government_surplus_target_adjustment
@@ -3382,7 +3390,7 @@ END_DESCRIPTION
 Parameter_enforcement_sensitivity
 
 _INIT_
-All 1 instances equal to 1
+All 1 instances equal to 0.07
 END_DESCRIPTION
 
 Parameter_audit_probability
@@ -3525,6 +3533,12 @@ END_DESCRIPTION
 
 Variable_Government_Debt
 
+END_DESCRIPTION
+
+Parameter_enforcement_decay
+
+_INIT_
+All 1 instances equal to 0.1
 END_DESCRIPTION
 
 Object_SECTORS
@@ -5530,6 +5544,12 @@ END_DESCRIPTION
 
 Variable_Household_Asset_Penalty
 
+END_DESCRIPTION
+
+Variable_Household_Offshore_Penalty
+
+_INIT_
+All 2 instances equal to 0
 END_DESCRIPTION
 
 Object_HOUSEHOLD_LOANS
