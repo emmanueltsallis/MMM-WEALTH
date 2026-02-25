@@ -1075,7 +1075,7 @@ Var: Country_Wealth_Capital_Ratio 0 s + n n
 Var: Country_Total_Household_Stock_Deposits 0 s + n n
 Var: Country_Capitalist_Wealth_Share 0 s + n n
 Var: Country_Wealth_GDP_Ratio 0 s + n n
-Param: country_total_population 0 n + n n	100
+Param: country_total_population 0 n + n n	10000
 Param: capitalist_population_share 0 n + n n	0.05
 Var: Country_Labor_Force 0 s + n n
 Var: Country_Total_Employment 0 s + n n
@@ -1845,8 +1845,8 @@ Param: household_loan_total_amount 0 n + n n	0	0
 Param: household_loan_interest_rate 0 n + n n	0	0
 Param: household_loan_fixed_amortization 0 n + n n	0	0
 
-SIM_NUM 1
-SEED 43
+SIM_NUM 50
+SEED 1
 MAX_STEP 600
 EQUATION fun_micro_macro_v.3.6.cpp
 MODELREPORT report_Sim1.html
@@ -2458,7 +2458,7 @@ END_DESCRIPTION
 Parameter_country_total_population
 
 _INIT_
-All 1 instances equal to 100
+All 1 instances equal to 10000
 END_DESCRIPTION
 
 Parameter_capitalist_population_share
