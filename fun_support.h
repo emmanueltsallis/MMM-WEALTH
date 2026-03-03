@@ -195,18 +195,8 @@ double household_percentile(object* parent, const char* var, double percentile, 
 		}
 	}
 
-	// Sort values (simple insertion sort - efficient for small n)
-	for(int i = 1; i < n; i++)
-	{
-		double key = values[i];
-		int j = i - 1;
-		while(j >= 0 && values[j] > key)
-		{
-			values[j + 1] = values[j];
-			j--;
-		}
-		values[j + 1] = key;
-	}
+	// Sort values using std::sort
+	std::sort(values, values + n);
 
 	// Compute percentile index (linear interpolation)
 	double pos = percentile * (n - 1);

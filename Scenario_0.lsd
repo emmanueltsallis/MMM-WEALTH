@@ -771,6 +771,37 @@ Label Root
 			Var: Class_Wealth_Share
 			Var: Class_Wealth_Tax_Owed
 			Var: Class_Wealth_Tax_Payment
+			Var: Class_Asset_Penalty
+			Var: Class_Asset_Purchases
+			Var: Class_Assets_Declared
+			Var: Class_Assets_Undeclared
+			Var: Class_Audited_Count
+			Var: Class_Avg_Imports_Share
+			Var: Class_Avg_Interest_Rate
+			Var: Class_Avg_Max_Debt_Rate
+			Var: Class_Avg_Real_Income
+			Var: Class_Avg_Nominal_Income
+			Var: Class_Avg_Reference_Income
+			Var: Class_Deposits_Domestic
+			Var: Class_Deposits_Offshore
+			Var: Class_Desired_Expenses
+			Var: Class_Effective_Real_Domestic_Consumption
+			Var: Class_Effective_Real_Imported_Consumption
+			Var: Class_Evasion_Count
+			Var: Class_Financial_Obligations
+			Var: Class_Flight_Count
+			Var: Class_Internal_Funds
+			Var: Class_Max_Loans
+			Var: Class_Maximum_Expenses
+			Var: Class_Offshore_Penalty
+			Var: Class_Real_Desired_Domestic_Consumption
+			Var: Class_Real_Disposable_Income
+			Var: Class_Repatriated_Deposits
+			Var: Class_Retained_Deposits
+			Var: Class_Wealth_Tax_From_Assets
+			Var: Class_Wealth_Tax_From_Borrowing
+			Var: Class_Wealth_Tax_From_Buffer
+			Var: Class_Wealth_Tax_From_Deposits
 
 		}
 
@@ -920,6 +951,7 @@ Label Root
 		Var: Country_Transfer_Desired
 		Param: wealth_transfer_target_percentile
 		Var: Country_Transfer_Eligible
+		Var: Country_Transfer_Income_Threshold
 		Param: country_avg_propensity_evade
 		Var: Country_Total_Deposits_Offshore
 		Var: Country_Total_Assets_Undeclared
@@ -1107,6 +1139,7 @@ Var: Country_Employed_Households 1 s + n n	0
 Var: Country_Transfer_Desired 0 s + n n
 Param: wealth_transfer_target_percentile 0 n + n n	0.5
 Var: Country_Transfer_Eligible 0 s + n n
+Var: Country_Transfer_Income_Threshold 0 s + n n
 Param: country_avg_propensity_evade 0 n + n n	0
 Var: Country_Total_Deposits_Offshore 0 s + n n
 Var: Country_Total_Assets_Undeclared 0 s + n n
@@ -1764,87 +1797,118 @@ Var: Class_Wage_Income 0 s + n n
 Var: Class_Wealth_Share 0 s + n n
 Var: Class_Wealth_Tax_Owed 0 s + n n
 Var: Class_Wealth_Tax_Payment 0 s + n n
+Var: Class_Asset_Penalty 0 s + n n
+Var: Class_Asset_Purchases 0 s + n n
+Var: Class_Assets_Declared 0 s + n n
+Var: Class_Assets_Undeclared 0 s + n n
+Var: Class_Audited_Count 0 s + n n
+Var: Class_Avg_Imports_Share 0 s + n n
+Var: Class_Avg_Interest_Rate 0 s + n n
+Var: Class_Avg_Max_Debt_Rate 0 s + n n
+Var: Class_Avg_Real_Income 0 s + n n
+Var: Class_Avg_Nominal_Income 0 s + n n
+Var: Class_Avg_Reference_Income 0 s + n n
+Var: Class_Deposits_Domestic 0 s + n n
+Var: Class_Deposits_Offshore 0 s + n n
+Var: Class_Desired_Expenses 0 s + n n
+Var: Class_Effective_Real_Domestic_Consumption 0 s + n n
+Var: Class_Effective_Real_Imported_Consumption 0 s + n n
+Var: Class_Evasion_Count 0 s + n n
+Var: Class_Financial_Obligations 0 s + n n
+Var: Class_Flight_Count 0 s + n n
+Var: Class_Internal_Funds 0 s + n n
+Var: Class_Max_Loans 0 s + n n
+Var: Class_Maximum_Expenses 0 s + n n
+Var: Class_Offshore_Penalty 0 s + n n
+Var: Class_Real_Desired_Domestic_Consumption 0 s + n n
+Var: Class_Real_Disposable_Income 0 s + n n
+Var: Class_Repatriated_Deposits 0 s + n n
+Var: Class_Retained_Deposits 0 s + n n
+Var: Class_Wealth_Tax_From_Assets 0 s + n n
+Var: Class_Wealth_Tax_From_Borrowing 0 s + n n
+Var: Class_Wealth_Tax_From_Buffer 0 s + n n
+Var: Class_Wealth_Tax_From_Deposits 0 s + n n
 
 Object: HOUSEHOLD C	1	1
 Param: household_id 0 n + n n	1	1
 Param: household_class_id 0 n + n n	1	1
-Var: Household_Id 0 s + n n
+Var: Household_Id 0 n + n n
 Param: household_type 0 s + n n	0	0
-Var: Household_Employment_Status 1 s + n n	1	-1
-Var: Household_Wage_Income 0 s + n n
-Var: Household_Profit_Income 0 s + n n
+Var: Household_Employment_Status 1 n + n n	1	-1
+Var: Household_Wage_Income 0 n + n n
+Var: Household_Profit_Income 0 n + n n
 Param: household_skill 0 s + n n	1	1
 Param: household_autonomous_consumption_adjustment 0 s + n n	0.5	0.5
 Param: household_import_propensity 0 s + n n	0.5	0.5
-Var: Household_Nominal_Disposable_Income 5 s + n n	0	0	0	0	0	0	0	0	0	0
-Var: Household_Real_Disposable_Income 4 s + n n	0	0	0	0	0	0	0	0
-Var: Household_Avg_Nominal_Income 1 s + n n	0	0
-Var: Household_Avg_Real_Income 1 s + n n	0	0
+Var: Household_Nominal_Disposable_Income 5 n + n n	0	0	0	0	0	0	0	0	0	0
+Var: Household_Real_Disposable_Income 4 n + n n	0	0	0	0	0	0	0	0
+Var: Household_Avg_Nominal_Income 1 n + n n	0	0
+Var: Household_Avg_Real_Income 1 n + n n	0	0
 Param: household_habit_persistence 0 s + n n	0	0
 Param: household_habit_inflation 0 s + n n	0	0
 Param: household_habit_deflation 0 s + n n	0	0
-Var: Household_Reference_Income 1 s + n n	0	0
-Var: Household_Income_Percentile 0 s + n n
-Var: Household_Real_Autonomous_Consumption 1 s + n n	0	0
-Var: Household_Imports_Share 0 s + n n
-Var: Household_Propensity_to_Spend 0 s + n n
-Var: Household_Real_Desired_Domestic_Consumption 0 s + n n
-Var: Household_Real_Desired_Imported_Consumption 0 s + n n
-Var: Household_Desired_Expenses 0 s + n n
-Var: Household_Internal_Funds 0 s + n n
-Var: Household_Maximum_Expenses 0 s + n n
-Var: Household_Real_Domestic_Consumption_Demand 0 s + n n
-Var: Household_Real_Imported_Consumption_Demand 0 s + n n
-Var: Household_Retained_Deposits 0 s + n n
-Var: Household_Stock_Deposits 1 s + n n	0	0
-Var: Household_Stock_Loans 1 s + n n	0	0
-Var: Household_Savings 1 s + n n	0	0
+Var: Household_Reference_Income 1 n + n n	0	0
+Var: Household_Income_Percentile 0 n + n n
+Var: Household_Real_Autonomous_Consumption 1 n + n n	0	0
+Var: Household_Imports_Share 0 n + n n
+Var: Household_Propensity_to_Spend 0 n + n n
+Var: Household_Real_Desired_Domestic_Consumption 0 n + n n
+Var: Household_Real_Desired_Imported_Consumption 0 n + n n
+Var: Household_Desired_Expenses 0 n + n n
+Var: Household_Internal_Funds 0 n + n n
+Var: Household_Maximum_Expenses 0 n + n n
+Var: Household_Real_Domestic_Consumption_Demand 0 n + n n
+Var: Household_Real_Imported_Consumption_Demand 0 n + n n
+Var: Household_Retained_Deposits 0 n + n n
+Var: Household_Stock_Deposits 1 n + n n	0	0
+Var: Household_Stock_Loans 1 n + n n	0	0
+Var: Household_Savings 1 n + n n	0	0
 Var: Household_Savings_Rate 0 n + n n
-Var: Household_Effective_Expenses 0 s + n n
-Var: Household_Effective_Real_Domestic_Consumption 0 s + n n
+Var: Household_Effective_Expenses 0 n + n n
+Var: Household_Effective_Real_Domestic_Consumption 0 n + n n
 Param: household_profit_share 0 s + n n	0	0
-Var: Household_Unemployment_Benefits 0 s + n n
-Var: Household_Nominal_Gross_Income 0 s + n n
-Var: Household_Avg_Debt_Rate 0 s + n n
-Var: Household_Interest_Rate 0 s + n n
-Var: Household_Interest_Payment 0 s + n n
-Var: Household_Debt_Payment 0 s + n n
-Var: Household_Financial_Obligations 0 s + n n
-Var: Household_Max_Debt_Rate 1 s + n n	0.3	0.3
-Var: Household_Debt_Rate 4 s + n n	0	0	0	0	0	0	0	0
-Var: Household_Max_Loans 0 s + n n
-Var: Household_Demand_Loans 0 s + n n
-Var: Household_Effective_Loans 0 s + n n
-Var: Household_Funds 0 s + n n
-Var: Household_Financial_Assets 1 s + n n	0	0
-Var: Household_Net_Wealth 1 s + n n	0	0
+Var: Household_Unemployment_Benefits 0 n + n n
+Var: Household_Nominal_Gross_Income 0 n + n n
+Var: Household_Avg_Debt_Rate 0 n + n n
+Var: Household_Interest_Rate 0 n + n n
+Var: Household_Interest_Payment 0 n + n n
+Var: Household_Debt_Payment 0 n + n n
+Var: Household_Financial_Obligations 0 n + n n
+Var: Household_Max_Debt_Rate 1 n + n n	0.3	0.3
+Var: Household_Debt_Rate 4 n + n n	0	0	0	0	0	0	0	0
+Var: Household_Max_Loans 0 n + n n
+Var: Household_Demand_Loans 0 n + n n
+Var: Household_Effective_Loans 0 n + n n
+Var: Household_Funds 0 n + n n
+Var: Household_Financial_Assets 1 n + n n	0	0
+Var: Household_Net_Wealth 1 n + n n	0	0
 Var: Country_Total_Household_Deposits_Return 0 n + n n
-Var: Household_Deposits_Return 1 s + n n	0	0
-Var: Household_Available_Deposits 0 s + n n
-Var: Household_Income_Taxation 0 s + n n
-Var: Household_Effective_Real_Imported_Consumption 0 s + n n
-Var: Household_Wealth_Tax_Owed 0 s + n n
-Var: Household_Wealth_Tax_Payment 0 s + n n
-Var: Household_Wealth_Tax_From_Deposits 0 s + n n
-Var: Household_Wealth_Tax_From_Assets 0 s + n n
-Var: Household_Wealth_Tax_From_Borrowing 0 s + n n
-Var: Household_Offshore_Penalty 1 s + n n	0	0
-Var: Household_Wealth_Tax_From_Buffer 0 s + n n
-Var: Household_Asset_Purchases 0 s + n n
+Var: Household_Deposits_Return 1 n + n n	0	0
+Var: Household_Available_Deposits 0 n + n n
+Var: Household_Income_Taxation 0 n + n n
+Var: Household_Effective_Real_Imported_Consumption 0 n + n n
+Var: Household_Wealth_Tax_Owed 0 n + n n
+Var: Household_Wealth_Tax_Payment 0 n + n n
+Var: Household_Wealth_Tax_From_Deposits 0 n + n n
+Var: Household_Wealth_Tax_From_Assets 0 n + n n
+Var: Household_Wealth_Tax_From_Borrowing 0 n + n n
+Var: Household_Offshore_Penalty 1 n + n n	0	0
+Var: Household_Wealth_Tax_From_Buffer 0 n + n n
+Var: Household_Asset_Purchases 0 n + n n
 Param: household_liquidity_preference 0 s + n n	0.3	0.3
-Var: Household_Transfer_Received 0 s + n n
+Var: Household_Transfer_Received 0 n + n n
 Var: Household_Transfer_Eligible 0 n + n n
 Param: household_propensity_evade 0 s + n n	0	0
-Var: Household_Deposits_Offshore 1 s + n n	0	0
-Var: Household_Decision_Flight 0 s + n n
-Var: Household_Offshore_Interest 0 s + n n
-Var: Household_Deposits_Domestic 1 s + n n	0	0
-Var: Household_Assets_Undeclared 1 s + n n	0	0
-Var: Household_Decision_Evasion 0 s + n n
-Var: Household_Assets_Declared 0 s + n n
-Var: Household_Repatriated_Deposits 0 s + n n
-Var: Household_Is_Audited 0 s + n n
-Var: Household_Asset_Penalty 0 s + n n
+Var: Household_Deposits_Offshore 1 n + n n	0	0
+Var: Household_Decision_Flight 0 n + n n
+Var: Household_Offshore_Interest 0 n + n n
+Var: Household_Deposits_Domestic 1 n + n n	0	0
+Var: Household_Assets_Undeclared 1 n + n n	0	0
+Var: Household_Decision_Evasion 0 n + n n
+Var: Household_Assets_Declared 0 n + n n
+Var: Household_Repatriated_Deposits 0 n + n n
+Var: Household_Is_Audited 0 n + n n
+Var: Household_Asset_Penalty 0 n + n n
 
 Object: HOUSEHOLD_LOANS C	1	1
 Param: household_loan_total_amount 0 n + n n	0	0
@@ -2620,6 +2684,10 @@ Variable_Country_Transfer_Eligible
 Stage 7.5: Count of households eligible for wealth transfer.
 Value is set via WRITE in Country_Transfer_Desired.
 This equation just returns the stored value.
+END_DESCRIPTION
+
+Variable_Country_Transfer_Income_Threshold
+Income threshold for wealth transfer eligibility. Computed by Country_Median_Household_Income.
 END_DESCRIPTION
 
 Parameter_country_avg_propensity_evade
@@ -5228,6 +5296,130 @@ END_DESCRIPTION
 
 Variable_Class_Wealth_Tax_Payment
 
+END_DESCRIPTION
+
+Variable_Class_Asset_Penalty
+Total asset evasion penalties for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Asset_Purchases
+Total financial asset purchases for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Assets_Declared
+Total declared financial assets for all households in this class.Total declared financial assets for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Assets_Undeclared
+Total undeclared financial assets for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Audited_Count
+Number of audited households in this class.
+END_DESCRIPTION
+
+Variable_Class_Avg_Imports_Share
+Average import share across households in this class.Average import share across households in this class.
+END_DESCRIPTION
+
+Variable_Class_Avg_Interest_Rate
+Average interest rate across households in this class.
+END_DESCRIPTION
+
+Variable_Class_Avg_Max_Debt_Rate
+Average maximum debt rate across households in this class.Average maximum debt rate across households in this class.
+END_DESCRIPTION
+
+Variable_Class_Avg_Real_Income
+Total average real income (smoothed) for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Avg_Nominal_Income
+Total average nominal income (smoothed) for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Avg_Reference_Income
+Average reference income (habit stock) across households in this class.
+END_DESCRIPTION
+
+Variable_Class_Deposits_Domestic
+Total domestic deposits for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Deposits_Offshore
+Total offshore deposits for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Desired_Expenses
+Total desired expenses for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Effective_Real_Domestic_Consumption
+Total effective real domestic consumption for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Effective_Real_Imported_Consumption
+Total effective real imported consumption for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Evasion_Count
+Number of households engaging in asset evasion in this class.
+END_DESCRIPTION
+
+Variable_Class_Financial_Obligations
+Total financial obligations for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Flight_Count
+Number of households engaging in capital flight in this class.
+END_DESCRIPTION
+
+Variable_Class_Internal_Funds
+Total internal funds available for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Max_Loans
+Total maximum allowed loans for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Maximum_Expenses
+Total maximum possible expenses for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Offshore_Penalty
+Total offshore penalties for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Real_Desired_Domestic_Consumption
+Total real desired domestic consumption for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Real_Disposable_Income
+Total real disposable income for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Repatriated_Deposits
+Total repatriated deposits for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Retained_Deposits
+Total retained deposits (precautionary) for all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Wealth_Tax_From_Assets
+Total wealth tax paid from asset liquidation by all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Wealth_Tax_From_Borrowing
+Total wealth tax paid via borrowing by all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Wealth_Tax_From_Buffer
+Total wealth tax paid from liquidity buffer by all households in this class.
+END_DESCRIPTION
+
+Variable_Class_Wealth_Tax_From_Deposits
+Total wealth tax paid from deposits by all households in this class.
 END_DESCRIPTION
 
 Object_HOUSEHOLD

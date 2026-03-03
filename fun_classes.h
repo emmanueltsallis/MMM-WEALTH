@@ -110,6 +110,27 @@ Total disposable income for all households in this class.
 RESULT(SUM("Household_Nominal_Disposable_Income"))
 
 
+EQUATION("Class_Real_Disposable_Income")
+/*
+Total real disposable income for all households in this class.
+*/
+RESULT(SUM("Household_Real_Disposable_Income"))
+
+
+EQUATION("Class_Avg_Real_Income")
+/*
+Total average real income (smoothed) for all households in this class.
+*/
+RESULT(SUM("Household_Avg_Real_Income"))
+
+
+EQUATION("Class_Avg_Nominal_Income")
+/*
+Total average nominal income (smoothed) for all households in this class.
+*/
+RESULT(SUM("Household_Avg_Nominal_Income"))
+
+
 EQUATION("Class_Transfer_Received")
 /*
 Total transfers received by all households in this class.
@@ -154,6 +175,69 @@ EQUATION("Class_Real_Autonomous_Consumption")
 Total real autonomous consumption for all households in this class.
 */
 RESULT(SUM("Household_Real_Autonomous_Consumption"))
+
+
+EQUATION("Class_Real_Desired_Domestic_Consumption")
+/*
+Total real desired domestic consumption for all households in this class.
+*/
+RESULT(SUM("Household_Real_Desired_Domestic_Consumption"))
+
+
+EQUATION("Class_Desired_Expenses")
+/*
+Total desired expenses for all households in this class.
+*/
+RESULT(SUM("Household_Desired_Expenses"))
+
+
+EQUATION("Class_Effective_Real_Domestic_Consumption")
+/*
+Total effective real domestic consumption for all households in this class.
+*/
+RESULT(SUM("Household_Effective_Real_Domestic_Consumption"))
+
+
+EQUATION("Class_Effective_Real_Imported_Consumption")
+/*
+Total effective real imported consumption for all households in this class.
+*/
+RESULT(SUM("Household_Effective_Real_Imported_Consumption"))
+
+
+EQUATION("Class_Retained_Deposits")
+/*
+Total retained deposits (precautionary) for all households in this class.
+*/
+RESULT(SUM("Household_Retained_Deposits"))
+
+
+EQUATION("Class_Internal_Funds")
+/*
+Total internal funds available for all households in this class.
+*/
+RESULT(SUM("Household_Internal_Funds"))
+
+
+EQUATION("Class_Maximum_Expenses")
+/*
+Total maximum possible expenses for all households in this class.
+*/
+RESULT(SUM("Household_Maximum_Expenses"))
+
+
+EQUATION("Class_Asset_Purchases")
+/*
+Total financial asset purchases for all households in this class.
+*/
+RESULT(SUM("Household_Asset_Purchases"))
+
+
+EQUATION("Class_Avg_Imports_Share")
+/*
+Average import share across households in this class.
+*/
+RESULT(AVE("Household_Imports_Share"))
 
 
 /*============================================================================
@@ -227,6 +311,34 @@ Total effective (granted) loans to all households in this class.
 RESULT(SUM("Household_Effective_Loans"))
 
 
+EQUATION("Class_Max_Loans")
+/*
+Total maximum allowed loans for all households in this class.
+*/
+RESULT(SUM("Household_Max_Loans"))
+
+
+EQUATION("Class_Financial_Obligations")
+/*
+Total financial obligations for all households in this class.
+*/
+RESULT(SUM("Household_Financial_Obligations"))
+
+
+EQUATION("Class_Avg_Interest_Rate")
+/*
+Average interest rate across households in this class.
+*/
+RESULT(AVE("Household_Interest_Rate"))
+
+
+EQUATION("Class_Avg_Max_Debt_Rate")
+/*
+Average maximum debt rate across households in this class.
+*/
+RESULT(AVE("Household_Max_Debt_Rate"))
+
+
 /*============================================================================
  * WEALTH TAX (Sums)
  *============================================================================*/
@@ -243,6 +355,108 @@ EQUATION("Class_Wealth_Tax_Payment")
 Total wealth tax paid by all households in this class.
 */
 RESULT(SUM("Household_Wealth_Tax_Payment"))
+
+
+EQUATION("Class_Wealth_Tax_From_Deposits")
+/*
+Total wealth tax paid from deposits by all households in this class.
+*/
+RESULT(SUM("Household_Wealth_Tax_From_Deposits"))
+
+
+EQUATION("Class_Wealth_Tax_From_Assets")
+/*
+Total wealth tax paid from asset liquidation by all households in this class.
+*/
+RESULT(SUM("Household_Wealth_Tax_From_Assets"))
+
+
+EQUATION("Class_Wealth_Tax_From_Borrowing")
+/*
+Total wealth tax paid via borrowing by all households in this class.
+*/
+RESULT(SUM("Household_Wealth_Tax_From_Borrowing"))
+
+
+EQUATION("Class_Wealth_Tax_From_Buffer")
+/*
+Total wealth tax paid from liquidity buffer by all households in this class.
+*/
+RESULT(SUM("Household_Wealth_Tax_From_Buffer"))
+
+
+/*============================================================================
+ * EVASION & CAPITAL FLIGHT (Sums)
+ *============================================================================*/
+
+EQUATION("Class_Deposits_Offshore")
+/*
+Total offshore deposits for all households in this class.
+*/
+RESULT(SUM("Household_Deposits_Offshore"))
+
+
+EQUATION("Class_Deposits_Domestic")
+/*
+Total domestic deposits for all households in this class.
+*/
+RESULT(SUM("Household_Deposits_Domestic"))
+
+
+EQUATION("Class_Assets_Undeclared")
+/*
+Total undeclared financial assets for all households in this class.
+*/
+RESULT(SUM("Household_Assets_Undeclared"))
+
+
+EQUATION("Class_Assets_Declared")
+/*
+Total declared financial assets for all households in this class.
+*/
+RESULT(SUM("Household_Assets_Declared"))
+
+
+EQUATION("Class_Repatriated_Deposits")
+/*
+Total repatriated deposits for all households in this class.
+*/
+RESULT(SUM("Household_Repatriated_Deposits"))
+
+
+EQUATION("Class_Asset_Penalty")
+/*
+Total asset evasion penalties for all households in this class.
+*/
+RESULT(SUM("Household_Asset_Penalty"))
+
+
+EQUATION("Class_Offshore_Penalty")
+/*
+Total offshore penalties for all households in this class.
+*/
+RESULT(SUM("Household_Offshore_Penalty"))
+
+
+EQUATION("Class_Audited_Count")
+/*
+Number of audited households in this class.
+*/
+RESULT(SUM("Household_Is_Audited"))
+
+
+EQUATION("Class_Flight_Count")
+/*
+Number of households engaging in capital flight in this class.
+*/
+RESULT(SUM("Household_Decision_Flight"))
+
+
+EQUATION("Class_Evasion_Count")
+/*
+Number of households engaging in asset evasion in this class.
+*/
+RESULT(SUM("Household_Decision_Evasion"))
 
 
 /*============================================================================
@@ -286,6 +500,13 @@ EQUATION("Class_Avg_Debt_Rate")
 Average debt rate across households in this class.
 */
 RESULT(AVE("Household_Debt_Rate"))
+
+
+EQUATION("Class_Avg_Reference_Income")
+/*
+Average reference income (habit stock) across households in this class.
+*/
+RESULT(AVE("Household_Reference_Income"))
 
 
 /*============================================================================

@@ -326,17 +326,65 @@ RESULT(max(0.001, v[0]))  // Prevent division by zero
 
 EQUATION("Country_Median_Household_Income")
 /*
-Stage 4.3 / 7.5: TRUE median household income.
+MASTER EQUATION: Sorts household income distribution ONCE per period.
+Extracts both median and transfer threshold from the single sorted array.
+WRITEs Country_Transfer_Income_Threshold for use by Country_Transfer_Desired.
 
-Uses PERCLS(0.5) for actual median calculation.
-Used for:
-- Income percentile calculations (Household_Income_Percentile)
-- Wealth transfer eligibility (Stage 7.5: bottom 50% threshold)
+Previously: two separate household_percentile() calls sorted the same data twice.
+Now: one sort, two percentile lookups.
 
 Uses lagged values to avoid circular dependency.
 */
-v[0] = household_percentile(country, "Household_Avg_Real_Income", 0.5, 1);  // Custom function for cross-class percentile
-RESULT(max(0.01, v[0]))
+
+// Count total households across both classes
+v[0] = 0;
+CYCLE(cur1, "CLASSES")
+{
+    CYCLES(cur1, cur, "HOUSEHOLD")
+        v[0]++;
+}
+i = (int) v[0];
+
+if(i <= 1)
+{
+    WRITE("Country_Transfer_Income_Threshold", 0);
+    END_EQUATION(0.01);
+}
+
+// Collect lagged incomes (single pass)
+double* inc_vals = new double[i];
+j = 0;
+CYCLE(cur1, "CLASSES")
+{
+    CYCLES(cur1, cur, "HOUSEHOLD")
+    {
+        inc_vals[j++] = VLS(cur, "Household_Avg_Real_Income", 1);
+    }
+}
+
+// Sort ONCE - O(n log n)
+std::sort(inc_vals, inc_vals + i);
+
+// Extract median (percentile 0.5)
+double pos_med = 0.5 * (i - 1);
+int lo_med = (int)floor(pos_med);
+int hi_med = (int)ceil(pos_med);
+double frac_med = pos_med - lo_med;
+v[1] = (lo_med == hi_med || hi_med >= i) ? inc_vals[lo_med] : inc_vals[lo_med] * (1 - frac_med) + inc_vals[hi_med] * frac_med;
+
+// Extract transfer threshold (wealth_transfer_target_percentile)
+v[2] = V("wealth_transfer_target_percentile");
+if(v[2] <= 0 || v[2] > 1) v[2] = 0.5;
+double pos_tr = v[2] * (i - 1);
+int lo_tr = (int)floor(pos_tr);
+int hi_tr = (int)ceil(pos_tr);
+double frac_tr = pos_tr - lo_tr;
+v[3] = (lo_tr == hi_tr || hi_tr >= i) ? inc_vals[lo_tr] : inc_vals[lo_tr] * (1 - frac_tr) + inc_vals[hi_tr] * frac_tr;
+
+WRITE("Country_Transfer_Income_Threshold", v[3]);
+
+delete[] inc_vals;
+RESULT(max(0.01, v[1]))
 
 
 EQUATION("Country_Total_Investment_Expenses")
@@ -1480,12 +1528,9 @@ if(v[0] < 5)
 }
 else
 {
-    // Get target percentile parameter (default 0.5 = median)
-    v[1] = V("wealth_transfer_target_percentile");
-    if(v[1] <= 0 || v[1] > 1) v[1] = 0.5;  // Safety default
-
-    // Calculate income threshold at target percentile (cross-class)
-    v[2] = household_percentile(country, "Household_Avg_Real_Income", v[1], 1);
+    // Read pre-computed threshold (sorted once in Country_Median_Household_Income)
+    V("Country_Median_Household_Income");  // Ensure master equation runs first
+    v[2] = V("Country_Transfer_Income_Threshold");
 
     // Count eligible AND mark each household in ONE pass
     v[3] = 0;  // Eligible count
@@ -1520,4 +1565,6 @@ Stage 7.5: Count of households eligible for wealth transfer (bottom X%).
 Value is set via WRITE in Country_Transfer_Desired.
 */
 RESULT(CURRENT)
+
+EQUATION_DUMMY("Country_Transfer_Income_Threshold", "Country_Median_Household_Income")
 
