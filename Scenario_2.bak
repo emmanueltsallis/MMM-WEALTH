@@ -1915,7 +1915,7 @@ Param: household_loan_total_amount 0 n + n n	0	0
 Param: household_loan_interest_rate 0 n + n n	0	0
 Param: household_loan_fixed_amortization 0 n + n n	0	0
 
-SIM_NUM 1
+SIM_NUM 50
 SEED 1
 MAX_STEP 600
 EQUATION fun_micro_macro_v.3.6.cpp

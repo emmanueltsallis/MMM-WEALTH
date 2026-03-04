@@ -1110,7 +1110,7 @@ Var: Country_Wealth_Capital_Ratio 0 s + n n
 Var: Country_Total_Household_Stock_Deposits 0 s + n n
 Var: Country_Capitalist_Wealth_Share 0 s + n n
 Var: Country_Wealth_GDP_Ratio 0 s + n n
-Param: country_total_population 0 n + n n	100
+Param: country_total_population 0 n + n n	50
 Param: capitalist_population_share 0 n + n n	0.05
 Var: Country_Labor_Force 0 s + n n
 Var: Country_Total_Employment 0 s + n n
@@ -1129,7 +1129,7 @@ Var: Diagnostic_Trigger 0 s + n n
 Param: household_income_tax_rate 0 n + n n	0.16
 Param: wealth_tax_rate 0 n + n n	0
 Param: wealth_tax_threshold 0 s + n n	8613
-Var: Country_Wealth_Tax_Revenue 1 s + n n	0
+Var: Country_Wealth_Tax_Revenue 0 s + n n
 Var: Country_Wealth_Tax_Taxpayer_Count 0 s + n n
 Var: Country_Wealth_Tax_From_Deposits 0 s + n n
 Var: Country_Wealth_Tax_From_Assets 0 s + n n
@@ -1917,7 +1917,7 @@ Param: household_loan_fixed_amortization 0 n + n n	0	0
 
 SIM_NUM 1
 SEED 1
-MAX_STEP 600
+MAX_STEP 50
 EQUATION fun_micro_macro_v.3.6.cpp
 MODELREPORT report_Sim1.html
 
@@ -2528,7 +2528,7 @@ END_DESCRIPTION
 Parameter_country_total_population
 
 _INIT_
-All 1 instances equal to 100
+All 1 instances equal to 10000
 END_DESCRIPTION
 
 Parameter_capitalist_population_share
@@ -2637,8 +2637,6 @@ END_DESCRIPTION
 Variable_Country_Wealth_Tax_Revenue
 Stage 7: Aggregate wealth tax collected from all households.
 Only active when switch_class_tax_structure >= 5.
-_INIT_
-All 1 instances equal to 0
 END_DESCRIPTION
 
 Variable_Country_Wealth_Tax_Taxpayer_Count

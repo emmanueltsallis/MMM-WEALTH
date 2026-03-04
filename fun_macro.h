@@ -13,7 +13,7 @@ There are some underlying hypothesis:
 */
 
 v[0]=SUM("Firm_Demand_Loans");						//total demand of firm loans
-v[12]=SUMS(working_class, "Household_Demand_Loans") + SUMS(capitalist_class, "Household_Demand_Loans");  // Phase E: sum both classes
+v[12]=V("Country_Total_Household_Demand_Loans");				// household loan demand (pre-computed)
 
 CYCLE(cur, "BANKS")
 {
@@ -89,10 +89,13 @@ Stage 4.7 SWITCH #1: Household-driven consumption demand.
 Calculates the domestic demand for consumption goods.
 Must be called by the sector.
 
-SWITCHED: From SUM("Class_Real_Domestic_Consumption_Demand")
-          To SUMS(households, "Household_Real_Domestic_Consumption_Demand")
+DEADLOCK FIX: Use SUMS over households directly instead of VS(class,...).
+VS(class,...) triggers the Opt 1 master CYCLE which reads ALL household variables,
+including any that are currently in-flight. SUMS is safe because
+Household_Real_Domestic_Consumption_Demand uses VL(lagged disposable income)
+and never depends on current-period Wage_Income or Employment_Status.
 */
-	v[0]=SUMS(working_class, "Household_Real_Domestic_Consumption_Demand") + SUMS(capitalist_class, "Household_Real_Domestic_Consumption_Demand");
+	v[0] = SUMS(working_class, "Household_Real_Domestic_Consumption_Demand") + SUMS(capitalist_class, "Household_Real_Domestic_Consumption_Demand");
 	v[1]=VS(consumption, "Sector_Avg_Price");
 	v[2]=V("Government_Effective_Consumption");
 	v[3]= v[1]!=0? v[2]/v[1] : 0;
@@ -256,15 +259,7 @@ Stage 5.2: Total labor force (all worker households).
 Computed ONCE per period at country level for efficiency.
 Households reference this via VS(country, "Country_Labor_Force") - O(1) lookup.
 */
-v[0] = 0;
-CYCLE(cur1, "CLASSES")
-{
-CYCLES(cur1, cur, "HOUSEHOLD")
-{
-    if(VS(cur, "household_type") == 0)  // Worker
-        v[0]++;
-}
-}
+v[0] = COUNTS(working_class, "HOUSEHOLD");  // all worker households (O(1) LSD counter)
 RESULT(max(1, v[0]))
 
 
@@ -272,20 +267,16 @@ EQUATION("Country_Total_Employment")
 /*
 Stage 5.2: Total employed workers (in any sector).
 Computed ONCE per period at country level for efficiency.
+
+DEADLOCK FIX: Use SUMS over Household_Employment_Status directly instead of
+VS(class,"Class_Employed_Count"). The master triggered by Class_Employed_Count
+reads ALL household variables, including Household_Wage_Income which is in-flight
+when this equation is called from within Household_Wage_Income's computation chain.
+Household_Employment_Status is safe: it is always already computed before
+Household_Wage_Income starts (Employment_Status is higher in the call chain).
+Workers have status 0 (unemployed) or 1 (employed); SUM = count of employed workers.
 */
-v[0] = 0;
-CYCLE(cur1, "CLASSES")
-{
-CYCLES(cur1, cur, "HOUSEHOLD")
-{
-    if(VS(cur, "household_type") == 0)  // Worker only
-    {
-        v[1] = VS(cur, "Household_Employment_Status");
-        if(v[1] > 0)  // Employed (status 1, 2, or 3)
-            v[0]++;
-    }
-}
-}
+v[0] = SUMS(working_class, "Household_Employment_Status");
 RESULT(v[0])
 
 
@@ -326,65 +317,64 @@ RESULT(max(0.001, v[0]))  // Prevent division by zero
 
 EQUATION("Country_Median_Household_Income")
 /*
-MASTER EQUATION: Sorts household income distribution ONCE per period.
-Extracts both median and transfer threshold from the single sorted array.
-WRITEs Country_Transfer_Income_Threshold for use by Country_Transfer_Desired.
-
-Previously: two separate household_percentile() calls sorted the same data twice.
-Now: one sort, two percentile lookups.
-
-Uses lagged values to avoid circular dependency.
+Median of lagged real household income, used as the transfer eligibility threshold.
+Also WRITEs Country_Transfer_Income_Threshold (percentile set by
+wealth_transfer_target_percentile) for Country_Transfer_Desired.
+Uses nth_element instead of full sort — both values extracted in O(n).
 */
-
-// Count total households across both classes
-v[0] = 0;
-CYCLE(cur1, "CLASSES")
-{
-    CYCLES(cur1, cur, "HOUSEHOLD")
-        v[0]++;
-}
-i = (int) v[0];
+v[0] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
+i = (int) v[0];										// household count
 
 if(i <= 1)
 {
     WRITE("Country_Transfer_Income_Threshold", 0);
-    END_EQUATION(0.01);
+    v[1] = 0.01;
 }
-
-// Collect lagged incomes (single pass)
-double* inc_vals = new double[i];
-j = 0;
-CYCLE(cur1, "CLASSES")
+else
 {
-    CYCLES(cur1, cur, "HOUSEHOLD")
+    static double* inc_vals = nullptr;				// reusable buffer across periods
+    static int buf_size = 0;
+    if(i > buf_size) { delete[] inc_vals; inc_vals = new double[i * 2]; buf_size = i * 2; }
+
+    j = 0;											// collect lagged incomes (single pass)
+    CYCLE(cur1, "CLASSES")
     {
-        inc_vals[j++] = VLS(cur, "Household_Avg_Real_Income", 1);
+        CYCLES(cur1, cur, "HOUSEHOLD")
+            inc_vals[j++] = VLS(cur, "Household_Avg_Real_Income", 1);
     }
+
+    double pos_med = 0.5 * (i - 1);				// median position
+    int lo_med = (int)floor(pos_med);
+    double frac_med = pos_med - lo_med;
+    std::nth_element(inc_vals, inc_vals + lo_med, inc_vals + i);
+    double lo_val = inc_vals[lo_med];
+    if(frac_med > 1e-10 && lo_med + 1 < i)
+    {
+        double hi_val = *std::min_element(inc_vals + lo_med + 1, inc_vals + i);
+        v[1] = lo_val * (1.0 - frac_med) + hi_val * frac_med;
+    }
+    else
+        v[1] = lo_val;
+
+    v[2] = V("wealth_transfer_target_percentile");	// transfer threshold percentile
+    if(v[2] <= 0 || v[2] > 1) v[2] = 0.5;
+    double pos_tr = v[2] * (i - 1);
+    int lo_tr = (int)floor(pos_tr);
+    double frac_tr = pos_tr - lo_tr;
+    std::nth_element(inc_vals, inc_vals + lo_tr, inc_vals + i);
+    double lo_tr_val = inc_vals[lo_tr];
+    if(frac_tr > 1e-10 && lo_tr + 1 < i)
+    {
+        double hi_tr_val = *std::min_element(inc_vals + lo_tr + 1, inc_vals + i);
+        v[3] = lo_tr_val * (1.0 - frac_tr) + hi_tr_val * frac_tr;
+    }
+    else
+        v[3] = lo_tr_val;
+
+    WRITE("Country_Transfer_Income_Threshold", v[3]);
+    v[1] = max(0.01, v[1]);
 }
-
-// Sort ONCE - O(n log n)
-std::sort(inc_vals, inc_vals + i);
-
-// Extract median (percentile 0.5)
-double pos_med = 0.5 * (i - 1);
-int lo_med = (int)floor(pos_med);
-int hi_med = (int)ceil(pos_med);
-double frac_med = pos_med - lo_med;
-v[1] = (lo_med == hi_med || hi_med >= i) ? inc_vals[lo_med] : inc_vals[lo_med] * (1 - frac_med) + inc_vals[hi_med] * frac_med;
-
-// Extract transfer threshold (wealth_transfer_target_percentile)
-v[2] = V("wealth_transfer_target_percentile");
-if(v[2] <= 0 || v[2] > 1) v[2] = 0.5;
-double pos_tr = v[2] * (i - 1);
-int lo_tr = (int)floor(pos_tr);
-int hi_tr = (int)ceil(pos_tr);
-double frac_tr = pos_tr - lo_tr;
-v[3] = (lo_tr == hi_tr || hi_tr >= i) ? inc_vals[lo_tr] : inc_vals[lo_tr] * (1 - frac_tr) + inc_vals[hi_tr] * frac_tr;
-
-WRITE("Country_Transfer_Income_Threshold", v[3]);
-
-delete[] inc_vals;
-RESULT(max(0.01, v[1]))
+RESULT(v[1])
 
 
 EQUATION("Country_Total_Investment_Expenses")
@@ -706,7 +696,7 @@ Stage 4.7 SWITCH #2: Household expenses.
 SWITCHED: From SUM("Class_Effective_Expenses")
           To SUMS(households, "Household_Effective_Expenses")
 */
-	v[0] = SUMS(working_class, "Household_Effective_Expenses") + SUMS(capitalist_class, "Household_Effective_Expenses");
+	v[0] = VS(working_class, "Class_Effective_Expenses") + VS(capitalist_class, "Class_Effective_Expenses");
 RESULT(v[0])
 
 
@@ -720,7 +710,7 @@ EQUATION("Country_Total_Household_Stock_Loans")
 Stage 5.3: Total household loan stock across all households.
 Used by Bank_Stock_Loans_Short_Term for bank accounting.
 */
-RESULT(SUMS(working_class, "Household_Stock_Loans") + SUMS(capitalist_class, "Household_Stock_Loans"))
+RESULT(VS(working_class, "Class_Stock_Loans") + VS(capitalist_class, "Class_Stock_Loans"))
 
 
 EQUATION("Country_Total_Household_Demand_Loans")
@@ -728,13 +718,15 @@ EQUATION("Country_Total_Household_Demand_Loans")
 Stage 5.3: Total household loan demand across all households.
 Used by Bank_Demand_Loans for credit allocation.
 */
-RESULT(SUMS(working_class, "Household_Demand_Loans") + SUMS(capitalist_class, "Household_Demand_Loans"))
+RESULT(VS(working_class, "Class_Demand_Loans") + VS(capitalist_class, "Class_Demand_Loans"))
 
 
 EQUATION("Country_Total_Household_Interest_Payment")
 /*
 Stage 5.3: Total interest payments from all households.
 Used by Bank_Interest_Receivment for bank income.
+DEADLOCK FIX: SUMS over households directly. Household_Interest_Payment uses
+lagged loan balances so is safe to compute during household income chain.
 */
 RESULT(SUMS(working_class, "Household_Interest_Payment") + SUMS(capitalist_class, "Household_Interest_Payment"))
 
@@ -744,7 +736,7 @@ EQUATION("Country_Total_Household_Debt_Payment")
 Stage 5.3: Total debt amortization from all households.
 Used by Bank_Debt_Payment for loan stock reduction.
 */
-RESULT(SUMS(working_class, "Household_Debt_Payment") + SUMS(capitalist_class, "Household_Debt_Payment"))
+RESULT(VS(working_class, "Class_Debt_Payment") + VS(capitalist_class, "Class_Debt_Payment"))
 
 
 /******************************************************************************
@@ -758,7 +750,7 @@ EQUATION("Country_Total_Financial_Assets")
 Stage 5.4: Aggregate financial asset holdings across all households.
 Only capitalists hold financial assets (workers have deposits only).
 */
-RESULT(SUMS(working_class, "Household_Financial_Assets") + SUMS(capitalist_class, "Household_Financial_Assets"))
+RESULT(VS(working_class, "Class_Financial_Assets") + VS(capitalist_class, "Class_Financial_Assets"))
 
 
 EQUATION("Country_Total_Household_Stock_Deposits")
@@ -766,13 +758,16 @@ EQUATION("Country_Total_Household_Stock_Deposits")
 Stage 5.4: Aggregate deposit holdings across all households.
 Both workers and capitalists hold deposits.
 */
-RESULT(SUMS(working_class, "Household_Stock_Deposits") + SUMS(capitalist_class, "Household_Stock_Deposits"))
+RESULT(VS(working_class, "Class_Stock_Deposits") + VS(capitalist_class, "Class_Stock_Deposits"))
 
 
 EQUATION("Country_Total_Household_Deposits_Return")
 /*
 Aggregate interest earned on household deposits.
 Used by banking sector for interest payments.
+DEADLOCK FIX: SUMS over households directly. Household_Deposits_Return uses
+lagged internal funds (VL disposable income) so is safe to compute during
+household income chain.
 */
 RESULT(SUMS(working_class, "Household_Deposits_Return") + SUMS(capitalist_class, "Household_Deposits_Return"))
 
@@ -782,7 +777,7 @@ EQUATION("Country_Income_Tax")
 Aggregate income taxation collected from all households.
 Used by government for income tax collection.
 */
-RESULT(SUMS(working_class, "Household_Income_Taxation") + SUMS(capitalist_class, "Household_Income_Taxation"))
+RESULT(VS(working_class, "Class_Income_Taxation") + VS(capitalist_class, "Class_Income_Taxation"))
 
 
 EQUATION("Country_Wealth_Tax_Revenue")
@@ -794,7 +789,7 @@ v[0] = V("switch_class_tax_structure");
 if(v[0] < 5)
     v[1] = 0;
 else
-    v[1] = SUMS(working_class, "Household_Wealth_Tax_Payment") + SUMS(capitalist_class, "Household_Wealth_Tax_Payment");
+    v[1] = VS(working_class, "Class_Wealth_Tax_Payment") + VS(capitalist_class, "Class_Wealth_Tax_Payment");
 RESULT(v[1])
 
 
@@ -832,7 +827,7 @@ v[0] = V("switch_class_tax_structure");
 if(v[0] < 5)
     v[1] = 0;
 else
-    v[1] = SUMS(working_class, "Household_Wealth_Tax_From_Deposits") + SUMS(capitalist_class, "Household_Wealth_Tax_From_Deposits");
+    v[1] = VS(working_class, "Class_Wealth_Tax_From_Deposits") + VS(capitalist_class, "Class_Wealth_Tax_From_Deposits");
 RESULT(v[1])
 
 
@@ -844,7 +839,7 @@ v[0] = V("switch_class_tax_structure");
 if(v[0] < 5)
     v[1] = 0;
 else
-    v[1] = SUMS(working_class, "Household_Wealth_Tax_From_Assets") + SUMS(capitalist_class, "Household_Wealth_Tax_From_Assets");
+    v[1] = VS(working_class, "Class_Wealth_Tax_From_Assets") + VS(capitalist_class, "Class_Wealth_Tax_From_Assets");
 RESULT(v[1])
 
 
@@ -856,7 +851,7 @@ v[0] = V("switch_class_tax_structure");
 if(v[0] < 5)
     v[1] = 0;
 else
-    v[1] = SUMS(working_class, "Household_Wealth_Tax_From_Borrowing") + SUMS(capitalist_class, "Household_Wealth_Tax_From_Borrowing");
+    v[1] = VS(working_class, "Class_Wealth_Tax_From_Borrowing") + VS(capitalist_class, "Class_Wealth_Tax_From_Borrowing");
 RESULT(v[1])
 
 
@@ -869,7 +864,7 @@ v[0] = V("switch_class_tax_structure");
 if(v[0] < 5)
     v[1] = 0;
 else
-    v[1] = SUMS(working_class, "Household_Wealth_Tax_From_Buffer") + SUMS(capitalist_class, "Household_Wealth_Tax_From_Buffer");
+    v[1] = VS(working_class, "Class_Wealth_Tax_From_Buffer") + VS(capitalist_class, "Class_Wealth_Tax_From_Buffer");
 RESULT(v[1])
 
 
@@ -883,8 +878,8 @@ Watch this grow as secular stagnation progresses!
 - v > 1.5: Financialization (paper wealth decoupled from production)
 - v > 2.0: Significant asset bubble territory
 */
-v[0] = SUMS(working_class, "Household_Financial_Assets") + SUMS(capitalist_class, "Household_Financial_Assets");  // Paper wealth
-v[1] = SUMS(working_class, "Household_Stock_Deposits") + SUMS(capitalist_class, "Household_Stock_Deposits");    // Liquid wealth
+v[0] = V("Country_Total_Financial_Assets");					// paper wealth (pre-computed)
+v[1] = V("Country_Total_Household_Stock_Deposits");			// liquid wealth (pre-computed)
 v[2] = V("Country_Capital_Stock");
 v[3] = (v[2] > 0) ? ((v[0] + v[1]) / v[2]) : 1.0;
 RESULT(v[3])
@@ -938,7 +933,7 @@ EQUATION("Country_Total_Household_Net_Wealth")
 Stage 5.4: Total net wealth across all households.
 Net Wealth = Deposits + Financial Assets - Loans
 */
-RESULT(SUMS(working_class, "Household_Net_Wealth") + SUMS(capitalist_class, "Household_Net_Wealth"))
+RESULT(VS(working_class, "Class_Net_Wealth") + VS(capitalist_class, "Class_Net_Wealth"))
 
 
 /******************************************************************************
@@ -951,7 +946,7 @@ EQUATION("Country_Total_Deposits_Offshore")
 Stage 9: Total deposits held in offshore tax havens.
 Invisible to government, not subject to wealth tax.
 */
-RESULT(SUMS(working_class, "Household_Deposits_Offshore") + SUMS(capitalist_class, "Household_Deposits_Offshore"))
+RESULT(VS(working_class, "Class_Deposits_Offshore") + VS(capitalist_class, "Class_Deposits_Offshore"))
 
 
 EQUATION("Country_Total_Assets_Undeclared")
@@ -959,14 +954,14 @@ EQUATION("Country_Total_Assets_Undeclared")
 Stage 9: Total financial assets not declared to tax authority.
 Subject to audit risk and penalties if caught.
 */
-RESULT(SUMS(working_class, "Household_Assets_Undeclared") + SUMS(capitalist_class, "Household_Assets_Undeclared"))
+RESULT(VS(working_class, "Class_Assets_Undeclared") + VS(capitalist_class, "Class_Assets_Undeclared"))
 
 
 EQUATION("Country_Total_Assets_Declared")
 /*
 Stage 9: Total financial assets declared to tax authority.
 */
-RESULT(SUMS(working_class, "Household_Assets_Declared") + SUMS(capitalist_class, "Household_Assets_Declared"))
+RESULT(VS(working_class, "Class_Assets_Declared") + VS(capitalist_class, "Class_Assets_Declared"))
 
 
 EQUATION("Country_Capital_Flight_Rate")
@@ -986,7 +981,7 @@ Stage 9: Fraction of financial assets undeclared.
 = Undeclared_Assets / Total_Financial_Assets
 */
 v[0] = V("Country_Total_Assets_Undeclared");
-v[1] = SUMS(working_class, "Household_Financial_Assets") + SUMS(capitalist_class, "Household_Financial_Assets");
+v[1] = V("Country_Total_Financial_Assets");					// total financial assets (pre-computed)
 v[2] = (v[1] > 0.01) ? v[0] / v[1] : 0;
 RESULT(v[2])
 
@@ -1014,7 +1009,7 @@ EQUATION("Country_Audit_Count")
 /*
 Stage 9: Number of households audited this period.
 */
-RESULT(SUMS(working_class, "Household_Is_Audited") + SUMS(capitalist_class, "Household_Is_Audited"))
+RESULT(VS(working_class, "Class_Audited_Count") + VS(capitalist_class, "Class_Audited_Count"))
 
 
 EQUATION("Country_Penalty_Revenue")
@@ -1023,8 +1018,8 @@ Stage 9: Total penalties collected from caught evaders.
 Includes both asset evasion penalties and offshore deposit penalties.
 Goes to Government_Penalty_Revenue.
 */
-v[0] = SUMS(working_class, "Household_Asset_Penalty") + SUMS(capitalist_class, "Household_Asset_Penalty");
-v[1] = SUMS(working_class, "Household_Offshore_Penalty") + SUMS(capitalist_class, "Household_Offshore_Penalty");
+v[0] = VS(working_class, "Class_Asset_Penalty") + VS(capitalist_class, "Class_Asset_Penalty");
+v[1] = VS(working_class, "Class_Offshore_Penalty") + VS(capitalist_class, "Class_Offshore_Penalty");
 RESULT(v[0] + v[1])
 
 
@@ -1128,7 +1123,7 @@ Sum up nominal value of autonomous consumption.
 SWITCHED: From SUM("Class_Real_Autonomous_Consumption")
           To SUMS(households, "Household_Real_Autonomous_Consumption")
 */
-	v[0]=SUMS(working_class, "Household_Real_Autonomous_Consumption") + SUMS(capitalist_class, "Household_Real_Autonomous_Consumption");
+	v[0]=VS(working_class, "Class_Real_Autonomous_Consumption") + VS(capitalist_class, "Class_Real_Autonomous_Consumption");
 	v[1]=VS(consumption, "Sector_Avg_Price");
 	v[2]=v[0]*v[1];
 RESULT(v[2])
@@ -1158,280 +1153,290 @@ RESULT(v[12])
 
 
 /******************************************************************************
- * OPTIMIZED INEQUALITY INDICES
+ * INEQUALITY INDICES
  *
- * Performance optimizations:
- * 1. std::sort instead of bubble sort: O(n log n) vs O(n²)
- * 2. Master equations compute all indices in single pass
- * 3. Data collected once, sorted once, all shares computed together
- * 4. Individual equations are thin wrappers returning pre-computed values
+ * Master equations collect household data once per annual period, sort once,
+ * and compute all indices (Gini, Palma, Top10, Top1, Bottom50, Theil) in a
+ * single pass. Slave variables are EQUATION_DUMMY, filled via WRITE.
  ******************************************************************************/
 
 EQUATION("Country_Gini_Index")
 /*
-MASTER EQUATION for income inequality (disposable, post-tax).
-Computes: Gini, Palma, Top10, Top1, Bottom50, Theil
-Uses std::sort for O(n log n) performance.
-WRITEs results to individual variables.
+Master equation for post-tax income inequality (disposable income).
+Computes Gini, Palma, Top10, Top1, Bottom50 and Theil in a single sorted pass.
+Recomputes only at annual frequency; holds previous value in interim periods.
 */
-	v[0] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
-	i = (int) v[0];
-	if(i <= 1)
+	v[0] = V("annual_frequency");						// annual recomputation period
+	v[1] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
+	v[2] = 0;											// result (gini)
+
+	if(t > 1 && fmod((double) t, v[0]) != 0)
+		v[2] = CURRENT;									// hold previous value
+	else if(v[1] <= 1)
 	{
 		WRITE("Country_Palma_Ratio_Income", 0);
 		WRITE("Country_Top10_Share_Income", 0);
 		WRITE("Country_Top1_Share_Income", 0);
 		WRITE("Country_Bottom50_Share_Income", 0);
 		WRITE("Country_Theil_Index_Income", 0);
-		END_EQUATION(0);
 	}
-
-	double* values = new double[i];
-	double total = 0;
-	j = 0;
-	CYCLE(cur1, "CLASSES")
+	else
 	{
-	CYCLES(cur1, cur, "HOUSEHOLD")
-	{
-		values[j] = VS(cur, "Household_Nominal_Disposable_Income");
-		total += values[j];
-		j++;
+		i = (int) v[1];
+		static double* values = nullptr;				// reusable buffer across periods
+		static int buf_size = 0;
+		if(i > buf_size) { delete[] values; values = new double[i * 2]; buf_size = i * 2; }
+
+		double total = 0;
+		j = 0;
+		CYCLE(cur1, "CLASSES")
+		{
+		CYCLES(cur1, cur, "HOUSEHOLD")
+		{
+			values[j] = VS(cur, "Household_Nominal_Disposable_Income");
+			total += values[j];
+			j++;
+		}
+		}
+
+		double mean = total / i;						// Theil computed before sorting
+		double theil = 0;
+		for(int k = 0; k < i; k++) {
+			double ratio = max(1e-10, values[k]) / mean;
+			if(ratio > 1e-10) theil += ratio * log(ratio);
+		}
+		WRITE("Country_Theil_Index_Income", theil / i);
+
+		std::sort(values, values + i);
+
+		double sum_ix = 0, sum_x = 0;
+		for(int k = 0; k < i; k++) {
+			sum_ix += (k + 1) * values[k];
+			sum_x  += values[k];
+		}
+		v[2] = (sum_x > 1e-10) ? (2.0 * sum_ix - (i + 1) * sum_x) / (i * sum_x) : 0;
+
+		int b40 = (int)(i * 0.40), b50 = (int)(i * 0.50);
+		int t10 = (int)(i * 0.90), t1  = min((int)(i * 0.99), i - 1);
+		double s_b40 = 0, s_b50 = 0, s_t10 = 0, s_t1 = 0;
+		for(int k = 0; k < i; k++) {
+			if(k < b40) s_b40 += values[k];
+			if(k < b50) s_b50 += values[k];
+			if(k >= t10) s_t10 += values[k];
+			if(k >= t1)  s_t1  += values[k];
+		}
+		WRITE("Country_Palma_Ratio_Income",   (fabs(s_b40) > 1e-10) ? s_t10 / s_b40 : 9999);
+		WRITE("Country_Top10_Share_Income",   (total > 1e-10) ? s_t10 / total : 0);
+		WRITE("Country_Top1_Share_Income",    (total > 1e-10) ? s_t1  / total : 0);
+		WRITE("Country_Bottom50_Share_Income",(total > 1e-10) ? s_b50 / total : 0);
 	}
-	}
-
-	// Compute Theil BEFORE sorting (doesn't need sorted data)
-	double mean = total / i;
-	double theil = 0;
-	for(int k = 0; k < i; k++) {
-		double val = max(1e-10, values[k]);
-		double ratio = val / mean;
-		if(ratio > 1e-10)
-			theil += ratio * log(ratio);
-	}
-	theil /= i;
-	WRITE("Country_Theil_Index_Income", theil);
-
-	// Sort using std::sort - O(n log n)
-	std::sort(values, values + i);
-
-	// Compute Gini from sorted array
-	double sum_ix = 0, sum_x = 0;
-	for(int k = 0; k < i; k++) {
-		sum_ix += (k + 1) * values[k];
-		sum_x += values[k];
-	}
-	double gini = (sum_x > 1e-10) ? (2.0 * sum_ix - (i + 1) * sum_x) / (i * sum_x) : 0;
-
-	// Compute all shares in single pass through sorted array
-	int bottom40_idx = (int)(i * 0.4);
-	int bottom50_idx = (int)(i * 0.5);
-	int top10_idx = (int)(i * 0.9);
-	int top1_idx = (int)(i * 0.99);
-	if(top1_idx >= i) top1_idx = i - 1;
-
-	double bottom40_sum = 0, bottom50_sum = 0, top10_sum = 0, top1_sum = 0;
-	for(int k = 0; k < i; k++) {
-		if(k < bottom40_idx) bottom40_sum += values[k];
-		if(k < bottom50_idx) bottom50_sum += values[k];
-		if(k >= top10_idx) top10_sum += values[k];
-		if(k >= top1_idx) top1_sum += values[k];
-	}
-
-	// Write all computed values
-	WRITE("Country_Palma_Ratio_Income", (fabs(bottom40_sum) > 1e-10) ? top10_sum / bottom40_sum : 9999);
-	WRITE("Country_Top10_Share_Income", (total > 1e-10) ? top10_sum / total : 0);
-	WRITE("Country_Top1_Share_Income", (total > 1e-10) ? top1_sum / total : 0);
-	WRITE("Country_Bottom50_Share_Income", (total > 1e-10) ? bottom50_sum / total : 0);
-
-	delete[] values;
-RESULT(gini)
+RESULT(v[2])
 
 EQUATION("Country_Gini_Index_Pretax")
 /*
 Gini coefficient for gross (pre-tax) income distribution.
-Standalone equation (different data source than post-tax).
+Under proportional income tax (switch_class_tax_structure < 5), the Gini is
+scale-invariant and equals Country_Gini_Index — no sort required.
+Recomputes only at annual frequency; holds previous value in interim periods.
 */
-	v[0] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
-	i = (int) v[0];
-	if(i <= 1)
-		END_EQUATION(0);
+	v[0] = V("annual_frequency");						// annual recomputation period
+	v[1] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
+	v[2] = 0;											// result (gini)
 
-	double* values = new double[i];
-	j = 0;
-	CYCLE(cur1, "CLASSES")
+	if(t > 1 && fmod((double) t, v[0]) != 0)
+		v[2] = CURRENT;									// hold previous value
+	else if(v[1] <= 1)
+		v[2] = 0;
+	else
 	{
-	CYCLES(cur1, cur, "HOUSEHOLD")
-	{
-		values[j] = VS(cur, "Household_Nominal_Gross_Income");
-		j++;
-	}
-	}
+		v[3] = V("switch_class_tax_structure");
+		if(v[3] < 5)
+			v[2] = V("Country_Gini_Index");				// proportional tax: Gini is scale-invariant
+		else
+		{
+			i = (int) v[1];
+			static double* values = nullptr;
+			static int buf_size = 0;
+			if(i > buf_size) { delete[] values; values = new double[i * 2]; buf_size = i * 2; }
 
-	// Sort and compute Gini
-	std::sort(values, values + i);
-	double sum_ix = 0, sum_x = 0;
-	for(int k = 0; k < i; k++) {
-		sum_ix += (k + 1) * values[k];
-		sum_x += values[k];
-	}
-	double gini = (sum_x > 1e-10) ? (2.0 * sum_ix - (i + 1) * sum_x) / (i * sum_x) : 0;
+			j = 0;
+			CYCLE(cur1, "CLASSES")
+			{
+			CYCLES(cur1, cur, "HOUSEHOLD")
+			{
+				values[j] = VS(cur, "Household_Nominal_Gross_Income");
+				j++;
+			}
+			}
 
-	delete[] values;
-RESULT(gini)
+			std::sort(values, values + i);
+			double sum_ix = 0, sum_x = 0;
+			for(int k = 0; k < i; k++) {
+				sum_ix += (k + 1) * values[k];
+				sum_x  += values[k];
+			}
+			v[2] = (sum_x > 1e-10) ? (2.0 * sum_ix - (i + 1) * sum_x) / (i * sum_x) : 0;
+		}
+	}
+RESULT(v[2])
 
 EQUATION("Country_Gini_Index_Wealth")
 /*
-MASTER EQUATION for wealth inequality (post-tax).
-Computes: Gini, Palma, Top10, Top1, Bottom50, Theil
-Uses std::sort for O(n log n) performance.
+Master equation for post-tax wealth inequality (net wealth).
+Computes Gini, Palma, Top10, Top1, Bottom50 and Theil in a single sorted pass.
+Recomputes only at annual frequency; holds previous value in interim periods.
 */
-	v[0] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
-	i = (int) v[0];
-	if(i <= 1)
+	v[0] = V("annual_frequency");						// annual recomputation period
+	v[1] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
+	v[2] = 0;											// result (gini)
+
+	if(t > 1 && fmod((double) t, v[0]) != 0)
+		v[2] = CURRENT;									// hold previous value
+	else if(v[1] <= 1)
 	{
 		WRITE("Country_Palma_Ratio_Wealth", 0);
 		WRITE("Country_Top10_Share_Wealth", 0);
 		WRITE("Country_Top1_Share_Wealth", 0);
 		WRITE("Country_Bottom50_Share_Wealth", 0);
 		WRITE("Country_Theil_Index_Wealth", 0);
-		END_EQUATION(0);
 	}
-
-	double* values = new double[i];
-	double total = 0;
-	j = 0;
-	CYCLE(cur1, "CLASSES")
+	else
 	{
-	CYCLES(cur1, cur, "HOUSEHOLD")
-	{
-		values[j] = VS(cur, "Household_Net_Wealth");
-		total += values[j];
-		j++;
+		i = (int) v[1];
+		static double* values = nullptr;				// reusable buffer across periods
+		static int buf_size = 0;
+		if(i > buf_size) { delete[] values; values = new double[i * 2]; buf_size = i * 2; }
+
+		double total = 0;
+		j = 0;
+		CYCLE(cur1, "CLASSES")
+		{
+		CYCLES(cur1, cur, "HOUSEHOLD")
+		{
+			values[j] = VS(cur, "Household_Net_Wealth");
+			total += values[j];
+			j++;
+		}
+		}
+
+		double mean = total / i;						// Theil computed before sorting
+		double theil = 0;
+		for(int k = 0; k < i; k++) {
+			double ratio = max(1e-10, values[k]) / mean;
+			if(ratio > 1e-10) theil += ratio * log(ratio);
+		}
+		WRITE("Country_Theil_Index_Wealth", theil / i);
+
+		std::sort(values, values + i);
+
+		double sum_ix = 0, sum_x = 0;
+		for(int k = 0; k < i; k++) {
+			sum_ix += (k + 1) * values[k];
+			sum_x  += values[k];
+		}
+		v[2] = (sum_x > 1e-10) ? (2.0 * sum_ix - (i + 1) * sum_x) / (i * sum_x) : 0;
+
+		int b40 = (int)(i * 0.40), b50 = (int)(i * 0.50);
+		int t10 = (int)(i * 0.90), t1  = min((int)(i * 0.99), i - 1);
+		double s_b40 = 0, s_b50 = 0, s_t10 = 0, s_t1 = 0;
+		for(int k = 0; k < i; k++) {
+			if(k < b40) s_b40 += values[k];
+			if(k < b50) s_b50 += values[k];
+			if(k >= t10) s_t10 += values[k];
+			if(k >= t1)  s_t1  += values[k];
+		}
+		WRITE("Country_Palma_Ratio_Wealth",   (fabs(s_b40) > 1e-10) ? s_t10 / s_b40 : 9999);
+		WRITE("Country_Top10_Share_Wealth",   (total > 1e-10) ? s_t10 / total : 0);
+		WRITE("Country_Top1_Share_Wealth",    (total > 1e-10) ? s_t1  / total : 0);
+		WRITE("Country_Bottom50_Share_Wealth",(total > 1e-10) ? s_b50 / total : 0);
 	}
-	}
-
-	// Compute Theil BEFORE sorting
-	double mean = total / i;
-	double theil = 0;
-	for(int k = 0; k < i; k++) {
-		double val = max(1e-10, values[k]);
-		double ratio = val / mean;
-		if(ratio > 1e-10)
-			theil += ratio * log(ratio);
-	}
-	theil /= i;
-	WRITE("Country_Theil_Index_Wealth", theil);
-
-	// Sort using std::sort
-	std::sort(values, values + i);
-
-	// Compute Gini
-	double sum_ix = 0, sum_x = 0;
-	for(int k = 0; k < i; k++) {
-		sum_ix += (k + 1) * values[k];
-		sum_x += values[k];
-	}
-	double gini = (sum_x > 1e-10) ? (2.0 * sum_ix - (i + 1) * sum_x) / (i * sum_x) : 0;
-
-	// Compute all shares
-	int bottom40_idx = (int)(i * 0.4);
-	int bottom50_idx = (int)(i * 0.5);
-	int top10_idx = (int)(i * 0.9);
-	int top1_idx = (int)(i * 0.99);
-	if(top1_idx >= i) top1_idx = i - 1;
-
-	double bottom40_sum = 0, bottom50_sum = 0, top10_sum = 0, top1_sum = 0;
-	for(int k = 0; k < i; k++) {
-		if(k < bottom40_idx) bottom40_sum += values[k];
-		if(k < bottom50_idx) bottom50_sum += values[k];
-		if(k >= top10_idx) top10_sum += values[k];
-		if(k >= top1_idx) top1_sum += values[k];
-	}
-
-	WRITE("Country_Palma_Ratio_Wealth", (fabs(bottom40_sum) > 1e-10) ? top10_sum / bottom40_sum : 9999);
-	WRITE("Country_Top10_Share_Wealth", (total > 1e-10) ? top10_sum / total : 0);
-	WRITE("Country_Top1_Share_Wealth", (total > 1e-10) ? top1_sum / total : 0);
-	WRITE("Country_Bottom50_Share_Wealth", (total > 1e-10) ? bottom50_sum / total : 0);
-
-	delete[] values;
-RESULT(gini)
+RESULT(v[2])
 
 EQUATION("Country_Gini_Index_Wealth_Pretax")
 /*
-MASTER EQUATION for wealth inequality (pre-tax).
-Computes: Gini, Palma, Top10, Top1, Bottom50, Theil
-Pre-tax wealth = current net wealth + wealth tax paid this period.
+Master equation for pre-tax wealth inequality (net wealth + wealth tax paid).
+When wealth_tax_rate = 0, pre-tax and post-tax wealth are identical, so all
+indices are copied from Country_Gini_Index_Wealth without iterating households.
+Recomputes only at annual frequency; holds previous value in interim periods.
 */
-	v[0] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
-	i = (int) v[0];
-	if(i <= 1)
+	v[0] = V("annual_frequency");						// annual recomputation period
+	v[1] = COUNTS(working_class, "HOUSEHOLD") + COUNTS(capitalist_class, "HOUSEHOLD");
+	v[2] = 0;											// result (gini)
+
+	if(t > 1 && fmod((double) t, v[0]) != 0)
+		v[2] = CURRENT;									// hold previous value
+	else if(v[1] <= 1)
 	{
 		WRITE("Country_Palma_Ratio_Wealth_Pretax", 0);
 		WRITE("Country_Top10_Share_Wealth_Pretax", 0);
 		WRITE("Country_Top1_Share_Wealth_Pretax", 0);
 		WRITE("Country_Bottom50_Share_Wealth_Pretax", 0);
 		WRITE("Country_Theil_Index_Wealth_Pretax", 0);
-		END_EQUATION(0);
 	}
-
-	double* values = new double[i];
-	double total = 0;
-	j = 0;
-	CYCLE(cur1, "CLASSES")
+	else
 	{
-	CYCLES(cur1, cur, "HOUSEHOLD")
-	{
-		values[j] = VS(cur, "Household_Net_Wealth") + VS(cur, "Household_Wealth_Tax_Payment");
-		total += values[j];
-		j++;
+		v[3] = V("wealth_tax_rate");
+		if(v[3] <= 0)									// no tax: pre-tax = post-tax
+		{
+			WRITE("Country_Palma_Ratio_Wealth_Pretax",    V("Country_Palma_Ratio_Wealth"));
+			WRITE("Country_Top10_Share_Wealth_Pretax",    V("Country_Top10_Share_Wealth"));
+			WRITE("Country_Top1_Share_Wealth_Pretax",     V("Country_Top1_Share_Wealth"));
+			WRITE("Country_Bottom50_Share_Wealth_Pretax", V("Country_Bottom50_Share_Wealth"));
+			WRITE("Country_Theil_Index_Wealth_Pretax",    V("Country_Theil_Index_Wealth"));
+			v[2] = V("Country_Gini_Index_Wealth");
+		}
+		else
+		{
+			i = (int) v[1];
+			static double* values = nullptr;			// reusable buffer across periods
+			static int buf_size = 0;
+			if(i > buf_size) { delete[] values; values = new double[i * 2]; buf_size = i * 2; }
+
+			double total = 0;
+			j = 0;
+			CYCLE(cur1, "CLASSES")
+			{
+			CYCLES(cur1, cur, "HOUSEHOLD")
+			{
+				values[j] = VS(cur, "Household_Net_Wealth") + VS(cur, "Household_Wealth_Tax_Payment");
+				total += values[j];
+				j++;
+			}
+			}
+
+			double mean = total / i;					// Theil computed before sorting
+			double theil = 0;
+			for(int k = 0; k < i; k++) {
+				double ratio = max(1e-10, values[k]) / mean;
+				if(ratio > 1e-10) theil += ratio * log(ratio);
+			}
+			WRITE("Country_Theil_Index_Wealth_Pretax", theil / i);
+
+			std::sort(values, values + i);
+
+			double sum_ix = 0, sum_x = 0;
+			for(int k = 0; k < i; k++) {
+				sum_ix += (k + 1) * values[k];
+				sum_x  += values[k];
+			}
+			v[2] = (sum_x > 1e-10) ? (2.0 * sum_ix - (i + 1) * sum_x) / (i * sum_x) : 0;
+
+			int b40 = (int)(i * 0.40), b50 = (int)(i * 0.50);
+			int t10 = (int)(i * 0.90), t1  = min((int)(i * 0.99), i - 1);
+			double s_b40 = 0, s_b50 = 0, s_t10 = 0, s_t1 = 0;
+			for(int k = 0; k < i; k++) {
+				if(k < b40) s_b40 += values[k];
+				if(k < b50) s_b50 += values[k];
+				if(k >= t10) s_t10 += values[k];
+				if(k >= t1)  s_t1  += values[k];
+			}
+			WRITE("Country_Palma_Ratio_Wealth_Pretax",   (fabs(s_b40) > 1e-10) ? s_t10 / s_b40 : 9999);
+			WRITE("Country_Top10_Share_Wealth_Pretax",   (total > 1e-10) ? s_t10 / total : 0);
+			WRITE("Country_Top1_Share_Wealth_Pretax",    (total > 1e-10) ? s_t1  / total : 0);
+			WRITE("Country_Bottom50_Share_Wealth_Pretax",(total > 1e-10) ? s_b50 / total : 0);
+		}
 	}
-	}
-
-	// Compute Theil BEFORE sorting
-	double mean = total / i;
-	double theil = 0;
-	for(int k = 0; k < i; k++) {
-		double val = max(1e-10, values[k]);
-		double ratio = val / mean;
-		if(ratio > 1e-10)
-			theil += ratio * log(ratio);
-	}
-	theil /= i;
-	WRITE("Country_Theil_Index_Wealth_Pretax", theil);
-
-	// Sort using std::sort
-	std::sort(values, values + i);
-
-	// Compute Gini
-	double sum_ix = 0, sum_x = 0;
-	for(int k = 0; k < i; k++) {
-		sum_ix += (k + 1) * values[k];
-		sum_x += values[k];
-	}
-	double gini = (sum_x > 1e-10) ? (2.0 * sum_ix - (i + 1) * sum_x) / (i * sum_x) : 0;
-
-	// Compute all shares
-	int bottom40_idx = (int)(i * 0.4);
-	int bottom50_idx = (int)(i * 0.5);
-	int top10_idx = (int)(i * 0.9);
-	int top1_idx = (int)(i * 0.99);
-	if(top1_idx >= i) top1_idx = i - 1;
-
-	double bottom40_sum = 0, bottom50_sum = 0, top10_sum = 0, top1_sum = 0;
-	for(int k = 0; k < i; k++) {
-		if(k < bottom40_idx) bottom40_sum += values[k];
-		if(k < bottom50_idx) bottom50_sum += values[k];
-		if(k >= top10_idx) top10_sum += values[k];
-		if(k >= top1_idx) top1_sum += values[k];
-	}
-
-	WRITE("Country_Palma_Ratio_Wealth_Pretax", (fabs(bottom40_sum) > 1e-10) ? top10_sum / bottom40_sum : 9999);
-	WRITE("Country_Top10_Share_Wealth_Pretax", (total > 1e-10) ? top10_sum / total : 0);
-	WRITE("Country_Top1_Share_Wealth_Pretax", (total > 1e-10) ? top1_sum / total : 0);
-	WRITE("Country_Bottom50_Share_Wealth_Pretax", (total > 1e-10) ? bottom50_sum / total : 0);
-
-	delete[] values;
-RESULT(gini)
+RESULT(v[2])
 
 
 /******************************************************************************
@@ -1476,8 +1481,8 @@ Stage 4.7 SWITCH #4: Household-based average propensity.
 SWITCHED: From SUM("Class_*") To SUMS(households, "Household_*")
 */
 	v[0]=VS(consumption, "Sector_Avg_Price");
-	v[1]=SUMS(working_class, "Household_Effective_Real_Domestic_Consumption") + SUMS(capitalist_class, "Household_Effective_Real_Domestic_Consumption");
-	v[2]=SUMS(working_class, "Household_Nominal_Disposable_Income") + SUMS(capitalist_class, "Household_Nominal_Disposable_Income");
+	v[1]=VS(working_class, "Class_Effective_Real_Domestic_Consumption") + VS(capitalist_class, "Class_Effective_Real_Domestic_Consumption");
+	v[2]=VS(working_class, "Class_Nominal_Disposable_Income") + VS(capitalist_class, "Class_Nominal_Disposable_Income");
 	v[3]= v[2]!=0? v[0]*v[1]/v[2] : 0;
 RESULT(v[3])
 
@@ -1553,8 +1558,8 @@ else
 
     WRITE("Country_Transfer_Eligible", v[3]);
 
-    // BUDGET = Wealth tax revenue
-    v[10] = VS(country, "Country_Wealth_Tax_Revenue");
+    // BUDGET = Wealth tax revenue (lagged: government budgets transfers from last period's actual receipts)
+    v[10] = VL("Country_Wealth_Tax_Revenue", 1);
 }
 RESULT(max(0, v[10]))
 

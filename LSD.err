@@ -2861,3 +2861,13 @@ set it [ .da.vars.pl.f.v get $iti ]
 Message:
 bad listbox index "": must be active, anchor, end, @x,y, or a number
 -----
+
+
+====================> NEW TCL SESSION
+
+(03/02/26 22:19:05)
+Command:
+Command line parameters
+Message:
+Invalid option, available options: -i TCL_DIRECTORY / -f MODEL_NAME / -c MAX_THREADS
+-----

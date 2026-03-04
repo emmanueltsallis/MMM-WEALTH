@@ -249,96 +249,36 @@ RESULT(VS(country, "Exit_Bankruptcy_Share"))
 
 /*****HOUSEHOLD TYPE STATS*****/
 EQUATION("YSH_w")
-// Worker income share = SUM(Worker_Income) / Total_Income
-	v[0] = 0;  // worker income
-	v[1] = 0;  // total income
-	CYCLE(cur1, "CLASSES")
-	{
-	CYCLES(cur1, cur, "HOUSEHOLD")
-	{
-		v[2] = VS(cur, "Household_Nominal_Disposable_Income");
-		v[3] = VS(cur, "household_type");
-		if(v[3] == 0) v[0] += v[2];  // worker
-		v[1] += v[2];
-	}
-	}
+// Worker income share = Class_Nominal_Disposable_Income(workers) / total
+	v[0] = VS(working_class, "Class_Nominal_Disposable_Income");
+	v[1] = v[0] + VS(capitalist_class, "Class_Nominal_Disposable_Income");
 RESULT(v[1] > 0 ? v[0] / v[1] : 0)
 
 EQUATION("YSH_c")
-// Capitalist income share = SUM(Capitalist_Income) / Total_Income
-	v[0] = 0;  // capitalist income
-	v[1] = 0;  // total income
-	CYCLE(cur1, "CLASSES")
-	{
-	CYCLES(cur1, cur, "HOUSEHOLD")
-	{
-		v[2] = VS(cur, "Household_Nominal_Disposable_Income");
-		v[3] = VS(cur, "household_type");
-		if(v[3] == 1) v[0] += v[2];  // capitalist
-		v[1] += v[2];
-	}
-	}
+// Capitalist income share = Class_Nominal_Disposable_Income(capitalists) / total
+	v[0] = VS(capitalist_class, "Class_Nominal_Disposable_Income");
+	v[1] = v[0] + VS(working_class, "Class_Nominal_Disposable_Income");
 RESULT(v[1] > 0 ? v[0] / v[1] : 0)
 
 EQUATION("WSH_w")
-// Worker wealth share = SUM(Worker_Deposits) / Total_Deposits
-	v[0] = 0;  // worker wealth
-	v[1] = 0;  // total wealth
-	CYCLE(cur1, "CLASSES")
-	{
-	CYCLES(cur1, cur, "HOUSEHOLD")
-	{
-		v[2] = VS(cur, "Household_Stock_Deposits");
-		v[3] = VS(cur, "household_type");
-		if(v[3] == 0) v[0] += v[2];  // worker
-		v[1] += v[2];
-	}
-	}
+// Worker deposit share = Class_Stock_Deposits(workers) / total
+	v[0] = VS(working_class, "Class_Stock_Deposits");
+	v[1] = v[0] + VS(capitalist_class, "Class_Stock_Deposits");
 RESULT(v[1] > 0 ? v[0] / v[1] : 0)
 
 EQUATION("WSH_c")
-// Capitalist wealth share = SUM(Capitalist_Deposits) / Total_Deposits
-	v[0] = 0;  // capitalist wealth
-	v[1] = 0;  // total wealth
-	CYCLE(cur1, "CLASSES")
-	{
-	CYCLES(cur1, cur, "HOUSEHOLD")
-	{
-		v[2] = VS(cur, "Household_Stock_Deposits");
-		v[3] = VS(cur, "household_type");
-		if(v[3] == 1) v[0] += v[2];  // capitalist
-		v[1] += v[2];
-	}
-	}
+// Capitalist deposit share = Class_Stock_Deposits(capitalists) / total
+	v[0] = VS(capitalist_class, "Class_Stock_Deposits");
+	v[1] = v[0] + VS(working_class, "Class_Stock_Deposits");
 RESULT(v[1] > 0 ? v[0] / v[1] : 0)
 
 EQUATION("NW_w")
-// Total worker net wealth (absolute value)
-	v[0] = 0;  // worker net wealth
-	CYCLE(cur1, "CLASSES")
-	{
-	CYCLES(cur1, cur, "HOUSEHOLD")
-	{
-		v[1] = VS(cur, "household_type");
-		if(v[1] == 0)  // worker
-			v[0] += VS(cur, "Household_Net_Wealth");
-	}
-	}
-RESULT(v[0])
+// Total worker net wealth
+RESULT(VS(working_class, "Class_Net_Wealth"))
 
 EQUATION("NW_c")
-// Total capitalist net wealth (absolute value)
-	v[0] = 0;  // capitalist net wealth
-	CYCLE(cur1, "CLASSES")
-	{
-	CYCLES(cur1, cur, "HOUSEHOLD")
-	{
-		v[1] = VS(cur, "household_type");
-		if(v[1] == 1)  // capitalist
-			v[0] += VS(cur, "Household_Net_Wealth");
-	}
-	}
-RESULT(v[0])
+// Total capitalist net wealth
+RESULT(VS(capitalist_class, "Class_Net_Wealth"))
 
 EQUATION("NW_w_G")
 // Growth rate of worker net wealth

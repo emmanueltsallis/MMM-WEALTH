@@ -760,7 +760,7 @@ void log_evasion()
     // Asset Evasion (Financial Assets)
     double undeclared = VS(country, "Country_Total_Assets_Undeclared");
     double declared = VS(country, "Country_Total_Assets_Declared");
-    double total_assets = SUMS(working_class, "Household_Financial_Assets") + SUMS(capitalist_class, "Household_Financial_Assets");
+    double total_assets = VS(country, "Country_Total_Financial_Assets");
     double evasion_rate = VS(country, "Country_Asset_Evasion_Rate");
 
     // Enforcement
@@ -1017,13 +1017,13 @@ void log_household_identity_check()
     if (households == NULL) return;
 
     // Wage identity: SUM(Household_Wage_Income) = Country_Total_Wages
-    double hh_wages = SUMS(working_class, "Household_Wage_Income") + SUMS(capitalist_class, "Household_Wage_Income");
+    double hh_wages = VS(working_class, "Class_Wage_Income") + VS(capitalist_class, "Class_Wage_Income");
     double country_wages = VS(country, "Country_Total_Wages");
     double wage_diff = fabs(hh_wages - country_wages);
     double wage_pct = (country_wages > 0) ? wage_diff / country_wages * 100 : 0;
 
     // Profit identity: SUM(Household_Profit_Income) = Country_Total_Profits
-    double hh_profits = SUMS(working_class, "Household_Profit_Income") + SUMS(capitalist_class, "Household_Profit_Income");
+    double hh_profits = VS(working_class, "Class_Profit_Income") + VS(capitalist_class, "Class_Profit_Income");
     double country_profits = VS(country, "Country_Total_Profits");
     double profit_diff = fabs(hh_profits - country_profits);
     double profit_pct = (country_profits > 0) ? profit_diff / country_profits * 100 : 0;
