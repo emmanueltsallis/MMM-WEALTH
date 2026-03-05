@@ -386,12 +386,12 @@ double variable::cal( object *caller, int lag )
 		// add the Variable to the stack
 		if ( stacklog != NULL && stacklog->next == NULL )
 		{
-			++stack;
+			++lsd_stack;
 			stacklog->next = new lsdstack;
 			stacklog->next->next = NULL;
 			stacklog->next->prev = stacklog;
 			strcpyn( stacklog->next->label, label, MAX_ELEM_LENGTH );
-			stacklog->next->ns = stack;
+			stacklog->next->ns = lsd_stack;
 			stacklog->next->vs = this;
 			stacklog = stacklog->next;
 		}
@@ -406,7 +406,7 @@ double variable::cal( object *caller, int lag )
 
 #ifndef _NW_
 		if ( stack_info >= stack && ( ! prof_obs_only || observe ) )
-			start_profile[ stack - 1 ] = pstart = clock( );
+			start_profile[ lsd_stack - 1 ] = pstart = clock( );
 		else
 			if ( prof_aggr_time )
 				pstart = clock( );
@@ -487,9 +487,9 @@ double variable::cal( object *caller, int lag )
 
 		if ( stack_info >= stack && ( ! prof_obs_only || observe ) )
 		{
-			end_profile[ stack - 1 ] = prof_aggr_time ? pend : clock( );
+			end_profile[ lsd_stack - 1 ] = prof_aggr_time ? pend : clock( );
 
-			time = 1000 * ( end_profile[ stack - 1 ] - start_profile[ stack - 1 ] ) / CLOCKS_PER_SEC;
+			time = 1000 * ( end_profile[ lsd_stack - 1 ] - start_profile[ lsd_stack - 1 ] ) / CLOCKS_PER_SEC;
 
 			if ( time >= prof_min_msecs )
 			{
@@ -501,7 +501,7 @@ double variable::cal( object *caller, int lag )
 				plog( "msecs=" );
 				plog_tag( "%d\t", "highlight", time );
 				plog( "stack=" );
-				plog_tag( "%d\t", "highlight", stack );
+				plog_tag( "%d\t", "highlight", lsd_stack );
 				plog( "caller=%s%s%s", caller == NULL ? "SYSTEM" : caller->label, caller == NULL ? "" : "\ttrigger=", caller == NULL || stacklog == NULL || stacklog->prev == NULL ? "" : stacklog->prev->label );
 			}
 		}
@@ -544,7 +544,7 @@ double variable::cal( object *caller, int lag )
 			stacklog = stacklog->prev;
 			delete stacklog->next;
 			stacklog->next = NULL;
-			stack--;
+			lsd_stack--;
 		}
 		else
 		{

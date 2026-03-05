@@ -766,6 +766,10 @@ Label Root
 			Var: Class_Stock_Loans
 			Var: Class_Transfer_Received
 			Var: Class_Unemployed_Count
+			Var: Class_Employed_Skill
+			Var: Class_Wealth_Tax_Payer_Count
+			Var: Class_Evader_Count
+			Var: Class_Weighted_Debt_Sum
 			Var: Class_Unemployment_Benefits
 			Var: Class_Wage_Income
 			Var: Class_Wealth_Share
@@ -854,6 +858,7 @@ Label Root
 		Var: Country_GDP_Demand
 		Var: Country_Gini_Index
 		Var: Country_Gini_Index_Pretax
+		Var: Country_Inequality_Master
 		Var: Country_Gini_Index_Wealth
 		Var: Country_Hedge_Share
 		Var: Country_Idle_Capacity
@@ -968,9 +973,6 @@ Label Root
 		Var: Country_Palma_Ratio_Income
 		Var: Country_Palma_Ratio_Wealth
 		Var: Country_Palma_Ratio_Wealth_Pretax
-		Var: Country_Theil_Index_Income
-		Var: Country_Theil_Index_Wealth
-		Var: Country_Theil_Index_Wealth_Pretax
 		Var: Country_Top1_Share_Income
 		Var: Country_Top1_Share_Wealth
 		Var: Country_Top1_Share_Wealth_Pretax
@@ -1041,6 +1043,7 @@ Var: Country_Domestic_Intermediate_Demand 0 s + n n
 Var: Country_GDP 10 s + n n	294	294	294	294	294	294	294	294	294	294
 Var: Country_GDP_Demand 0 s + n n
 Var: Country_Gini_Index 0 s + n n
+Var: Country_Inequality_Master 0 n + n n
 Var: Country_Gini_Index_Pretax 0 s + n n
 Var: Country_Gini_Index_Wealth 0 s + n n
 Var: Country_Hedge_Share 0 s + n n
@@ -1077,7 +1080,7 @@ Param: switch_foroward_looking 0 n + n n	0
 Param: household_skill_stddev 0 n + n n	0.3
 Param: household_avg_autonomous_consumption_adjustment 0 n + n n	0.4
 Param: household_avg_import_propensity 0 n + n n	0.33
-Param: switch_household_propensity_hysteresis 0 n + n n	1
+Param: switch_household_propensity_hysteresis 0 n + n n	0
 Param: household_habit_inflation_alpha 0 n + n n	5
 Param: household_habit_inflation_beta 0 n + n n	1
 Param: household_habit_deflation_alpha 0 n + n n	2
@@ -1110,7 +1113,7 @@ Var: Country_Wealth_Capital_Ratio 0 s + n n
 Var: Country_Total_Household_Stock_Deposits 0 s + n n
 Var: Country_Capitalist_Wealth_Share 0 s + n n
 Var: Country_Wealth_GDP_Ratio 0 s + n n
-Param: country_total_population 0 n + n n	10000
+Param: country_total_population 0 n + n n	5000
 Param: capitalist_population_share 0 n + n n	0.05
 Var: Country_Labor_Force 0 s + n n
 Var: Country_Total_Employment 0 s + n n
@@ -1156,9 +1159,6 @@ Var: Country_Gini_Index_Wealth_Pretax 0 s + n n
 Var: Country_Palma_Ratio_Income 0 s + n n
 Var: Country_Palma_Ratio_Wealth 0 s + n n
 Var: Country_Palma_Ratio_Wealth_Pretax 0 s + n n
-Var: Country_Theil_Index_Income 0 s + n n
-Var: Country_Theil_Index_Wealth 0 s + n n
-Var: Country_Theil_Index_Wealth_Pretax 0 s + n n
 Var: Country_Top1_Share_Income 0 s + n n
 Var: Country_Top1_Share_Wealth 0 s + n n
 Var: Country_Top1_Share_Wealth_Pretax 0 s + n n
@@ -1792,6 +1792,10 @@ Var: Class_Stock_Deposits 0 s + n n
 Var: Class_Stock_Loans 0 s + n n
 Var: Class_Transfer_Received 0 s + n n
 Var: Class_Unemployed_Count 0 s + n n
+Var: Class_Employed_Skill 0 n + n n
+Var: Class_Wealth_Tax_Payer_Count 0 n + n n
+Var: Class_Evader_Count 0 n + n n
+Var: Class_Weighted_Debt_Sum 0 n + n n
 Var: Class_Unemployment_Benefits 0 s + n n
 Var: Class_Wage_Income 0 s + n n
 Var: Class_Wealth_Share 0 s + n n
@@ -1917,7 +1921,7 @@ Param: household_loan_fixed_amortization 0 n + n n	0	0
 
 SIM_NUM 1
 SEED 1
-MAX_STEP 600
+MAX_STEP 500
 EQUATION fun_micro_macro_v.3.6.cpp
 MODELREPORT report_Sim1.html
 
@@ -2163,6 +2167,10 @@ END_DESCRIPTION
 
 Variable_Country_GDP_Demand
 
+END_DESCRIPTION
+
+Variable_Country_Inequality_Master
+Unified annual master: all inequality indices in a single CYCLE pass.
 END_DESCRIPTION
 
 Variable_Country_Gini_Index
@@ -2750,7 +2758,7 @@ END_DESCRIPTION
 
 Variable_Country_Gini_Index_Wealth_Pretax
 MASTER EQUATION for wealth inequality (pre-tax).
-Computes: Gini, Palma, Top10, Top1, Bottom50, Theil
+Computes: Gini, Palma, Top10, Top1, Bottom50
 Pre-tax wealth = current net wealth + wealth tax paid this period.
 END_DESCRIPTION
 
@@ -2765,18 +2773,6 @@ END_DESCRIPTION
 
 Variable_Country_Palma_Ratio_Wealth_Pretax
 Thin wrapper: Palma Ratio for net wealth (pre-tax).
-END_DESCRIPTION
-
-Variable_Country_Theil_Index_Income
-Thin wrapper: Theil Index for disposable income.
-END_DESCRIPTION
-
-Variable_Country_Theil_Index_Wealth
-Thin wrapper: Theil Index for net wealth (post-tax).
-END_DESCRIPTION
-
-Variable_Country_Theil_Index_Wealth_Pretax
-Thin wrapper: Theil Index for net wealth (pre-tax).
 END_DESCRIPTION
 
 Variable_Country_Top1_Share_Income
@@ -5277,6 +5273,22 @@ Variable_Class_Transfer_Received
 END_DESCRIPTION
 
 Variable_Class_Unemployed_Count
+
+END_DESCRIPTION
+
+Variable_Class_Employed_Skill
+
+END_DESCRIPTION
+
+Variable_Class_Wealth_Tax_Payer_Count
+
+END_DESCRIPTION
+
+Variable_Class_Evader_Count
+
+END_DESCRIPTION
+
+Variable_Class_Weighted_Debt_Sum
 
 END_DESCRIPTION
 

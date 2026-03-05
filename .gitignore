@@ -1,0 +1,20 @@
+# Build artifacts
+*.o
+*.exe
+*.err
+*.res
+*.res.gz
+*.tot.gz
+*.log
+lsdNW
+LSD.app/
+
+# Backup files
+*.bak
+
+# Results
+results/
+
+# OS files
+.DS_Store
+Thumbs.db
