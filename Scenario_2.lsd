@@ -1043,8 +1043,8 @@ Var: Country_Domestic_Intermediate_Demand 0 s + n n
 Var: Country_GDP 10 s + n n	294	294	294	294	294	294	294	294	294	294
 Var: Country_GDP_Demand 0 s + n n
 Var: Country_Gini_Index 0 s + n n
-Var: Country_Inequality_Master 0 n + n n
-Var: Country_Gini_Index_Pretax 0 s + n n
+Var: Country_Gini_Index_Pretax 0 n + n n
+Var: Country_Inequality_Master 0 s + n n
 Var: Country_Gini_Index_Wealth 0 s + n n
 Var: Country_Hedge_Share 0 s + n n
 Var: Country_Idle_Capacity 5 s + n n	0.18	0.18	0.18	0.18	0.18
@@ -1852,7 +1852,7 @@ Param: household_habit_persistence 0 s + n n	0	0
 Param: household_habit_inflation 0 s + n n	0	0
 Param: household_habit_deflation 0 s + n n	0	0
 Var: Household_Reference_Income 1 n + n n	0	0
-Var: Household_Income_Percentile 0 n + n n
+Var: Household_Income_Percentile 1 n + n n	0	0
 Var: Household_Real_Autonomous_Consumption 1 n + n n	0	0
 Var: Household_Imports_Share 0 n + n n
 Var: Household_Propensity_to_Spend 0 n + n n
@@ -1872,7 +1872,7 @@ Var: Household_Effective_Expenses 0 n + n n
 Var: Household_Effective_Real_Domestic_Consumption 0 n + n n
 Param: household_profit_share 0 s + n n	0	0
 Var: Household_Unemployment_Benefits 0 n + n n
-Var: Household_Nominal_Gross_Income 0 n + n n
+Var: Household_Nominal_Gross_Income 1 n + n n	0	0
 Var: Household_Avg_Debt_Rate 0 n + n n
 Var: Household_Interest_Rate 0 n + n n
 Var: Household_Interest_Payment 0 n + n n
@@ -2169,16 +2169,16 @@ Variable_Country_GDP_Demand
 
 END_DESCRIPTION
 
-Variable_Country_Inequality_Master
-Unified annual master: all inequality indices in a single CYCLE pass.
-END_DESCRIPTION
-
 Variable_Country_Gini_Index
 
 END_DESCRIPTION
 
 Variable_Country_Gini_Index_Pretax
 
+END_DESCRIPTION
+
+Variable_Country_Inequality_Master
+Unified annual master: all inequality indices in a single CYCLE pass.
 END_DESCRIPTION
 
 Variable_Country_Gini_Index_Wealth
@@ -5597,6 +5597,8 @@ END_DESCRIPTION
 
 Variable_Household_Nominal_Gross_Income
 
+_INIT_
+All 2 instances equal to 0
 END_DESCRIPTION
 
 Variable_Household_Avg_Debt_Rate
